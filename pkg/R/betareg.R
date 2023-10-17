@@ -31,7 +31,7 @@ betareg <- function(formula, data, subset, na.action, weights, offset,
     mf$formula <- formula
 
     ## evaluate model.frame
-    mf[[1L]] <- as.name("model.frame")
+    mf[[1L]] <- quote(stats::model.frame)
     mf <- eval(mf, parent.frame())
 
     ## extract terms, model matrix, response
