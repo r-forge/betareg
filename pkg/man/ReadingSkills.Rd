@@ -15,10 +15,13 @@ children's reading skills in dyslexic and non-dyslexic children.
 \format{
 A data frame containing 44 observations on 3 variables.
 \describe{
-  \item{accuracy}{reading score scaled to the open unit interval (see below).}
+  \item{accuracy}{numeric. Reading score with maximum restricted to be
+    0.99 rather than 1 (see below).}
   \item{dyslexia}{factor. Is the child dyslexic? (A sum contrast rather
     than treatment contrast is employed.)}
-  \item{iq}{non-verbal intelligence quotient transformed to z-scores.}
+  \item{iq}{numeric. Non-verbal intelligence quotient transformed to z-scores.}
+  \item{accuracy1}{numeric. Unrestricted reading score with a maximum of 1
+    (see below).}
 }
 }
 
@@ -28,10 +31,9 @@ A data frame containing 44 observations on 3 variables.
   by Smithson and Verkuilen (2006) so that \code{accuracy} is in the open unit
   interval (0, 1) and beta regression can be employed. First, the original accuracy
   was scaled using the minimal and maximal score (\code{a} and \code{b}, respectively)
-  that can be obtained in the test: \code{(original_accuracy - a) / (b - a)}
-  (\code{a} and \code{b} are not provided). Subsequently, the scaled score is transformed
-  to the unit interval using a continuity correction: \code{(scaled_accuracy * (n-1) - 0.5) / n}
-  (either with some rounding or using \code{n = 50} rather than 44).
+  that can be obtained in the test: \code{accuracy1 = (original_accuracy - a) / (b - a)}
+  (\code{a} and \code{b} are not provided). Subsequently, \code{accuracy} was obtained
+  from \code{accuracy1} by replacing all observations with a value of 1 with 0.99.
 }
 
 \source{
@@ -83,6 +85,8 @@ lines(nd$iq, plogis(predict(rs_ols, nd)), lty = 2)
 nd <- data.frame(dyslexia = "yes", iq = -30:30/10)
 lines(nd$iq, predict(rs_beta, nd), col = 2)
 lines(nd$iq, plogis(predict(rs_ols, nd)), col = 2, lty = 2)
+legend("topleft", c("Dyslexia: no", "Dyslexia: yes", "OLS", "Beta"),
+  lty = c(0, 0, 2, 1), pch = c(19, 19, NA, NA), col = c(1, 2, 1, 1), bty = "n")
 
 ## see demo("SmithsonVerkuilen2006", package = "betareg") for more details
 }
