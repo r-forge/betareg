@@ -10,7 +10,7 @@
 \usage{
 betareg.control(phi = TRUE, method = "BFGS", maxit = 5000,
   hessian = FALSE, trace = FALSE, start = NULL,
-  fsmaxit = 200, fstol = 1e-8, \dots)
+  fsmaxit = 200, fstol = 1e-8, quad = 20, \dots)
 }
 
 \arguments{
@@ -31,6 +31,8 @@ betareg.control(phi = TRUE, method = "BFGS", maxit = 5000,
     iterations. For details see below.}
   \item{fstol}{numeric tolerance for convergence in (quasi) Fisher scoring.
     For details see below.}
+  \item{quad}{numeric. The number of quadrature points for numeric
+    integration in case of \code{dist = "xbetax"} is used in the beta regression.}
   \item{\dots}{arguments passed to \code{\link[stats]{optim}}.}
 }
 

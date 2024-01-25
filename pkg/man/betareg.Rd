@@ -16,7 +16,7 @@
 betareg(formula, data, subset, na.action, weights, offset,
   link = c("logit", "probit", "cloglog", "cauchit", "log", "loglog"),
   link.phi = NULL, type = c("ML", "BC", "BR"),
-  dist = c("beta", "cbeta4", "cbetax"), nu = NULL,
+  dist = c("beta", "xbeta", "xbetax"), nu = NULL,
   control = betareg.control(\dots), model = TRUE,
   y = TRUE, x = FALSE, \dots)
 
@@ -49,14 +49,13 @@ betareg.fit(x, y, z = NULL, weights = NULL, offset = NULL,
     maximum likelihood (\code{"ML"}), ML with bias correction (\code{"BC"}),
     and ML with bias reduction (\code{"BR"}) are supported.}
   \item{dist}{character specification of the response distribution.
-    If all response observation are in (0, 1) the default is the standard
-    beta distribution. In the presence of boundary 0/1 observations, a
-    censored constrained four-parameter beta distribution (\code{"cbeta4"})
-    or a censored exponential mixture beta distribution (\code{"cbetax"})
-    can be used.}
-  \item{nu}{numeric. The value of the (fixed) \code{nu} parameter in
-    case a censored \code{dist} is used. The default is to estimate
-    \code{nu} in case of the \code{"cbetax"} distribution.}
+    If all response observation are in (0, 1) the default is the classical
+    beta distribution. In the presence of boundary 0/1 observations, an
+    extended-support beta distribution (\code{"xbeta"}) or an extended-support
+    beta mixture distribution (\code{"xbetax"}) is used.}
+  \item{nu}{numeric. The value of the (fixed) exceedence parameter \code{nu} in
+    case an extended-support beta distribution \code{dist} is used. The default
+    is to estimate \code{nu} in case of the \code{"xbetax"} distribution.}
   \item{control}{a list of control arguments specified via
     \code{\link{betareg.control}}.}
   \item{model, y, x}{logicals. If \code{TRUE} the corresponding components
@@ -117,6 +116,16 @@ betareg.fit(x, y, z = NULL, weights = NULL, offset = NULL,
   be treated as full model parameters (default) or as nuisance parameters. In the latter case
   the estimation does not change, only the reported information in output from \code{print},
   \code{summary}, or \code{coef} (among others) will be different. See also \code{\link{betareg.control}}.
+
+FIXME
+The extended-support beta distribution (\code{"xbeta"}) leverages an underlying
+symmetric four-parameter beta distribution with exceedence parameter \code{nu}
+to obtain support [-nu, 1 + nu] that is subsequently censored to [0, 1] in order
+to obtain point masses as the boundary values 0 and 1. The extended-support
+beta mixture distribution  (\code{"xbetax"}) is a continuous mixture of extended-support
+beta distributions where the exceedence parameter follows an exponential distribution
+with mean \code{nu} (rather than a fixed value of \code{nu}).
+
 
   A set of standard extractor functions for fitted model objects is available for
   objects of class \code{"betareg"}, including methods to the generic functions
