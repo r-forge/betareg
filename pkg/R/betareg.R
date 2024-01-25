@@ -1,7 +1,7 @@
 betareg <- function(formula, data, subset, na.action, weights, offset,
                     link = c("logit", "probit", "cloglog", "cauchit", "log", "loglog"),
                     link.phi = NULL, type = c("ML", "BC", "BR"),
-		    dist = c("beta", "cbeta4", "cbetax"), nu = NULL,
+		    dist = c("beta", "xbeta", "xbetax"), nu = NULL,
                     control = betareg.control(...),
                     model = TRUE, y = TRUE, x = FALSE,
                     temporary_control = temp_control(),  ## temporary control
@@ -81,23 +81,26 @@ betareg <- function(formula, data, subset, na.action, weights, offset,
     ## type of estimator and distribution
     type <- match.arg(type, c("ML", "BC", "BR"))
     if(!missing(dist)) {
-        dist <- match.arg(dist, c("beta", "cbeta4", "cbetax"))
+        dist <- tolower(dist)
+        if(dist == "xb") dist <- "xbeta"
+        if(dist == "xbx") dist <- "xbetax"
+        dist <- match.arg(dist, c("beta", "xbeta", "xbetax"))
         if(dist == "beta") {
             if(any(Y <= 0 | Y >= 1)) stop("invalid dependent variable, all observations must be in (0, 1)")
         }
-        if(dist == "cbeta4" & is.null(nu)) {
-            warning(sprintf("estimation of 'nu' with 'cbeta4' is not feasible, using '%s' instead",
-                            dist <- if(any(Y <= 0 | Y >= 1)) "cbetax" else "beta"))
+        if(dist == "xbeta" & is.null(nu)) {
+            warning(sprintf("estimation of 'nu' with 'xbeta' is not feasible, using '%s' instead",
+                            dist <- if(any(Y <= 0 | Y >= 1)) "xbetax" else "beta"))
         }
     } else {
         if(is.null(nu)) {
             dist <- if(all(Y > 0 & Y < 1)) {
                         "beta"
                     } else {
-                        "cbetax"
+                        "xbetax"
                     }
         } else {
-            dist <- "cbeta4"
+            dist <- "xbeta"
         }
     }
     if(dist != "beta" && type != "ML") {
@@ -501,12 +504,12 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
     ##  if(dist != "beta") {
     else {
         ## distribution d/p functions
-        dfun <- if(dist == "cbeta4") {
-                    function(x, mu, phi, nu, ...) dbeta4(x, mu = mu, phi = phi, theta1 = -nu, ...)
+        dfun <- if(dist == "xbeta") {
+                    function(x, mu, phi, nu, ...) dxbeta(x, mu = mu, phi = phi, nu = nu, ...)
                 }
                 else {
                     quadrule <- quadtable(nquad = quad)
-                    function(...) dbetax(quad = quadrule, ...)
+                    function(x, mu, phi, nu, ...) dxbetax(x, mu = mu, phi = phi, nu = nu, quad = quadrule, ...)
                 }
 
         ## set up (censored) log-likelihood
@@ -514,13 +517,13 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
             ## extract fitted parameters
             if(is.null(fit)) fit <- fitfun(par)
             rval <- with(fit, {
-                dfun(y, mu = mu, phi = phi, nu = nu, log = TRUE, censored = TRUE)
+                dfun(y, mu = mu, phi = phi, nu = nu, log = TRUE)
             })
             sum(weights * rval)
         }
 
         ## FIXME: Numerics are not yet very reliable. Accurate evaluation of h3f2 is still the issue here...
-        gradfun_cbeta4 <- function(par, sum = TRUE, fit = NULL) {
+        gradfun_xbeta <- function(par, sum = TRUE, fit = NULL) {
             ## extract fitted means/precisions
             if(is.null(fit)) fit <- fitfun(par, deriv = 3L)
             with(fit, {
@@ -572,24 +575,24 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
             })
         }
 
-        if (dist == "cbeta4") {
-            gradfun <- gradfun_cbeta4
+        if (dist == "xbeta") {
+            gradfun <- gradfun_xbeta
         }
-        if (dist == "cbetax") {
+        if (dist == "xbetax") {
             gradfun <- function(par, sum = TRUE, fit = NULL) {
                 if (is.null(fit)) {
                     fit <- fitfun(par, deriv = 3L)
                 }
                 with(fit, {
                     dens <- apply(quadrule, 1, function(rule) {
-                        e <- rule[1]*nu
-                        rule[2]*dbeta4(y, mu, phi, theta1 = -e, log = FALSE, censored = TRUE)
+                        e <- rule[1] * nu
+                        rule[2] * dxbeta(y, mu, phi, nu = e, log = FALSE)
                     })
                     tdens <- rowSums(dens)
                     obsders <- lapply(seq.int(quad), function(inds) {
                         current_nu <- fit$nu <- quadrule[inds, 1]*nu
                         par[k + m + 1] <- log(current_nu)
-                        out <- gradfun_cbeta4(par, fit = fit, sum = FALSE)
+                        out <- gradfun_xbeta(par, fit = fit, sum = FALSE)
                         dens[, inds]*out/tdens
                     })
                     out <- Reduce("+", obsders)
@@ -721,7 +724,7 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
     ## set up return value
     rval <- list(
         coefficients = list(mu = beta, phi = gamma),
-        residuals = y - mu, ## FIXME mean instead of mu for cbeta4/x
+        residuals = y - mu, ## FIXME mean instead of mu for xbeta/x
         fitted.values = structure(mu, .Names = names(y)), ## FIXME mean vs. mu
         type = type,
         dist = dist,
@@ -784,7 +787,7 @@ print.betareg <- function(x, digits = max(3, getOption("digits") - 3), ...)
     }
     if(x$dist != "beta") {
         cat(sprintf("Distribution: %s\nNu: %s\n\n",
-                    if(x$dist == "cbeta4") "censored constrained 4-parameter beta (cbeta4)" else "censored exponential mixture beta (cbetax)",
+                    if(x$dist == "xbeta") "censored constrained 4-parameter beta (xbeta)" else "censored exponential mixture beta (xbetax)",
                     round(x$nu, digits = digits)))
     }
 
@@ -890,7 +893,7 @@ print.summary.betareg <- function(x, digits = max(3, getOption("digits") - 3), .
 
         if(x$dist != "beta") {
             cat(sprintf("\nDistribution: %s\nNu: %s",
-                        if(x$dist == "cbeta4") "censored constrained 4-parameter beta (cbeta4)" else "censored exponential mixture beta (cbetax)",
+                        if(x$dist == "xbeta") "censored constrained 4-parameter beta (xbeta)" else "censored exponential mixture beta (xbetax)",
                         round(x$nu, digits = digits)))
         }
         cat("\nType of estimator:", x$type, switch(x$type,
@@ -916,7 +919,7 @@ print.summary.betareg <- function(x, digits = max(3, getOption("digits") - 3), .
 }
 
 predict.betareg <- function(object, newdata = NULL,
-                            type = c("response", "link", "precision", "variance", "parameter", "density", "probability", "quantile"),
+                            type = c("response", "link", "precision", "variance", "parameters", "density", "probability", "quantile"),
                             na.action = na.pass, at = 0.5, ...)
 {
     ## unify list component names
@@ -926,7 +929,7 @@ predict.betareg <- function(object, newdata = NULL,
     if(is.null(object$nu)) object$nu <- NA_real_
 
     ## types of predictions
-    type <- match.arg(type)
+    type <- match.arg(type, c("response", "link", "precision", "variance", "parameters", "density", "probability", "quantile"))
     attype <- if(is.character(at)) match.arg(at, c("function", "list")) else "numeric"
 
     ## set up function that computes prediction from model parameters
@@ -937,38 +940,36 @@ predict.betareg <- function(object, newdata = NULL,
                       "link" = function(pars) linkfun(pars$mu),
                       "precision" = function(pars) pars$phi,
                       "variance" = function(pars) pars$mu * (1 - pars$mu)/(1 + pars$phi),
-                      "parameter" = function(pars) pars,
+                      "parameters" = function(pars) pars,
                       "density" = function(x, pars, ...) dbetar(x, mu = pars$mu, phi = pars$phi, ...),
                       "probability" = function(q, pars, ...) pbetar(q, mu = pars$mu, phi = pars$phi, ...),
                       "quantile" = function(p, pars, ...) qbetar(p, mu = pars$mu, phi = pars$phi, ...)
                       )
-           } else if(object$dist == "cbeta4") {
+           } else if(object$dist == "xbeta") {
                switch(type,
                       "response" = function(pars) rep.int(NA_real_, length(pars$mu)),
                       "link" = function(pars) linkfun(pars$mu),
                       "precision" = function(pars) rep.int(NA_real_, length(pars$mu)),
                       "variance" = function(pars) rep.int(NA_real_, length(pars$mu)),
-                      "parameter" = function(pars) pars,
-                      "density" = function(x, pars, ...) dbeta4(x, mu = pars$mu, phi = pars$phi, theta1 = -pars$nu, censored = TRUE, ...),
-                      "probability" = function(q, pars, ...) pbeta4(q, mu = pars$mu, phi = pars$phi, theta1 = -pars$nu, censored = TRUE, ...),
-                      "quantile" = function(p, pars, ...) qbeta4(p, mu = pars$mu, phi = pars$phi, theta1 = -pars$nu, censored = TRUE, ...)
+                      "parameters" = function(pars) pars,
+                      "density" = function(x, pars, ...) dxbeta(x, mu = pars$mu, phi = pars$phi, nu = pars$nu, ...),
+                      "probability" = function(q, pars, ...) pxbeta(q, mu = pars$mu, phi = pars$phi, nu = pars$nu, ...),
+                      "quantile" = function(p, pars, ...) qxbeta(p, mu = pars$mu, phi = pars$phi, nu = pars$nu, ...)
                       )
-           } else if(object$dist == "cbetax") {
+           } else if(object$dist == "xbetax") {
                switch(type,
                       "response" = function(pars) rep.int(NA_real_, length(pars$mu)),
                       "link" = function(pars) linkfun(pars$mu),
                       "precision" = function(pars) rep.int(NA_real_, length(pars$mu)),
                       "variance" = function(pars) rep.int(NA_real_, length(pars$mu)),
-                      "parameter" = function(pars) pars,
-                      "density" = function(x, pars, ...) dbetax(x, mu = pars$mu, phi = pars$phi, nu = pars$nu, censored = TRUE, ...),
-                      "probability" = function(q, pars, ...) pbetax(q, mu = pars$mu, phi = pars$phi, nu = pars$nu, censored = TRUE, ...),
-                      "quantile" = function(p, pars, ...) rep.int(NA_real_, length(pars$mu))
-                      ## qbetax(p, mu = pars$mu, phi = pars$phi, nu = pars$nu, censored = TRUE, ...)
+                      "parameters" = function(pars) pars,
+                      "density" = function(x, pars, ...) dxbetax(x, mu = pars$mu, phi = pars$phi, nu = pars$nu, ...),
+                      "probability" = function(q, pars, ...) pxbetax(q, mu = pars$mu, phi = pars$phi, nu = pars$nu, ...),
+                      "quantile" = function(p, pars, ...) qxbetax(p, mu = pars$mu, phi = pars$phi, nu = pars$nu, ...)
                       )
            }
 
     if(missing(newdata) || is.null(newdata)) {
-
         pars <- data.frame(mu = object$fitted.values, phi = NA_real_, nu = object$nu)
         if(!(type %in% c("response", "link"))) {
             gamma <- object$coefficients$phi
@@ -976,15 +977,12 @@ predict.betareg <- function(object, newdata = NULL,
             offset <- if(is.null(object$offset$phi)) rep.int(0, NROW(z)) else object$offset$phi
             pars$phi <- object$link$phi$linkinv(drop(z %*% gamma + offset))
         }
-
     } else {
-
         tnam <- switch(type,
                        "response" = "mu",
                        "link" = "mu",
                        "precision" = "phi",
-                       "full"
-                       )
+                       "full")
 
         mf <- model.frame(delete.response(object$terms[[tnam]]), newdata, na.action = na.action, xlev = object$levels[[tnam]])
         newdata <- newdata[rownames(mf), , drop = FALSE]
@@ -1008,12 +1006,12 @@ predict.betareg <- function(object, newdata = NULL,
             }
             pars$phi <- object$link$phi$linkinv(drop(Z %*% object$coefficients$phi + offset[[2L]]))
         }
-
     }
 
-    if(type %in% c("response", "link", "precision", "variance", "parameter")) {
+    if(type %in% c("response", "link", "precision", "variance", "parameters")) {
         ## prediction is just a transformation of the parameters
         rval <- fun(pars, ...)
+        if(object$dist == "beta" && type == "parameters") rval$nu <- NULL
         if(is.null(dim(rval))) names(rval) <- rownames(pars)
     } else {
         ## prediction is a list of functions with predicted parameters as default
@@ -1134,7 +1132,7 @@ estfun.betareg <- function(x, phi = NULL, ...)
     if(x$dist == "beta") {
         for(n in names(x)[names(x) %in% fix_names_mu_phi]) names(x[[n]])[1L:2L] <- c("mu", "phi")
     } else {
-        stop("not implemented yet")
+        stop("not yet implemented")
     }
 
     ## extract response y and regressors X and Z
@@ -1372,55 +1370,8 @@ update.betareg <- function (object, formula., ..., evaluate = TRUE)
     else call
 }
 
-pit.betareg <- function(object, ...)
-{
-    ## observed response
-    y <- if(is.null(object$y)) model.response(model.frame(object)) else object$y
-
-    ## cdf
-    pfun <- predict(object, type = "probability", at = "function")
-    p <- pfun(y)
-
-    ## in case of censoring provide interval
-    if(y01 <- any(y <= 0 | y >= 1)) {
-        p <- cbind(p, p)
-        p[y01, 1L] <- pfun(y - .Machine$double.eps^0.9)[y01]
-    }
-    return(p)
-}
-
-utils::globalVariables("rootogram.default")
-
-rootogram.betareg <- function(object, newdata = NULL, breaks = NULL,
-                              max = NULL, xlab = NULL, main = NULL, width = NULL, ...)
-{
-    ## observed response and weights
-    mt <- terms(object)
-    mf <- if(is.null(newdata)) model.frame(object) else model.frame(mt, newdata, na.action = na.omit)
-    y <- model.response(mf)
-    w <- model.weights(mf)
-    if(is.null(w)) w <- rep.int(1, NROW(y))
-
-    ## breaks
-    if(is.null(breaks)) breaks <- "Sturges"
-    breaks <- hist(y[w > 0], plot = FALSE, breaks = breaks)$breaks
-    obsrvd <- as.vector(xtabs(w ~ cut(y, breaks, include.lowest = TRUE)))
-
-    ## expected frequencies
-    p <- predict(object, newdata, type = "probability", at = breaks)
-    p <- p[, -1L, drop = FALSE] - p[, -ncol(p), drop = FALSE]
-    expctd <- colSums(p * w)
-
-    ## call default method
-    if(is.null(xlab)) xlab <- as.character(attr(mt, "variables"))[2L]
-    if(is.null(main)) main <- deparse(substitute(object))
-    rootogram.default(obsrvd, expctd, breaks = breaks,
-                      xlab = xlab, main = main, width = 1, ...)
-}
-
-
 simulate.betareg <- function(object, nsim = 1, seed = NULL, ...) {
-    ## Does not support cbeta4 and cbetax yet
+    ## Does not support xbeta and xbetax yet
     if (!exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE))
         runif(1)
     if (is.null(seed))
@@ -1451,4 +1402,13 @@ simulate.betareg <- function(object, nsim = 1, seed = NULL, ...) {
     }
     attr(val, "seed") <- RNGstate
     val
+}
+
+prodist.betareg <- function(object, newdata = NULL, na.action = na.pass, ...) {
+  pars <- predict(object, newdata = newdata, na.action = na.action, type = "parameters", ...)
+  pars$mu <- setNames(pars$mu, rownames(pars))
+  switch(object$dist,
+    "beta"   = do.call("BetaR",  pars),
+    "xbeta"  = do.call("XBeta",  pars),
+    "xbetax" = do.call("XBetaX", pars))
 }
