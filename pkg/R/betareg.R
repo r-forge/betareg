@@ -1,10 +1,9 @@
 betareg <- function(formula, data, subset, na.action, weights, offset,
                     link = c("logit", "probit", "cloglog", "cauchit", "log", "loglog"),
                     link.phi = NULL, type = c("ML", "BC", "BR"),
-		    dist = c("beta", "xbeta", "xbetax"), nu = NULL,
+		    dist = NULL, nu = NULL,
                     control = betareg.control(...),
                     model = TRUE, y = TRUE, x = FALSE,
-                    temporary_control = temp_control(),  ## temporary control
                     ...)
 {
     ## call
@@ -80,32 +79,28 @@ betareg <- function(formula, data, subset, na.action, weights, offset,
 
     ## type of estimator and distribution
     type <- match.arg(type, c("ML", "BC", "BR"))
-    if(!missing(dist)) {
-        dist <- tolower(dist)
-        if(dist == "xb") dist <- "xbeta"
-        if(dist == "xbx") dist <- "xbetax"
-        dist <- match.arg(dist, c("beta", "xbeta", "xbetax"))
-        if(dist == "beta") {
-            if(any(Y <= 0 | Y >= 1)) stop("invalid dependent variable, all observations must be in (0, 1)")
-        }
-        if(dist == "xbeta" & is.null(nu)) {
-            warning(sprintf("estimation of 'nu' with 'xbeta' is not feasible, using '%s' instead",
-                            dist <- if(any(Y <= 0 | Y >= 1)) "xbetax" else "beta"))
-        }
+    if(!is.null(dist)) {
+      dist <- tolower(as.character(dist))
+      if(dist == "xb") dist <- "xbeta"
+      if(dist == "xbx") dist <- "xbetax"
+      dist <- match.arg(dist, c("beta", "xbeta", "xbetax"))
+      if(dist == "beta") {
+        if(any(Y <= 0 | Y >= 1)) stop("dependent variable not suitable for 'beta' distribution, all observations must be in (0, 1)")
+      }
+      if(dist == "xbeta" && is.null(nu)) {
+        warning(sprintf("estimation of 'nu' with 'xbeta' distribution is not feasible, using '%s' instead",
+          dist <- if(any(Y <= 0 | Y >= 1)) "xbetax" else "beta"))
+      }
     } else {
-        if(is.null(nu)) {
-            dist <- if(all(Y > 0 & Y < 1)) {
-                        "beta"
-                    } else {
-                        "xbetax"
-                    }
-        } else {
-            dist <- "xbeta"
-        }
+      if(is.null(nu)) {
+        dist <- if(all(Y > 0 & Y < 1)) "beta" else "xbetax"
+      } else {
+        dist <- "xbeta"
+      }
     }
     if(dist != "beta" && type != "ML") {
-        warning(sprintf("only 'ML' estimation is available for '%s' distribution", dist))
-        type <- "ML"
+      warning(sprintf("only 'ML' estimation is available for '%s' distribution", dist))
+      type <- "ML"
     }
 
     ## links
@@ -137,8 +132,7 @@ betareg <- function(formula, data, subset, na.action, weights, offset,
 
 
     ## call the actual workhorse: betareg.fit()
-    rval <- betareg.fit(X, Y, Z, weights, offset, link, link.phi, type, control, dist, nu,
-                        temporary_control = temporary_control) ## temprorary
+    rval <- betareg.fit(X, Y, Z, weights, offset, link, link.phi, type, control, dist, nu)
 
     ## further model information
     rval$call <- cl
@@ -168,37 +162,39 @@ fix_model_mu_phi <- function(model) {
     return(as.vector(model))
 }
 
-temp_control <- function(use_gradient = TRUE, halt = FALSE, use_nlminb = FALSE) {
-    list(use_gradient = use_gradient, halt = halt, use_nlminb = use_nlminb)
-}
-
-
-betareg.control <- function(phi = TRUE,
-                            method = "BFGS", maxit = 5000, hessian = FALSE, trace = FALSE, start = NULL,
+betareg.control <- function(phi = TRUE, method = "BFGS", maxit = 5000, gradient = TRUE, hessian = FALSE, trace = FALSE, start = NULL,
                             fsmaxit = 200, fstol = 1e-8, quad = 20,...)
 {
-    rval <- list(phi = phi, method = method, maxit = maxit, hessian = hessian, trace = trace, start = start,
-                 fsmaxit = fsmaxit, fstol = fstol, quad = quad)
+    method <- match.arg(method, c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent", "nlminb"))
+    rval <- list(phi = phi, method = method, maxit = maxit, gradient = gradient, hessian = hessian,
+                 trace = trace, start = start, fsmaxit = fsmaxit, fstol = fstol, quad = quad)
     rval <- c(rval, list(...))
     if(!is.null(rval$fnscale)) warning("fnscale must not be modified")
     rval$fnscale <- -1
     if(is.null(rval$reltol)) rval$reltol <- .Machine$double.eps^(1/1.2)
-    rval
+    return(rval)
 }
 
 betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
                         link = "logit", link.phi = "log", type = "ML", control = betareg.control(),
-                        dist = "beta", nu = NULL,
-                        temporary_control = temp_control())  ## temporary control
+                        dist = NULL, nu = NULL)
 {
     ## estimation type and distribution:
-    ## only plain ML supported for censored distributions
+    if(is.null(dist)) {
+      if(is.null(nu)) {
+        dist <- if(all(y > 0 & y < 1)) "beta" else "xbetax"
+      } else {
+        dist <- "xbeta"
+      }
+    }
+
+    ## only plain ML supported for extended-support distributions
     if(dist != "beta") {
         if(type != "ML") stop(sprintf("only 'ML' estimation implemented for '%s'", dist))
         control$hessian <- TRUE
         control$fsmaxit <- 0
     }
-    estnu <- if(dist != "beta" & is.null(nu)) TRUE else FALSE
+    estnu <- if(dist != "beta" && is.null(nu)) TRUE else FALSE
 
     ## response and regressor matrix
     n <- NROW(x)
@@ -280,12 +276,13 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
     ocontrol <- control
     phi_full <- control$phi
     method <- control$method
+    gradient <- control$gradient
     hessian <- control$hessian
     start <- control$start
     fsmaxit <- control$fsmaxit
     fstol <- control$fstol
     quad <- control$quad
-    control$phi <- control$method <- control$hessian <- control$start <- control$fsmaxit <- control$fstol <- control$quad <- NULL
+    control$phi <- control$method <- control$gradient <- control$hessian <- control$start <- control$fsmaxit <- control$fstol <- control$quad <- NULL
 
     ## starting values
     if(is.null(start)) {
@@ -609,19 +606,26 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
 
     ## optimize likelihood
 
-    if (temporary_control$use_nlminb) {
+    if (method == "nlminb") {
+        stopifnot(requireNamespace("numDeriv"))
+        if("maxit" %in% control) {
+          if(is.null(control$iter.max)) control$iter.max <- control$maxit
+          control$maxit <- NULL
+        }
+        if("reltol" %in% control) {
+          if(is.null(control$rel.tol)) control$rel.tol <- control$reltol
+          control$reltol <- NULL
+        }
         opt <- nlminb(start = start, objective = function(par, ...) -loglikfun(par, ...),
-                      gradient = if (temporary_control$use_gradient) function(par, ...) -gradfun(par, ...) else NULL)
+                      gradient = if (gradient) function(par, ...) -gradfun(par, ...) else NULL,
+                      control = control)
         opt$hessian <- numDeriv::hessian(loglikfun, opt$par)
     }
     else {
-        opt <- optim(par = start, fn = loglikfun, gr = if (temporary_control$use_gradient) gradfun else NULL,
+        opt <- optim(par = start, fn = loglikfun, gr = if (gradient) gradfun else NULL,
                      method = method, hessian = hessian, control = control)
     }
-
     par <- opt$par
-
-    if (temporary_control$halt) browser()
 
     ## conduct further (quasi) Fisher scoring to move ML derivatives
     ## even further to zero or conduct bias reduction
@@ -688,19 +692,16 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
     ll <- loglikfun(par, fit = fit)
 
 
-
     ## No need to evaluate ef below.
-    if (temporary_control$use_gradient) {
+    if (gradient) {
         ef <- gradfun(par, fit = fit, sum = FALSE)
     }
     else {
+        stopifnot(requireNamespace("numDeriv"))
         ef <- numDeriv::grad(loglikfun, par)
     }
 
-
-
-
-    vcov <- if (hessian & (type == "ML")) solve(-as.matrix(opt$hessian)) else hessfun(fit = fit, inverse = TRUE)
+    vcov <- if (hessian && (type == "ML")) solve(-as.matrix(opt$hessian)) else hessfun(fit = fit, inverse = TRUE)
 
     ## R-squared
     wcor <- function(x, y, weights = NULL) {
@@ -786,8 +787,8 @@ print.betareg <- function(x, digits = max(3, getOption("digits") - 3), ...)
         }
     }
     if(x$dist != "beta") {
-        cat(sprintf("Distribution: %s\nNu: %s\n\n",
-                    if(x$dist == "xbeta") "censored constrained 4-parameter beta (xbeta)" else "censored exponential mixture beta (xbetax)",
+        cat(sprintf("Exceedence parameter (extended-support %s model)\nNu: %s\n\n",
+                    x$dist == "xbeta",
                     round(x$nu, digits = digits)))
     }
 
@@ -883,18 +884,16 @@ print.summary.betareg <- function(x, digits = max(3, getOption("digits") - 3), .
         }
 
         if(!is.null(x$coefficients$nu)) {
-            cat("\nNu parameter:\n")
+            cat("\nExceedence parameter (extended-support xbetax model):\n")
             printCoefmat(x$coefficients$nu, digits = digits, signif.legend = FALSE)
         }
 
-        if(getOption("show.signif.stars") & any(do.call("rbind", x$coefficients)[, 4L] < 0.1))
+        if(getOption("show.signif.stars") && any(do.call("rbind", x$coefficients)[, 4L] < 0.1, na.rm = TRUE))
             cat("---\nSignif. codes: ", "0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1", "\n")
 
 
         if(x$dist != "beta") {
-            cat(sprintf("\nDistribution: %s\nNu: %s",
-                        if(x$dist == "xbeta") "censored constrained 4-parameter beta (xbeta)" else "censored exponential mixture beta (xbetax)",
-                        round(x$nu, digits = digits)))
+            cat(sprintf("\nExceedence parameter nu: %s", round(x$nu, digits = digits)))
         }
         cat("\nType of estimator:", x$type, switch(x$type,
                                                    "ML" = "(maximum likelihood)",

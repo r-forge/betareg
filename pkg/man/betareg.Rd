@@ -15,14 +15,13 @@
 \usage{
 betareg(formula, data, subset, na.action, weights, offset,
   link = c("logit", "probit", "cloglog", "cauchit", "log", "loglog"),
-  link.phi = NULL, type = c("ML", "BC", "BR"),
-  dist = c("beta", "xbeta", "xbetax"), nu = NULL,
+  link.phi = NULL, type = c("ML", "BC", "BR"), dist = NULL, nu = NULL,
   control = betareg.control(\dots), model = TRUE,
   y = TRUE, x = FALSE, \dots)
 
 betareg.fit(x, y, z = NULL, weights = NULL, offset = NULL,
   link = "logit", link.phi = "log", type = "ML", control = betareg.control(),
-  dist = "beta", nu = NULL)
+  dist = NULL, nu = NULL)
 }
 
 \arguments{
@@ -49,13 +48,17 @@ betareg.fit(x, y, z = NULL, weights = NULL, offset = NULL,
     maximum likelihood (\code{"ML"}), ML with bias correction (\code{"BC"}),
     and ML with bias reduction (\code{"BR"}) are supported.}
   \item{dist}{character specification of the response distribution.
-    If all response observation are in (0, 1) the default is the classical
-    beta distribution. In the presence of boundary 0/1 observations, an
-    extended-support beta distribution (\code{"xbeta"}) or an extended-support
-    beta mixture distribution (\code{"xbetax"}) is used.}
-  \item{nu}{numeric. The value of the (fixed) exceedence parameter \code{nu} in
-    case an extended-support beta distribution \code{dist} is used. The default
-    is to estimate \code{nu} in case of the \code{"xbetax"} distribution.}
+    Usually, this does not have to be set by the user because by default
+    the classical \code{"beta"} distribution is used when all observations
+    for the dependent variable are in (0, 1). In the presence of boundary
+    observations (0 or 1, which cannot be accomodated by \code{"beta"}) the
+    extended-support beta mixture distribution (\code{"xbetax"}) is used.
+    Additionally, \code{dist = "xbeta"} can be used with fixed exceedence
+    parameter \code{nu}, mostly for testing and debugging purposes.}
+  \item{nu}{numeric. The fixed value of the expected exceedence parameter \code{nu} 
+    in case the extended-support beta mixture distribution is used. By default,
+    \code{nu} does not need to be specified and is estimated if needed. So
+    setting \code{nu} is mostly for profiling and debugging.}
   \item{control}{a list of control arguments specified via
     \code{\link{betareg.control}}.}
   \item{model, y, x}{logicals. If \code{TRUE} the corresponding components

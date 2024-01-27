@@ -18,5 +18,5 @@ Description: Beta regression for modeling beta-distributed dependent variables, 
   recursive partitioning for beta regressions are provided.
 Depends: R (>= 3.6.0)
 Imports: graphics, grDevices, methods, stats, flexmix, Formula, lmtest, modeltools, sandwich
-Suggests: car, distributions3 (>= 0.2.1), lattice, partykit, statmod, strucchange
+Suggests: car, distributions3 (>= 0.2.1), lattice, numDeriv, partykit, statmod, strucchange
 License: GPL-2 | GPL-3
