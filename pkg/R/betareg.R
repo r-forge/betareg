@@ -162,7 +162,7 @@ fix_model_mu_phi <- function(model) {
     return(as.vector(model))
 }
 
-betareg.control <- function(phi = TRUE, method = "BFGS", maxit = 5000, gradient = TRUE, hessian = FALSE, trace = FALSE, start = NULL,
+betareg.control <- function(phi = TRUE, method = "BFGS", maxit = 5000, gradient = NULL, hessian = FALSE, trace = FALSE, start = NULL,
                             fsmaxit = 200, fstol = 1e-8, quad = 20,...)
 {
     method <- match.arg(method, c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent", "nlminb"))
@@ -283,6 +283,7 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
     fstol <- control$fstol
     quad <- control$quad
     control$phi <- control$method <- control$gradient <- control$hessian <- control$start <- control$fsmaxit <- control$fstol <- control$quad <- NULL
+    if(is.null(gradient)) gradient <- (dist == "beta") ## currently use analytical gradients only for classic beta
 
     ## starting values
     if(is.null(start)) {
