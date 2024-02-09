@@ -120,7 +120,7 @@ quantile.BetaR <- function(x, probs, drop = TRUE, elementwise = NULL, ...) {
 
 support.BetaR <- function(d, drop = TRUE, ...) {
   stopifnot(requireNamespace("distributions3"))
-  distributions3::make_support(0, 1, d, drop = drop)
+  distributions3::make_support(rep.int(0, length(d)), rep.int(1, length(d)), d, drop = drop)
 }
 
 is_discrete.BetaR <- function(d, ...) {
