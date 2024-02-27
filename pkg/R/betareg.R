@@ -55,17 +55,17 @@ betareg <- function(formula, data, subset, na.action, weights, offset,
         paste("The following terms variables are not part of the model.frame:",
         paste(ovar[!(ovar %in% nvar)], collapse = ", ")))
       ix <- match(ovar, nvar)
-  
+
       ## subset predvars
-      if(!is.null(attr(rval, "predvars"))) 
+      if(!is.null(attr(rval, "predvars")))
         warning("terms already had 'predvars' attribute, now replaced")
       attr(rval, "predvars") <- attr(nval, "predvars")[1L + c(0L, ix)]
 
       ## subset dataClasses
-      if(!is.null(attr(rval, "dataClasses"))) 
+      if(!is.null(attr(rval, "dataClasses")))
         warning("terms already had 'dataClasses' attribute, now replaced")
       attr(rval, "dataClasses") <- attr(nval, "dataClasses")[ix]
-  
+
       return(rval)
     }
     mt  <- .add_predvars_and_dataClasses(mt,  mf)
@@ -788,8 +788,8 @@ print.betareg <- function(x, digits = max(3, getOption("digits") - 3), ...)
         }
     }
     if(x$dist != "beta") {
-        cat(sprintf("Exceedence parameter (extended-support %s model)\nNu: %s\n\n",
-                    x$dist == "xbeta",
+        cat(sprintf("Exceedence parameter (extended-support %s model)\nnu: %s\n\n",
+                    x$dist,
                     round(x$nu, digits = digits)))
     }
 
