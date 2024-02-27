@@ -169,9 +169,11 @@ betareg.control <- function(phi = TRUE, method = "BFGS", maxit = 5000, gradient 
     rval <- list(phi = phi, method = method, maxit = maxit, gradient = gradient, hessian = hessian,
                  trace = trace, start = start, fsmaxit = fsmaxit, fstol = fstol, quad = quad)
     rval <- c(rval, list(...))
-    if(!is.null(rval$fnscale)) warning("fnscale must not be modified")
-    rval$fnscale <- -1
-    if(is.null(rval$reltol)) rval$reltol <- .Machine$double.eps^(1/1.2)
+    if (method != "nlminb") {
+        if(!is.null(rval$fnscale)) warning("fnscale must not be modified")
+        rval$fnscale <- -1
+        if(is.null(rval$reltol)) rval$reltol <- .Machine$double.eps^(1/1.2)
+    }
     return(rval)
 }
 
