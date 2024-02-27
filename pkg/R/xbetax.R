@@ -26,7 +26,7 @@ dxbetax <- function(x, mu, phi, nu = 0, log = FALSE, quad = 20) {
     rule[2] * dbeta((x + e)/(1 + 2 * e), shape1 = mu * phi, shape2 = (1 - mu) * phi)/(1 + 2 * e)
   })
   out <- if (is.null(dim(out))) sum(out) else rowSums(out)
-  
+
   ## censoring
   out[x <= 0] <- pxbetax(0, mu = mu[x <= 0], phi = phi[x <= 0], nu = nu[x <= 0])
   out[x >= 1] <- pxbetax(1, mu = mu[x >= 1], phi = phi[x >= 1], nu = nu[x >= 1], lower.tail = FALSE)
@@ -86,6 +86,20 @@ rxbetax <- function(n, mu, phi, nu = 0) {
 }
 
 
+exbx <- function(mu, phi, nu, quad = 20) {
+    pu <- pxbetax(1, mu, phi, nu, lower.tail = FALSE, quad = quad)
+    int <- integrate(function(x) x * dxbetax(x, mu, phi, nu, quad = quad), 0, 1)
+    int$value + pu
+}
+
+sdxbx <- function(mu, phi, nu, quad = 20) {
+    pu <- pxbetax(1, mu, phi, nu, lower.tail = FALSE, quad = quad)
+    int <- integrate(function(x) x^2 * dxbetax(x, mu, phi, nu, quad = quad), 0, 1)
+    e <- exbx(mu, phi, nu)
+    sqrt(int$value + pu - e^2)
+}
+
+
 ## distributions3 interface
 
 XBetaX <- function(mu, phi, nu = 0) {
@@ -100,15 +114,15 @@ XBetaX <- function(mu, phi, nu = 0) {
 }
 
 mean.XBetaX <- function(x, ...) {
-  stop("not yet implemented")
-  rval <- x$mu
-  setNames(rval, names(x))
+    m <- vapply(seq_along(x), function(i) exbx(mu = x$mu[i], phi = x$phi[i], nu = x$nu[i], ...),
+                0.0)
+  setNames(m, names(x))
 }
 
 variance.XBetaX <- function(x, ...) {
-  stop("not yet implemented")
-  rval <- x$mu * (1 - x$mu)/(1 + x$phi)
-  setNames(rval, names(x))
+    s <- vapply(seq_along(x), function(i) sdxbx(mu = x$mu[i], phi = x$phi[i], nu = x$nu[i], ...),
+                0.0)
+  setNames(s^2, names(x))
 }
 
 skewness.XBetaX <- function(x, ...) {
