@@ -836,7 +836,12 @@ summary.betareg <- function(object, phi = NULL, type = "sweighted2", ...)
 
     ## number of iterations
     mytail <- function(x) x[length(x)]
-    object$iterations <- c("optim" = as.vector(mytail(na.omit(object$optim$count))), "scoring" = as.vector(object$scoring))
+    if (object$method == "nlminb") {
+        object$iterations <- c("nlminb" = as.vector(object$optim$iterations), "scoring" = as.vector(object$scoring))
+    } else {
+        object$iterations <- c("nlminb" = as.vector(mytail(na.omit(object$optim$count))), "scoring" = as.vector(object$scoring))
+    }
+
 
     ## delete some slots
     object$fitted.values <- object$terms <- object$model <- object$y <-
