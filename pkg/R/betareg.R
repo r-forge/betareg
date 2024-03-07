@@ -608,7 +608,6 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
     }
 
     ## optimize likelihood
-
     if (method == "nlminb") {
         stopifnot(requireNamespace("numDeriv"))
         if("maxit" %in% control) {

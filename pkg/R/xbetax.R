@@ -10,7 +10,7 @@ quadtable <- function(nquad = 20) {
 }
 
 dxbetax <- function(x, mu, phi, nu = 0, log = FALSE, quad = 20) {
-  if(all(nu == 0)) return(dbeta(x, shape1 = mu * phi, shape2 = (1 - mu) * phi, log = log))
+  if(isTRUE(all(nu == 0))) return(dbeta(x, shape1 = mu * phi, shape2 = (1 - mu) * phi, log = log))
 
   ## unify lengths of all variables
   n <- max(length(x), length(mu), length(phi), length(nu))
@@ -39,7 +39,7 @@ dxbetax <- function(x, mu, phi, nu = 0, log = FALSE, quad = 20) {
 }
 
 pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20) {
-  if(all(nu == 0)) return(pbeta(q, shape1 = mu * phi, shape2 = (1 - mu) * phi, lower.tail = lower.tail, log.p = log.p))
+  if(isTRUE(all(nu == 0))) return(pbeta(q, shape1 = mu * phi, shape2 = (1 - mu) * phi, lower.tail = lower.tail, log.p = log.p))
 
   ## unify lengths of all variables
   n <- max(length(q), length(mu), length(phi), length(nu))
@@ -68,7 +68,7 @@ pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
 
 qxbetax <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE) {
   q <- qbeta(p, shape1 = mu * phi, shape2 = (1 - mu) * phi, lower.tail = lower.tail, log.p = log.p)
-  if(all(nu == 0)) return(q)
+  if(isTRUE(all(nu == 0))) return(q)
 
   ## FIXME (xbeta -> xbetax)
   q <- q * (1 + 2 * nu) - nu
@@ -78,7 +78,7 @@ qxbetax <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE) {
 }
 
 rxbetax <- function(n, mu, phi, nu = 0) {
-  if(all(nu == 0)) {
+  if(isTRUE(all(nu == 0))) {
     rbeta(n, shape1 = mu * phi, shape2 = (1 - mu) * phi)
   } else {
     rxbeta(n, mu = mu, phi = phi, nu = rexp(n, 1/nu))
