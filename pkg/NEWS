@@ -12,8 +12,10 @@ Changes in Version 3.2-0
   o Bug fix in pseudo.r.squared computation for weighted models where previously
     the weights were erroneously ignored (reported by Ray Tayek).
 
-  o Bug fix in betatree() when only intercepts are included for both "mu" and
-    "phi" (reported by Ludwig Hothorn).
+  o Bug fixes in betatree(): Split points were computed incorrectly due to wrong
+    sign of the log-likelihood (reported by Se-Wan Jeong). And trees with only
+    intercepts for both "mu" and "phi" could not be fitted (reported by Ludwig
+    Hothorn).
 
 
 Changes in Version 3.1-4

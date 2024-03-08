@@ -64,7 +64,7 @@ betatree <- function(formula, partition, data, subset = NULL, na.action = na.omi
     ## list structure
     rval <- list(
       coefficients = coef.betareg(obj),
-      objfun = obj$loglik,
+      objfun = -obj$loglik,
       estfun = NULL,
       object = NULL
     )
