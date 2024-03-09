@@ -47,6 +47,18 @@ rxbeta <- function(n, mu, phi, nu = 0) {
   return(r)
 }
 
+mean_xbeta <- function(mu, phi, nu, ...) {
+    pu <- pxbeta(1, mu, phi, nu, lower.tail = FALSE)
+    int <- integrate(function(x) x * dxbeta(x, mu, phi, nu), 0, 1)
+    int$value + pu
+}
+
+var_xbeta <- function(mu, phi, nu, ...) {
+    pu <- pxbeta(1, mu, phi, nu, lower.tail = FALSE)
+    int <- integrate(function(x) x^2 * dxbeta(x, mu, phi, nu), 0, 1)
+    e <- mean_xbeta(mu, phi, nu)
+    int$value + pu - e^2
+}
 
 ## distributions3 interface
 
@@ -62,15 +74,13 @@ XBeta <- function(mu, phi, nu = 0) {
 }
 
 mean.XBeta <- function(x, ...) {
-  stop("not yet implemented")
-  rval <- x$mu
-  setNames(rval, names(x))
+  m <- vapply(seq_along(x), function(i) mean_xbeta(mu = x$mu[i], phi = x$phi[i], nu = x$nu[i], ...), 0.0)
+  setNames(m, names(x))
 }
 
 variance.XBeta <- function(x, ...) {
-  stop("not yet implemented")
-  rval <- x$mu * (1 - x$mu)/(1 + x$phi)
-  setNames(rval, names(x))
+  v <- vapply(seq_along(x), function(i) var_xbeta(mu = x$mu[i], phi = x$phi[i], nu = x$nu[i], ...), 0.0)
+  setNames(v, names(x))
 }
 
 skewness.XBeta <- function(x, ...) {

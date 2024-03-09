@@ -68,8 +68,8 @@ X <- XBeta(
 X
 
 ## compute moments of the distribution
-#FIXME# mean(X)
-#FIXME# variance(X)
+mean(X)
+variance(X)
 
 ## support interval (minimum and maximum)
 support(X)
@@ -113,8 +113,8 @@ quantile(X, p, elementwise = TRUE)
 quantile(X, p, elementwise = TRUE, drop = FALSE)
 
 ## compare theoretical and empirical mean from 1,000 simulated observations
-#FIXME# cbind(
-#FIXME#   "theoretical" = mean(X),
-#FIXME#   "empirical" = rowMeans(random(X, 1000))
-#FIXME# )
+cbind(
+  "theoretical" = mean(X),
+  "empirical" = rowMeans(random(X, 1000))
+)
 }
