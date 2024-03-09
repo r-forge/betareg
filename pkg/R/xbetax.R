@@ -86,17 +86,17 @@ rxbetax <- function(n, mu, phi, nu = 0) {
 }
 
 
-exbx <- function(mu, phi, nu, quad = 20) {
+mean_xbetax <- function(mu, phi, nu, quad = 20, ...) {
     pu <- pxbetax(1, mu, phi, nu, lower.tail = FALSE, quad = quad)
     int <- integrate(function(x) x * dxbetax(x, mu, phi, nu, quad = quad), 0, 1)
     int$value + pu
 }
 
-sdxbx <- function(mu, phi, nu, quad = 20) {
+var_xbetax <- function(mu, phi, nu, quad = 20, ...) {
     pu <- pxbetax(1, mu, phi, nu, lower.tail = FALSE, quad = quad)
     int <- integrate(function(x) x^2 * dxbetax(x, mu, phi, nu, quad = quad), 0, 1)
-    e <- exbx(mu, phi, nu)
-    sqrt(int$value + pu - e^2)
+    e <- mean_xbetax(mu, phi, nu)
+    int$value + pu - e^2
 }
 
 
@@ -114,15 +114,13 @@ XBetaX <- function(mu, phi, nu = 0) {
 }
 
 mean.XBetaX <- function(x, ...) {
-    m <- vapply(seq_along(x), function(i) exbx(mu = x$mu[i], phi = x$phi[i], nu = x$nu[i], ...),
-                0.0)
+  m <- vapply(seq_along(x), function(i) mean_xbetax(mu = x$mu[i], phi = x$phi[i], nu = x$nu[i], ...), 0.0)
   setNames(m, names(x))
 }
 
 variance.XBetaX <- function(x, ...) {
-    s <- vapply(seq_along(x), function(i) sdxbx(mu = x$mu[i], phi = x$phi[i], nu = x$nu[i], ...),
-                0.0)
-  setNames(s^2, names(x))
+  v <- vapply(seq_along(x), function(i) var_xbetax(mu = x$mu[i], phi = x$phi[i], nu = x$nu[i], ...), 0.0)
+  setNames(v, names(x))
 }
 
 skewness.XBetaX <- function(x, ...) {
