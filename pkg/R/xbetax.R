@@ -38,7 +38,7 @@ dxbetax <- function(x, mu, phi, nu = 0, log = FALSE, quad = 20) {
   return(out)
 }
 
-pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20) {
+pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20, censor = TRUE) {
   if(isTRUE(all(nu == 0))) return(pbeta(q, shape1 = mu * phi, shape2 = (1 - mu) * phi, lower.tail = lower.tail, log.p = log.p))
 
   ## unify lengths of all variables
@@ -57,8 +57,10 @@ pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
   out <- if (is.null(dim(out))) sum(out) else rowSums(out)
 
   ## censoring
-  out[q < 0] <- 0
-  out[q > 1] <- 1
+  if (censor) {
+      out[q < 0] <- 0
+      out[q > 1] <- 1
+  }
 
   ## additional arguments
   if(!lower.tail) out <- 1 - out
@@ -66,15 +68,21 @@ pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
   return(out)
 }
 
-qxbetax <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE) {
-  q <- qbeta(p, shape1 = mu * phi, shape2 = (1 - mu) * phi, lower.tail = lower.tail, log.p = log.p)
-  if(isTRUE(all(nu == 0))) return(q)
-
-  ## FIXME (xbeta -> xbetax)
-  q <- q * (1 + 2 * nu) - nu
-  q[q < 0] <- 0
-  q[q > 1] <- 1
-  return(q)
+qxbetax <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20) {
+    ## unify lengths of all variables
+    n <- max(length(p), length(mu), length(phi), length(nu))
+    p <- rep_len(p, n)
+    mu <- rep_len(mu, n)
+    phi <- rep_len(phi, n)
+    nu <- rep_len(nu, n)
+    if(length(quad) == 1L) quad <- quadtable(quad)
+    obj <- function(pn, mu, phi, nu, p)
+        p - pxbetax(qnorm(pn), mu, phi, nu, lower.tail, log.p, quad, censor = FALSE)
+    q <- vapply(seq_along(p), function(i) uniroot(obj, c(0, 1), mu = mu[i], phi = phi[i], nu = nu[i], p = p[i])$root, 0.0)
+    q <- qnorm(q)
+    q[q < 0] <- 0
+    q[q > 1] <- 1
+    return(q)
 }
 
 rxbetax <- function(n, mu, phi, nu = 0) {
