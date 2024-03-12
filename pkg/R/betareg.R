@@ -838,7 +838,7 @@ summary.betareg <- function(object, phi = NULL, type = "sweighted2", ...)
     if (object$method == "nlminb") {
         object$iterations <- c("nlminb" = as.vector(object$optim$iterations), "scoring" = as.vector(object$scoring))
     } else {
-        object$iterations <- c("nlminb" = as.vector(mytail(na.omit(object$optim$count))), "scoring" = as.vector(object$scoring))
+        object$iterations <- c("optim" = as.vector(mytail(na.omit(object$optim$count))), "scoring" = as.vector(object$scoring))
     }
 
 
