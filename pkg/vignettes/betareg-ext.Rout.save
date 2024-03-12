@@ -180,7 +180,7 @@ Fitted party:
 Number of inner nodes:    1
 Number of terminal nodes: 2
 Number of parameters per node: 4
-Objective function (negative log-likelihood): 66.734
+Objective function (negative log-likelihood): -66.734
 
 > library("strucchange")
 Loading required package: zoo
