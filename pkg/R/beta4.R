@@ -2,6 +2,11 @@
 ## (mean = mu, precision = phi, support = (theta1, theta2))
 
 dbeta4 <- function(x, mu, phi, theta1 = 0, theta2 = 1 - theta1, log = FALSE) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= theta1 & mu <= theta2),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'theta1' must always be less than 'theta2'" = all(theta1 <= theta2)
+  )
   out <- dbeta((x - theta1) / (theta2 - theta1),
     shape1 = mu * phi, shape2 = (1 - mu) * phi, log = log
   )
@@ -10,6 +15,11 @@ dbeta4 <- function(x, mu, phi, theta1 = 0, theta2 = 1 - theta1, log = FALSE) {
 }
 
 pbeta4 <- function(q, mu, phi, theta1 = 0, theta2 = 1 - theta1, lower.tail = TRUE, log.p = FALSE) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= theta1 & mu <= theta2),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'theta1' must always be less than 'theta2'" = all(theta1 <= theta2)
+  )
   out <- pbeta((q - theta1) / (theta2 - theta1),
     shape1 = mu * phi, shape2 = (1 - mu) * phi,
     lower.tail = lower.tail, log.p = log.p
@@ -18,6 +28,11 @@ pbeta4 <- function(q, mu, phi, theta1 = 0, theta2 = 1 - theta1, lower.tail = TRU
 }
 
 qbeta4 <- function(p, mu, phi, theta1 = 0, theta2 = 1 - theta1, lower.tail = TRUE, log.p = FALSE) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= theta1 & mu <= theta2),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'theta1' must always be less than 'theta2'" = all(theta1 <= theta2)
+  )
   q <- qbeta(p, shape1 = mu * phi, shape2 = (1 - mu) * phi,
     lower.tail = lower.tail, log.p = log.p)
   q <- q * (theta2 - theta1) + theta1
@@ -25,6 +40,11 @@ qbeta4 <- function(p, mu, phi, theta1 = 0, theta2 = 1 - theta1, lower.tail = TRU
 }
 
 rbeta4 <- function(n, mu, phi, theta1 = 0, theta2 = 1 - theta1) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= theta1 & mu <= theta2),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'theta1' must always be less than 'theta2'" = all(theta1 <= theta2)
+  )
   r <- theta1 + (theta2 - theta1) * rbeta(n, shape1 = mu * phi, shape2 = (1 - mu) * phi)
   return(r)
 }
@@ -37,8 +57,11 @@ Beta4 <- function(mu, phi, theta1 = 0, theta2 = 1 - theta1) {
   n <- c(length(mu), length(phi), length(theta1), length(theta2))
   stopifnot("parameter lengths do not match (only scalars are allowed to be recycled)" = all(n %in% c(1L, max(n))))
 
-  stopifnot("parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1))
-  stopifnot("parameter 'phi' must always be non-negative" = all(phi >= 0))
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= theta1 & mu <= theta2),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'theta1' must always be less than 'theta2'" = all(theta1 <= theta2)
+  )
 
   d <- data.frame(mu = mu, phi = phi, theta1 = theta1, theta2 = theta2)
   class(d) <- c("Beta4", "distribution")

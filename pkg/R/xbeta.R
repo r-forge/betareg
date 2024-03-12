@@ -3,6 +3,12 @@
 ## (mean = mu, precision = phi, latent support = (-nu, 1 + nu) censored to [0, 1])
 
 dxbeta <- function(x, mu, phi, nu = 0, log = FALSE) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'nu' must always be non-negative" = all(nu >= 0)
+  )
+
   out <- dbeta((x + nu) / (1 + 2 * nu), shape1 = mu * phi, shape2 = (1 - mu) * phi, log = log)
   out <- if(log) out - log(1 + 2 * nu) else out/(1 + 2 * nu)
 
@@ -21,6 +27,11 @@ dxbeta <- function(x, mu, phi, nu = 0, log = FALSE) {
 }
 
 pxbeta <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'nu' must always be non-negative" = all(nu >= 0)
+  )
   out <- pbeta((q + nu) / (1 + 2 * nu), shape1 = mu * phi, shape2 = (1 - mu) * phi, lower.tail = lower.tail, log.p = log.p)
   if(lower.tail) {
     out[q < 0] <- if(log.p) -Inf else 0
@@ -33,6 +44,11 @@ pxbeta <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE) {
 }
 
 qxbeta <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'nu' must always be non-negative" = all(nu >= 0)
+  )
   q <- qbeta(p, shape1 = mu * phi, shape2 = (1 - mu) * phi, lower.tail = lower.tail, log.p = log.p)
   q <- q * (1 + 2 * nu) - nu
   q[q < 0] <- 0
@@ -41,6 +57,11 @@ qxbeta <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE) {
 }
 
 rxbeta <- function(n, mu, phi, nu = 0) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'nu' must always be non-negative" = all(nu >= 0)
+  )
   r <- -nu + (1 + 2 * nu) * rbeta(n, shape1 = mu * phi, shape2 = (1 - mu) * phi)
   r[r < 0] <- 0
   r[r > 1] <- 1
@@ -65,9 +86,11 @@ var_xbeta <- function(mu, phi, nu, ...) {
 XBeta <- function(mu, phi, nu = 0) {
   n <- c(length(mu), length(phi), length(nu))
   stopifnot("parameter lengths do not match (only scalars are allowed to be recycled)" = all(n %in% c(1L, max(n))))
-  stopifnot("parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1))
-  stopifnot("parameter 'phi' must always be non-negative" = all(phi >= 0))
-  stopifnot("parameter 'nu' must always be non-negative" = all(nu >= 0))
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'nu' must always be non-negative" = all(nu >= 0)
+  )
   d <- data.frame(mu = mu, phi = phi, nu = nu)
   class(d) <- c("XBeta", "distribution")
   d

@@ -2,24 +2,44 @@
 ## (mean = mu, precision = phi, support = (0, 1))
 
 dbetar <- function(x, mu, phi, log = FALSE) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0)
+  )
   dbeta(x, shape1 = mu * phi, shape2 = (1 - mu) * phi, log = log)
 }
 
 pbetar <- function(q, mu, phi, lower.tail = TRUE, log.p = FALSE) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0)
+  )
   pbeta(q, shape1 = mu * phi, shape2 = (1 - mu) * phi,
     lower.tail = lower.tail, log.p = log.p)
 }
 
 qbetar <- function(p, mu, phi, lower.tail = TRUE, log.p = FALSE) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0)
+  )
   qbeta(p, shape1 = mu * phi, shape2 = (1 - mu) * phi,
     lower.tail = lower.tail, log.p = log.p)
 }
 
 rbetar <- function(n, mu, phi) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0)
+  )
   rbeta(n, shape1 = mu * phi, shape2 = (1 - mu) * phi)
 }
 
 sbetar <- function(x, mu, phi, parameter = c("mu", "phi"), drop = TRUE) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0)
+  )
   parameter <- sapply(parameter, function(x) match.arg(x, c("mu", "phi")))
   xstar <- qlogis(x)
   mustar <- digamma(mu * phi) - digamma((1 - mu) * phi)
@@ -34,6 +54,10 @@ sbetar <- function(x, mu, phi, parameter = c("mu", "phi"), drop = TRUE) {
 hbetar <- function(x, mu, phi, parameter = c("mu", "phi"), drop = TRUE) {
   parameter <- sapply(parameter, function(x) match.arg(x, c("mu", "phi")))
   if(all(c("mu", "phi") %in% parameter)) parameter <- c(parameter, "mu:phi")
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0)
+  )
   n <- max(length(x), length(mu), length(phi))
   mu <- rep_len(mu, n)
   phi <- rep_len(phi, n)
@@ -56,8 +80,10 @@ hbetar <- function(x, mu, phi, parameter = c("mu", "phi"), drop = TRUE) {
 BetaR <- function(mu, phi) {
   n <- c(length(mu), length(phi))
   stopifnot("parameter lengths do not match (only scalars are allowed to be recycled)" = all(n %in% c(1L, max(n))))
-  stopifnot("parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1))
-  stopifnot("parameter 'phi' must always be non-negative" = all(phi >= 0))
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0)
+  )
   d <- data.frame(mu = mu, phi = phi)
   class(d) <- c("BetaR", "distribution")
   d

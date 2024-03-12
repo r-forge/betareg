@@ -75,14 +75,21 @@ export(
   "betamix",
   "extraComponent",
 
-  ## beta distribution in regression specification
+  ## beta distribution in regression parameterization
   "dbetar",
   "pbetar",
   "qbetar",
   "rbetar",
   "BetaR",
 
-  ## 4-parameter beta distribution in regression specification
+  ## zero- and/or one-inflated beta distribution in regression parameterization
+  "dbeta01",
+  "pbeta01",
+  "qbeta01",
+  "rbeta01",
+  "Beta01",
+
+  ## 4-parameter beta distribution in regression parameterization
   "dbeta4",
   "pbeta4",
   "qbeta4",
@@ -156,6 +163,20 @@ S3method(distributions3::cdf, "BetaR")
 S3method(distributions3::support, "BetaR")
 S3method(distributions3::is_discrete, "BetaR")
 S3method(distributions3::is_continuous, "BetaR")
+
+## methods for Beta01
+S3method("mean", "Beta01")
+S3method("quantile", "Beta01")
+S3method(distributions3::variance, "Beta01")
+S3method(distributions3::skewness, "Beta01")
+S3method(distributions3::kurtosis, "Beta01")
+S3method(distributions3::random, "Beta01")
+S3method(distributions3::pdf, "Beta01")
+S3method(distributions3::log_pdf, "Beta01")
+S3method(distributions3::cdf, "Beta01")
+S3method(distributions3::support, "Beta01")
+S3method(distributions3::is_discrete, "Beta01")
+S3method(distributions3::is_continuous, "Beta01")
 
 ## methods for Beta4
 S3method("mean", "Beta4")

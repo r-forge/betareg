@@ -10,6 +10,11 @@ quadtable <- function(nquad = 20) {
 }
 
 dxbetax <- function(x, mu, phi, nu = 0, log = FALSE, quad = 20) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'nu' must always be non-negative" = all(nu >= 0)
+  )
   if(isTRUE(all(nu == 0))) return(dbeta(x, shape1 = mu * phi, shape2 = (1 - mu) * phi, log = log))
 
   ## unify lengths of all variables
@@ -38,7 +43,12 @@ dxbetax <- function(x, mu, phi, nu = 0, log = FALSE, quad = 20) {
   return(out)
 }
 
-pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20, censor = TRUE) {
+pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20, censored = TRUE) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'nu' must always be non-negative" = all(nu >= 0)
+  )
   if(isTRUE(all(nu == 0))) return(pbeta(q, shape1 = mu * phi, shape2 = (1 - mu) * phi, lower.tail = lower.tail, log.p = log.p))
 
   ## unify lengths of all variables
@@ -57,9 +67,9 @@ pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
   out <- if (is.null(dim(out))) sum(out) else rowSums(out)
 
   ## censoring
-  if (censor) {
-      out[q < 0] <- 0
-      out[q > 1] <- 1
+  if (censored) {
+    out[q < 0] <- 0
+    out[q > 1] <- 1
   }
 
   ## additional arguments
@@ -69,23 +79,33 @@ pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
 }
 
 qxbetax <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20) {
-    ## unify lengths of all variables
-    n <- max(length(p), length(mu), length(phi), length(nu))
-    p <- rep_len(p, n)
-    mu <- rep_len(mu, n)
-    phi <- rep_len(phi, n)
-    nu <- rep_len(nu, n)
-    if(length(quad) == 1L) quad <- quadtable(quad)
-    obj <- function(pn, mu, phi, nu, p)
-        p - pxbetax(qnorm(pn), mu, phi, nu, lower.tail, log.p, quad, censor = FALSE)
-    q <- vapply(seq_along(p), function(i) uniroot(obj, c(0, 1), mu = mu[i], phi = phi[i], nu = nu[i], p = p[i])$root, 0.0)
-    q <- qnorm(q)
-    q[q < 0] <- 0
-    q[q > 1] <- 1
-    return(q)
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'nu' must always be non-negative" = all(nu >= 0)
+  )
+  ## unify lengths of all variables
+  n <- max(length(p), length(mu), length(phi), length(nu))
+  p <- rep_len(p, n)
+  mu <- rep_len(mu, n)
+  phi <- rep_len(phi, n)
+  nu <- rep_len(nu, n)
+  if(length(quad) == 1L) quad <- quadtable(quad)
+  obj <- function(pn, mu, phi, nu, p)
+      p - pxbetax(qnorm(pn), mu, phi, nu, lower.tail, log.p, quad, censored = FALSE)
+  q <- vapply(seq_along(p), function(i) uniroot(obj, c(0, 1), mu = mu[i], phi = phi[i], nu = nu[i], p = p[i])$root, 0.0)
+  q <- qnorm(q)
+  q[q < 0] <- 0
+  q[q > 1] <- 1
+  return(q)
 }
 
 rxbetax <- function(n, mu, phi, nu = 0) {
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'nu' must always be non-negative" = all(nu >= 0)
+  )
   if(isTRUE(all(nu == 0))) {
     rbeta(n, shape1 = mu * phi, shape2 = (1 - mu) * phi)
   } else {
@@ -113,9 +133,11 @@ var_xbetax <- function(mu, phi, nu, quad = 20, ...) {
 XBetaX <- function(mu, phi, nu = 0) {
   n <- c(length(mu), length(phi), length(nu))
   stopifnot("parameter lengths do not match (only scalars are allowed to be recycled)" = all(n %in% c(1L, max(n))))
-  stopifnot("parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1))
-  stopifnot("parameter 'phi' must always be non-negative" = all(phi >= 0))
-  stopifnot("parameter 'nu' must always be non-negative" = all(nu >= 0))
+  stopifnot(
+    "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
+    "parameter 'phi' must always be non-negative" = all(phi >= 0),
+    "parameter 'nu' must always be non-negative" = all(nu >= 0)
+  )
   d <- data.frame(mu = mu, phi = phi, nu = nu)
   class(d) <- c("XBetaX", "distribution")
   d
