@@ -14,10 +14,12 @@ dbeta01 <- function(x, mu, phi, p0 = 0, p1 = 0, log = FALSE) {
     rval <- rval + log(1 - p0 - p1)
     rval[x <= 0] <- log(p0)
     rval[x >= 1] <- log(p1)
+    rval[x < 0 | x > 1] <- -Inf
   } else {
     rval <- rval * (1 - p0 - p1)
     rval[x <= 0] <- p0
     rval[x >= 1] <- p1
+    rval[x < 0 | x > 1] <- 0
   }
   return(rval)
 }
