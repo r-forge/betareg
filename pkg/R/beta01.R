@@ -11,11 +11,11 @@ dbeta01 <- function(x, mu, phi, p0 = 0, p1 = 0, log = FALSE) {
   )
   rval <- dbetar(x, mu = mu, phi = phi, log = log)
   if(log) {
-    rval <- rval - log(1 - p0 - p1)
+    rval <- rval + log(1 - p0 - p1)
     rval[x <= 0] <- log(p0)
     rval[x >= 1] <- log(p1)
   } else {
-    rval <- rval/(1 - p0 - p1)
+    rval <- rval * (1 - p0 - p1)
     rval[x <= 0] <- p0
     rval[x >= 1] <- p1
   }
