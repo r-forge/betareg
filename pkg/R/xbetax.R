@@ -105,8 +105,8 @@ qxbetax <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
   p1 <- pxbetax(1, mu = mu, phi = phi, nu = nu, log.p = log.p, quad = quad, lower.tail = FALSE)
   if(log.p) p1 <- log(1 - exp(p1))
 
-  idx0 <- if (lower.tail) p <= p0 else if (!log.p) 1 - p <= p0 else log(1 - exp(p)) <= p0
-  idx1 <- if (lower.tail) p >= p1 else if (!log.p) 1 - p >= p1 else log(1 - exp(p)) >= p1
+  idx0 <- if (lower.tail) p <= p0 else if (!log.p) 1 - p <= p0 else log1p(-exp(p)) <= p0
+  idx1 <- if (lower.tail) p >= p1 else if (!log.p) 1 - p >= p1 else log1p(-exp(p)) >= p1
   idx <- !idx0 & !idx1
   if (any(idx0)) q[idx0] <- 0
   if (any(idx1)) q[idx1] <- 1
