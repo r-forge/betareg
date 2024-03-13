@@ -10,15 +10,22 @@ dbeta01 <- function(x, mu, phi, p0 = 0, p1 = 0, log = FALSE) {
     "sum of parameters 'p0' + 'p1' must always be in [0, 1]" = all(p0 + p1 <= 1)
   )
   rval <- dbetar(x, mu = mu, phi = phi, log = log)
+
+  ## unify lengths of variables
+  n <- length(rval)
+  x <- rep_len(x, n)
+  p0 <- rep_len(p0, n)
+  p1 <- rep_len(p1, n)
+  
   if(log) {
     rval <- rval + log(1 - p0 - p1)
-    rval[x <= 0] <- log(p0)
-    rval[x >= 1] <- log(p1)
+    rval[x <= 0] <- log(p0[x <= 0])
+    rval[x >= 1] <- log(p1[x >= 1])
     rval[x < 0 | x > 1] <- -Inf
   } else {
     rval <- rval * (1 - p0 - p1)
-    rval[x <= 0] <- p0
-    rval[x >= 1] <- p1
+    rval[x <= 0] <- p0[x <= 0]
+    rval[x >= 1] <- p1[x >= 1]
     rval[x < 0 | x > 1] <- 0
   }
   return(rval)
@@ -33,14 +40,20 @@ pbeta01 <- function(q, mu, phi, p0 = 0, p1 = 0, lower.tail = TRUE, log.p = FALSE
     "sum of parameters 'p0' + 'p1' must always be in [0, 1]" = all(p0 + p1 <= 1)
   )
   rval <- p0 + (1 - p0 - p1) * pbetar(q, mu = mu, phi = phi)
+
+  ## unify lengths of variables
   n <- length(rval)
+  q <- rep_len(q, n)
+  p0 <- rep_len(p0, n)
+  p1 <- rep_len(p1, n)
+
   if(lower.tail) { 
-    rval[q <= 0] <- rep_len(p0, n)[rep_len(q, n) <= 0]
+    rval[q <= 0] <- p0[q <= 0]
     rval[q <  0] <- 0
     rval[q >= 1] <- 1
   } else {
     rval <- 1 - rval
-    rval[q >= 1] <- rep_len(p1, n)[rep_len(q, n) >= 1]
+    rval[q >= 1] <- p1[q >= 1]
     rval[q >  1] <- 0
     rval[q <= 0] <- 1
   }
@@ -75,10 +88,14 @@ rbeta01 <- function(n, mu, phi, p0 = 0, p1 = 0) {
     "parameter 'p1' must always be in [0, 1]" = all(p1 >= 0 & p1 <= 1),
     "sum of parameters 'p0' + 'p1' must always be in [0, 1]" = all(p0 + p1 <= 1)
   )
+
+  ## unify lengths of variables
   mu <- rep_len(mu, n)
   phi <- rep_len(phi, n)
   p0 <- rep_len(p0, n)
   p1 <- rep_len(p1, n)
+
+  ## sample left boundary, right boundary, middle
   rval <- rbinom(n, size = 1, prob = 1 - p0)
   i <- rval > 0
   rval[i] <- rval[i] + rbinom(sum(i), size = 1, prob = (1 - p0 - p1)/(1 - p0))

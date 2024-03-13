@@ -14,7 +14,7 @@
 \usage{
 dxbetax(x, mu, phi, nu = 0, log = FALSE, quad = 20)
 
-pxbetax(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20, censored = TRUE)
+pxbetax(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20)
 
 qxbetax(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20)
 
@@ -36,8 +36,6 @@ rxbetax(n, mu, phi, nu = 0)
   \item{quad}{numeric. The number of quadrature points for numeric
     integration of the continuous mixture. Alternatively, a matrix with nodes
     and weights for the quadrature points can be specified.}
-  \item{censored}{logical. Should the cumulative distribution of the censored
-    (or the uncensored) extended-support beta mixture distribution be computed?}
 }
 
 \details{

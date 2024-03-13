@@ -43,7 +43,7 @@ dxbetax <- function(x, mu, phi, nu = 0, log = FALSE, quad = 20) {
   return(out)
 }
 
-pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20, censored = TRUE) {
+pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20) {
   stopifnot(
     "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
     "parameter 'phi' must always be non-negative" = all(phi >= 0),
@@ -70,14 +70,12 @@ pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
   if(!lower.tail) out <- 1 - out
 
   ## censoring
-  if (censored) {
-    if(lower.tail) {
-      out[q <  0] <- 0
-      out[q >= 1] <- 1
-    } else {
-      out[q <= 0] <- 1
-      out[q >  1] <- 0
-    }
+  if(lower.tail) {
+    out[q <  0] <- 0
+    out[q >= 1] <- 1
+  } else {
+    out[q <= 0] <- 1
+    out[q >  1] <- 0
   }
 
   ## additional arguments
@@ -85,25 +83,44 @@ pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
   return(out)
 }
 
-qxbetax <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20) {
+qxbetax <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20, tol = .Machine$double.eps^0.7) {
   stopifnot(
     "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
     "parameter 'phi' must always be non-negative" = all(phi >= 0),
     "parameter 'nu' must always be non-negative" = all(nu >= 0)
   )
+
   ## unify lengths of all variables
   n <- max(length(p), length(mu), length(phi), length(nu))
   p <- rep_len(p, n)
   mu <- rep_len(mu, n)
   phi <- rep_len(phi, n)
   nu <- rep_len(nu, n)
+  q <- rep_len(NA_real_, n)
+
+  ## quadrature
   if(length(quad) == 1L) quad <- quadtable(quad)
-  obj <- function(pn, mu, phi, nu, p)
-      p - pxbetax(qnorm(pn), mu, phi, nu, lower.tail, log.p, quad, censored = FALSE)
-  q <- vapply(seq_along(p), function(i) uniroot(obj, c(0, 1), mu = mu[i], phi = phi[i], nu = nu[i], p = p[i])$root, 0.0)
-  q <- qnorm(q)
-  q[q < 0] <- 0
-  q[q > 1] <- 1
+
+  p0 <- pxbetax(0, mu = mu, phi = phi, nu = nu, log = log.p, quad = quad, lower.tail = TRUE)
+  p1 <- pxbetax(1, mu = mu, phi = phi, nu = nu, log = log.p, quad = quad, lower.tail = FALSE)
+  if(log.p) p1 <- log(1 - exp(p1))
+
+  idx0 <- if (lower.tail) p <= p0 else if (!log.p) 1 - p <= p0 else log(1 - exp(p)) <= p0
+  idx1 <- if (lower.tail) p >= p1 else if (!log.p) 1 - p >= p1 else log(1 - exp(p)) >= p1
+  idx <- !idx0 & !idx1
+  if (any(idx0)) q[idx0] <- 0
+  if (any(idx1)) q[idx1] <- 1
+
+  if (any(idx)) {
+    obj <- function(pq, mu, phi, nu, p) {
+      p - pxbetax(q = pq, mu = mu, phi = phi, nu = nu, lower.tail = lower.tail, log.p = log.p, quad = quad)
+    }
+    iroot <- function(i) {
+      r <- try(uniroot(obj, c(0, 1), mu = mu[i], phi = phi[i], nu = nu[i], p = p[i], tol = tol), silent = TRUE)
+      if(inherits(r, "try-error")) NA_real_ else r$root
+    }
+    q[idx] <- vapply(which(idx), iroot, 0.0)
+  }
   return(q)
 }
 

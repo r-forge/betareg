@@ -77,37 +77,6 @@ betareg <- function(formula, data, subset, na.action, weights, offset,
     if(any(Y < 0 | Y > 1)) stop("invalid dependent variable, all observations must be in [0, 1]")
     n <- length(Y)
 
-    ## type of estimator and distribution
-    type <- match.arg(type, c("ML", "BC", "BR"))
-    if(!is.null(dist)) {
-      dist <- tolower(as.character(dist))
-      if(dist == "xb") dist <- "xbeta"
-      if(dist == "xbx") dist <- "xbetax"
-      dist <- match.arg(dist, c("beta", "xbeta", "xbetax"))
-      if(dist == "beta") {
-        if(any(Y <= 0 | Y >= 1)) stop("dependent variable not suitable for 'beta' distribution, all observations must be in (0, 1)")
-      }
-      if(dist == "xbeta" && is.null(nu)) {
-        warning(sprintf("estimation of 'nu' with 'xbeta' distribution is not feasible, using '%s' instead",
-          dist <- if(any(Y <= 0 | Y >= 1)) "xbetax" else "beta"))
-      }
-    } else {
-      if(is.null(nu)) {
-        dist <- if(all(Y > 0 & Y < 1)) "beta" else "xbetax"
-      } else {
-        dist <- "xbeta"
-      }
-    }
-    if(dist != "beta" && type != "ML") {
-      warning(sprintf("only 'ML' estimation is available for '%s' distribution", dist))
-      type <- "ML"
-    }
-
-    ## links
-    if(is.character(link)) link <- match.arg(link)
-    if(is.null(link.phi)) link.phi <- if(simple_formula) "identity" else "log"
-    if(is.character(link.phi)) link.phi <- match.arg(link.phi, c("identity", "log", "sqrt"))
-
     ## weights
     weights <- model.weights(mf)
     if(is.null(weights)) weights <- 1
@@ -130,6 +99,36 @@ betareg <- function(formula, data, subset, na.action, weights, offset,
     ## collect
     offset <- list(mu = offsetX, phi = offsetZ)
 
+    ## type of estimator and distribution
+    type <- match.arg(type, c("ML", "BC", "BR"))
+    if(!is.null(dist)) {
+      dist <- tolower(as.character(dist))
+      if(dist == "xb") dist <- "xbeta"
+      if(dist == "xbx") dist <- "xbetax"
+      dist <- match.arg(dist, c("beta", "xbeta", "xbetax"))
+      if(dist == "beta") {
+        if(any((Y <= 0 | Y >= 1)[weights > 0])) stop("dependent variable not suitable for 'beta' distribution, all observations must be in (0, 1)")
+      }
+      if(dist == "xbeta" && is.null(nu)) {
+        warning(sprintf("estimation of 'nu' with 'xbeta' distribution is not feasible, using '%s' instead",
+          dist <- if(any((Y <= 0 | Y >= 1)[weights > 0])) "xbetax" else "beta"))
+      }
+    } else {
+      if(is.null(nu)) {
+        dist <- if(all((Y > 0 & Y < 1)[weights > 0])) "beta" else "xbetax"
+      } else {
+        dist <- "xbeta"
+      }
+    }
+    if(dist != "beta" && type != "ML") {
+      warning(sprintf("only 'ML' estimation is available for '%s' distribution", dist))
+      type <- "ML"
+    }
+
+    ## links
+    if(is.character(link)) link <- match.arg(link)
+    if(is.null(link.phi)) link.phi <- if(simple_formula) "identity" else "log"
+    if(is.character(link.phi)) link.phi <- match.arg(link.phi, c("identity", "log", "sqrt"))
 
     ## call the actual workhorse: betareg.fit()
     rval <- betareg.fit(X, Y, Z, weights, offset, link, link.phi, type, control, dist, nu)
@@ -294,6 +293,7 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
         yhat <- linkinv(auxreg$fitted.values)
         dlink <- 1/mu.eta(linkfun(yhat))
         res <- auxreg$residuals
+        res[weights <= 0] <- 0
         sigma2 <- sum(weights * res^2)/((sum(weights) - k) * (dlink)^2)
         phi_y <- weights * yhat * (1 - yhat)/(sum(weights) * sigma2) - 1/n
         phi <- rep.int(0, ncol(z))
@@ -388,6 +388,7 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
                 ## catch extreme cases
                 else {
                     ll <- suppressWarnings(dbeta(y, shape1, shape2, log = TRUE))
+                    ll[weights <= 0] <- 0
                     if(any(!is.finite(ll))) NaN else sum(weights * ll)
                     ## again: catch extreme cases without warning
                 }
@@ -406,6 +407,7 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
                     phi_mu.eta(phi_eta) * weights * z
                 )
             })
+            rval[weights <= 0, ] <- 0
             if(sum) colSums(rval) else rval
         }
 
@@ -708,14 +710,16 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
     ## R-squared
     wcor <- function(x, y, weights = NULL) {
       if(is.null(weights) || identical(rep.int(1, length(x)), weights)) return(cor(x, y))
-      w <- weights/sum(weights)
+      x <- x[weights > 0]
+      y <- y[weights > 0]
+      w <- weights[weights > 0]/sum(weights)
       x <- x - sum(x * w)
       x <- x/sqrt(sum(w * x^2))
       y <- y - sum(y * w)
       y <- y/sqrt(sum(w * y^2))
       sum(w * x * y)
     }
-    pseudor2 <- if(dist != "beta" || var(eta) * var(ystar) <= 0) NA else wcor(eta, linkfun(y), weights)^2
+    pseudor2 <- if(dist != "beta" || var(eta[weights > 0]) * var(ystar[weights > 0]) <= 0) NA else wcor(eta, linkfun(y), weights)^2
 
     ## names
     names(beta) <- colnames(x)
