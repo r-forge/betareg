@@ -101,16 +101,21 @@ qxbetax <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
   ## quadrature
   if(length(quad) == 1L) quad <- quadtable(quad)
 
+  ## cumulative probabilities at boundary
   p0 <- pxbetax(0, mu = mu, phi = phi, nu = nu, log.p = log.p, quad = quad, lower.tail = TRUE)
   p1 <- pxbetax(1, mu = mu, phi = phi, nu = nu, log.p = log.p, quad = quad, lower.tail = FALSE)
-  if(log.p) p1 <- log(1 - exp(p1))
+  p1 <- if(!log.p) 1 - p1 else log1p(-exp(p1))
 
+  ## indexes for boundary and non-boundary observations
   idx0 <- if (lower.tail) p <= p0 else if (!log.p) 1 - p <= p0 else log1p(-exp(p)) <= p0
   idx1 <- if (lower.tail) p >= p1 else if (!log.p) 1 - p >= p1 else log1p(-exp(p)) >= p1
   idx <- !idx0 & !idx1
+
+  ## boundary quantiles
   if (any(idx0)) q[idx0] <- 0
   if (any(idx1)) q[idx1] <- 1
 
+  ## non-boundary quantiles
   if (any(idx)) {
     obj <- function(pq, mu, phi, nu, p) {
       p - pxbetax(q = pq, mu = mu, phi = phi, nu = nu, lower.tail = lower.tail, log.p = log.p, quad = quad)
@@ -121,6 +126,7 @@ qxbetax <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
     }
     q[idx] <- vapply(which(idx), iroot, 0.0)
   }
+  
   return(q)
 }
 
