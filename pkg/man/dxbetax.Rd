@@ -16,7 +16,8 @@ dxbetax(x, mu, phi, nu = 0, log = FALSE, quad = 20)
 
 pxbetax(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20)
 
-qxbetax(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20)
+qxbetax(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad = 20,
+  tol = .Machine$double.eps^0.7)
 
 rxbetax(n, mu, phi, nu = 0)
 }
@@ -36,6 +37,8 @@ rxbetax(n, mu, phi, nu = 0)
   \item{quad}{numeric. The number of quadrature points for numeric
     integration of the continuous mixture. Alternatively, a matrix with nodes
     and weights for the quadrature points can be specified.}
+  \item{tol}{numeric. Accuracy (convergence tolerance) for numerically
+    determining quantiles based on \code{\link[stats]{uniroot}} and \code{pxbetax}.}
 }
 
 \details{

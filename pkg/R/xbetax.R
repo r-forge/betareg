@@ -101,8 +101,8 @@ qxbetax <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
   ## quadrature
   if(length(quad) == 1L) quad <- quadtable(quad)
 
-  p0 <- pxbetax(0, mu = mu, phi = phi, nu = nu, log = log.p, quad = quad, lower.tail = TRUE)
-  p1 <- pxbetax(1, mu = mu, phi = phi, nu = nu, log = log.p, quad = quad, lower.tail = FALSE)
+  p0 <- pxbetax(0, mu = mu, phi = phi, nu = nu, log.p = log.p, quad = quad, lower.tail = TRUE)
+  p1 <- pxbetax(1, mu = mu, phi = phi, nu = nu, log.p = log.p, quad = quad, lower.tail = FALSE)
   if(log.p) p1 <- log(1 - exp(p1))
 
   idx0 <- if (lower.tail) p <= p0 else if (!log.p) 1 - p <= p0 else log(1 - exp(p)) <= p0
