@@ -66,14 +66,21 @@ pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
   })
   out <- if (is.null(dim(out))) sum(out) else rowSums(out)
 
+  ## tail of the distribution
+  if(!lower.tail) out <- 1 - out
+
   ## censoring
   if (censored) {
-    out[q < 0] <- 0
-    out[q > 1] <- 1
+    if(lower.tail) {
+      out[q <  0] <- 0
+      out[q >= 1] <- 1
+    } else {
+      out[q <= 0] <- 1
+      out[q >  1] <- 0
+    }
   }
 
   ## additional arguments
-  if(!lower.tail) out <- 1 - out
   if(log.p) out <- log(out)
   return(out)
 }

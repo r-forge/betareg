@@ -9,6 +9,7 @@ dxbeta <- function(x, mu, phi, nu = 0, log = FALSE) {
     "parameter 'nu' must always be non-negative" = all(nu >= 0)
   )
 
+  ## essentially rely on rescaling as in symmetric four-parameter beta distribution
   out <- dbeta((x + nu) / (1 + 2 * nu), shape1 = mu * phi, shape2 = (1 - mu) * phi, log = log)
   out <- if(log) out - log(1 + 2 * nu) else out/(1 + 2 * nu)
 
@@ -19,8 +20,9 @@ dxbeta <- function(x, mu, phi, nu = 0, log = FALSE) {
   phi <- rep_len(phi, n)
   nu <- rep_len(nu, n)
 
-  out[x <= 0] <- pxbeta(0, mu = mu[x <= 0], phi = phi[x <= 0], nu = nu[x <= 0], log.p = log)
-  out[x >= 1] <- pxbeta(1, mu = mu[x >= 1], phi = phi[x >= 1], nu = nu[x >= 1], log.p = log, lower.tail = FALSE)
+  ## boundary cases
+  out[x <= 0] <- pbeta((0 + nu[x <= 0]) / (1 + 2 * nu[x <= 0]), shape1 = (mu * phi)[x <= 0], shape2 = ((1 - mu) * phi)[x <= 0], log.p = log, lower.tail = TRUE)
+  out[x >= 1] <- pbeta((1 + nu[x >= 1]) / (1 + 2 * nu[x >= 1]), shape1 = (mu * phi)[x >= 1], shape2 = ((1 - mu) * phi)[x >= 1], log.p = log, lower.tail = FALSE)
   out[x < 0 | x > 1] <- if(log) -Inf else 0
 
   return(out)
@@ -32,14 +34,28 @@ pxbeta <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE) {
     "parameter 'phi' must always be non-negative" = all(phi >= 0),
     "parameter 'nu' must always be non-negative" = all(nu >= 0)
   )
+
+  ## essentially rely on rescaling as in symmetric four-parameter beta distribution
   out <- pbeta((q + nu) / (1 + 2 * nu), shape1 = mu * phi, shape2 = (1 - mu) * phi, lower.tail = lower.tail, log.p = log.p)
+
+  ## unify lengths of all variables
+  n <- length(out)
+  q <- rep_len(q, n)
+  mu <- rep_len(mu, n)
+  phi <- rep_len(phi, n)
+  nu <- rep_len(nu, n)
+
+  ## boundary cases
   if(lower.tail) {
-    out[q < 0] <- if(log.p) -Inf else 0
-    out[q > 1] <- if(log.p) 0 else 1
+    out[q <= 0] <- dxbeta(0, mu = mu[q <= 0], phi = phi[q <= 0], nu = nu[q <= 0], log = log.p)
+    out[q <  0] <- if(log.p) -Inf else 0
+    out[q >= 1] <- if(log.p) 0 else 1
   } else {
-    out[q < 0] <- if(log.p) 0 else 1
-    out[q > 1] <- if(log.p) -Inf else 0
+    out[q >= 1] <- dxbeta(1, mu = mu[q >= 1], phi = phi[q >= 1], nu = nu[q >= 1], log = log.p)
+    out[q <= 0] <- if(log.p) 0 else 1
+    out[q >  1] <- if(log.p) -Inf else 0
   }
+  
   return(out)
 }
 
