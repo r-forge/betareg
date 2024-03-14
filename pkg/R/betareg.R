@@ -518,10 +518,18 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
         loglikfun <- function(par, fit = NULL) {
             ## extract fitted parameters
             if(is.null(fit)) fit <- fitfun(par)
-            rval <- with(fit, {
-                dfun(y, mu = mu, phi = phi, nu = nu, log = TRUE)
+            ## FIXME: Temporary edge case control to go around the
+            ## stopifnot's in dxbeta, dxbetax, when simple_formula is
+            ## TRUE (link.phi is "identity") and the optimizer tries
+            ## negative phi's
+            with(fit, {
+                if(any(!is.finite(phi)) | any(phi < 0))
+                    NaN
+                else {
+                    rval <- dfun(y, mu = mu, phi = phi, nu = nu, log = TRUE)
+                    sum(weights * rval)
+                }
             })
-            sum(weights * rval)
         }
 
         ## FIXME: Numerics are not yet very reliable. Accurate evaluation of h3f2 is still the issue here...
