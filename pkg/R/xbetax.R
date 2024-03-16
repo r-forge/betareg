@@ -126,7 +126,7 @@ qxbetax <- function(p, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
     }
     q[idx] <- vapply(which(idx), iroot, 0.0)
   }
-  
+
   return(q)
 }
 
@@ -145,17 +145,44 @@ rxbetax <- function(n, mu, phi, nu = 0) {
 
 
 mean_xbetax <- function(mu, phi, nu, quad = 20, ...) {
-    pu <- pxbetax(1, mu, phi, nu, lower.tail = FALSE, quad = quad)
-    int <- integrate(function(x) x * dxbetax(x, mu, phi, nu, quad = quad), 0, 1)
-    int$value + pu
+    if(length(quad) == 1L) quad <- quadtable(quad)
+    a <- mu * phi
+    b <- (1 - mu) * phi
+    out <- apply(quad, 1, function(rule) {
+        e <- rule[1] * nu
+        d <- (1 + 2 * e)
+        q0 <- e / d
+        q1 <- (1 + e) / d
+        t3 <- pbeta(q1, a, b)
+        t1 <- d * mu * (pbeta(q1, a + 1, b) - pbeta(q0, a + 1, b))
+        t2 <- e * (t3 - pbeta(q0, a, b))
+        rule[2] * (t1 - t2 - t3)
+    })
+    1 + sum(out)
 }
 
 var_xbetax <- function(mu, phi, nu, quad = 20, ...) {
-    pu <- pxbetax(1, mu, phi, nu, lower.tail = FALSE, quad = quad)
-    int <- integrate(function(x) x^2 * dxbetax(x, mu, phi, nu, quad = quad), 0, 1)
-    e <- mean_xbetax(mu, phi, nu)
-    int$value + pu - e^2
+    if(length(quad) == 1L) quad <- quadtable(quad)
+    a <- mu * phi
+    b <- (1 - mu) * phi
+    mu1 <- (phi * mu + 1) / (phi + 1)
+    out <- apply(quad, 1, function(rule) {
+        e <- rule[1] * nu
+        d <- (1 + 2 * e)
+        q0 <- e / d
+        q1 <- (1 + e) / d
+        t3 <- pbeta(q1, a, b)
+        t1 <- d * mu * (pbeta(q1, a + 1, b) - pbeta(q0, a + 1, b))
+        t2 <- e * (t3 - pbeta(q0, a, b))
+        v1 <- d^2 * mu * mu1 * (pbeta(q1, a + 2, b) - pbeta(q0, a + 2, b))
+        v2 <- e * t2
+        v3 <- 2 * e * t1
+        rule[2] * c(v1 + v2 - v3 - t3, t1 - t2 - t3)
+    })
+    out <- rowSums(out)
+    out[1] - out[2] * (2 + out[2])
 }
+
 
 
 ## distributions3 interface
