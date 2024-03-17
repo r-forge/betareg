@@ -1315,7 +1315,8 @@ residuals.betareg <- function(object,
     if(object$dist == "beta") {
         for(n in names(object)[names(object) %in% fix_names_mu_phi]) names(object[[n]])[1L:2L] <- c("mu", "phi")
     } else {
-        type <- "response"
+        if (!(type %in% c("response", "pearson")))
+            stop(sprintf("only 'type = 'response'' and 'type = 'pearson'' are implemented for '%s'", object$dist))
     }
 
     ## raw response residuals and desired type
@@ -1329,11 +1330,12 @@ residuals.betareg <- function(object,
     wts <- weights(object)
     if(is.null(wts)) wts <- 1
     phi <- predict(object, type = "precision")
+    marg_v <- predict(object, type = "variance")
 
     res <- switch(type,
 
                   "pearson" = {
-                      sqrt(wts) * res / sqrt(mu * (1 - mu) / (1 + phi))
+                      sqrt(wts) * res / sqrt(marg_v)
                   },
 
                   "deviance" = {
