@@ -55,7 +55,7 @@ pxbeta <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE) {
     out[q <= 0] <- if(log.p) 0 else 1
     out[q >  1] <- if(log.p) -Inf else 0
   }
-  
+
   return(out)
 }
 
@@ -85,17 +85,35 @@ rxbeta <- function(n, mu, phi, nu = 0) {
 }
 
 mean_xbeta <- function(mu, phi, nu, ...) {
-    pu <- pxbeta(1, mu, phi, nu, lower.tail = FALSE)
-    int <- integrate(function(x) x * dxbeta(x, mu, phi, nu), 0, 1)
-    int$value + pu
+    a <- mu * phi
+    b <- (1 - mu) * phi
+    d <- (1 + 2 * nu)
+    q0 <- nu / d
+    q1 <- (1 + nu) / d
+    t3 <- pbeta(q1, a, b)
+    t1 <- d * mu * (pbeta(q1, a + 1, b) - pbeta(q0, a + 1, b))
+    t2 <- nu * (t3 - pbeta(q0, a, b))
+    1 + t1 - t2 - t3
 }
 
-var_xbeta <- function(mu, phi, nu, ...) {
-    pu <- pxbeta(1, mu, phi, nu, lower.tail = FALSE)
-    int <- integrate(function(x) x^2 * dxbeta(x, mu, phi, nu), 0, 1)
-    e <- mean_xbeta(mu, phi, nu)
-    int$value + pu - e^2
+var_xbeta <- function(mu, phi, nu, quad = 20, ...) {
+    if(length(quad) == 1L) quad <- quadtable(quad)
+    a <- mu * phi
+    b <- (1 - mu) * phi
+    mu1 <- (phi * mu + 1) / (phi + 1)
+    d <- (1 + 2 * nu)
+    q0 <- nu / d
+    q1 <- (1 + nu) / d
+    t3 <- pbeta(q1, a, b)
+    t1 <- d * mu * (pbeta(q1, a + 1, b) - pbeta(q0, a + 1, b))
+    t2 <- nu * (t3 - pbeta(q0, a, b))
+    v1 <- d^2 * mu * mu1 * (pbeta(q1, a + 2, b) - pbeta(q0, a + 2, b))
+    v2 <- nu * t2
+    v3 <- 2 * nu * t1
+    out <- c(v1 + v2 - v3 - t3, t1 - t2 - t3)
+    out[1] - out[2] * (2 + out[2])
 }
+
 
 ## distributions3 interface
 
