@@ -736,11 +736,16 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
                                                          if(phi_const & phi_linkstr == "identity") "(phi)" else paste("(phi)", colnames(z), sep = "_"),
                                                          if(estnu) "Log(nu)" else NULL)
 
+    marg_e <- switch(dist,
+                     "beta" = mu,
+                     "xbeta" = vapply(seq.int(n), function(i) mean_xbeta(mu[i], phi[i], nu), 0.0),
+                     "xbetax" = vapply(seq.int(n), function(i) mean_xbetax(mu[i], phi[i], nu, quad), 0.0))
+
     ## set up return value
     rval <- list(
         coefficients = list(mu = beta, phi = gamma),
-        residuals = y - mu, ## FIXME mean instead of mu for xbeta/x
-        fitted.values = structure(mu, .Names = names(y)), ## FIXME mean vs. mu
+        residuals = y - marg_e,
+        fitted.values = structure(marg_e, .Names = names(y)),
         type = type,
         dist = dist,
         optim = opt,
@@ -965,10 +970,10 @@ predict.betareg <- function(object, newdata = NULL,
                       )
            } else if(object$dist == "xbeta") {
                switch(type,
-                      "response" = function(pars) rep.int(NA_real_, length(pars$mu)),
+                      "response" = function(pars) apply(pars, 1, function(x) mean_xbeta(x["mu"], x["phi"], x["nu"])),
                       "link" = function(pars) linkfun(pars$mu),
-                      "precision" = function(pars) rep.int(NA_real_, length(pars$mu)),
-                      "variance" = function(pars) rep.int(NA_real_, length(pars$mu)),
+                      "precision" = function(pars) pars$phi,
+                      "variance" = function(pars) apply(pars, 1, function(x) var_xbeta(x["mu"], x["phi"], x["nu"])),
                       "parameters" = function(pars) pars,
                       "density" = function(x, pars, ...) dxbeta(x, mu = pars$mu, phi = pars$phi, nu = pars$nu, ...),
                       "probability" = function(q, pars, ...) pxbeta(q, mu = pars$mu, phi = pars$phi, nu = pars$nu, ...),
@@ -976,10 +981,10 @@ predict.betareg <- function(object, newdata = NULL,
                       )
            } else if(object$dist == "xbetax") {
                switch(type,
-                      "response" = function(pars) rep.int(NA_real_, length(pars$mu)),
+                      "response" = function(pars) apply(pars, 1, function(x) mean_xbetax(x["mu"], x["phi"], x["nu"], object$control$quad)),
                       "link" = function(pars) linkfun(pars$mu),
-                      "precision" = function(pars) rep.int(NA_real_, length(pars$mu)),
-                      "variance" = function(pars) rep.int(NA_real_, length(pars$mu)),
+                      "precision" = function(pars) pars$phi,
+                      "variance" = function(pars) apply(pars, 1, function(x) var_xbetax(x["mu"], x["phi"], x["nu"], object$control$quad)),
                       "parameters" = function(pars) pars,
                       "density" = function(x, pars, ...) dxbetax(x, mu = pars$mu, phi = pars$phi, nu = pars$nu, ...),
                       "probability" = function(q, pars, ...) pxbetax(q, mu = pars$mu, phi = pars$phi, nu = pars$nu, ...),
@@ -989,7 +994,14 @@ predict.betareg <- function(object, newdata = NULL,
 
     if(missing(newdata) || is.null(newdata)) {
         pars <- data.frame(mu = object$fitted.values, phi = NA_real_, nu = object$nu)
-        if(!(type %in% c("response", "link"))) {
+        if(!(type %in% c("link"))) {
+            if (object$dist != "beta") {
+                ## Use the correct mu values
+                beta <- object$coefficients$mu
+                x <- if(is.null(object$x)) model.matrix(object, model = "mu") else object$x$mu
+                offset <- if(is.null(object$offset$mu)) rep.int(0, NROW(x)) else object$offset$mu
+                pars$mu <- object$link$mu$linkinv(drop(x %*% beta + offset))
+            }
             gamma <- object$coefficients$phi
             z <- if(is.null(object$x)) model.matrix(object, model = "phi") else object$x$phi
             offset <- if(is.null(object$offset$phi)) rep.int(0, NROW(z)) else object$offset$phi
