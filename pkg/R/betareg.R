@@ -1361,7 +1361,7 @@ residuals.betareg <- function(object,
                       )
                       pit[i1] <- 1 - (pit1[i1] * runif(sum(i1)))
                     }
-                    qnorm(pit)
+                    sqrt(wts) * qnorm(pit)
                   },
 
                   "deviance" = {
