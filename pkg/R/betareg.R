@@ -1309,33 +1309,59 @@ model.matrix.betareg <- function(object, model = c("mean", "precision"), ...) {
 }
 
 residuals.betareg <- function(object,
-                              type = c("sweighted2", "deviance", "pearson", "response", "weighted", "sweighted"), ...)
+                              type = c("quantile", "sweighted2", "deviance", "pearson", "response", "weighted", "sweighted"), ...)
 {
     ## unify list component names
+    type <- match.arg(type)
     if(object$dist == "beta") {
         for(n in names(object)[names(object) %in% fix_names_mu_phi]) names(object[[n]])[1L:2L] <- c("mu", "phi")
     } else {
-        if (!(type %in% c("response", "pearson")))
-            stop(sprintf("only 'type = 'response'' and 'type = 'pearson'' are implemented for '%s'", object$dist))
+        if (!(type %in% c("quantile", "response", "pearson")))
+            stop(sprintf("only types 'quantile', 'response', and 'pearson' are implemented for '%s'", object$dist))
     }
 
     ## raw response residuals and desired type
     res <- object$residuals
-    type <- match.arg(type)
     if(type == "response") return(res)
 
     ## extract fitted information
     y <- if(is.null(object$y)) model.response(model.frame(object)) else object$y
-    mu <- fitted(object)
     wts <- weights(object)
     if(is.null(wts)) wts <- 1
-    phi <- predict(object, type = "precision")
-    marg_v <- predict(object, type = "variance")
+    pars <- predict(object, type = "parameters")
+    mu <- pars$mu
+    phi <- pars$phi
+    nu <- pars$nu
 
     res <- switch(type,
 
                   "pearson" = {
-                      sqrt(wts) * res / sqrt(marg_v)
+                      margvar <- switch(object$dist,
+                        "beta"   = mu * (1 - mu)/(1 + phi),
+                        "xbeta"  = vapply(seq_along(mu), function(i) var_xbeta(mu[i], phi[i], nu[i]), 0.0),
+                        "xbetax" = vapply(seq_along(mu), function(i) var_xbetax(mu[i], phi[i], nu[i], object$control$quad), 0.0)
+                      )
+                      sqrt(wts) * res / sqrt(margvar)
+                  },
+                  
+                  "quantile" = {
+                    ## probability integral transform
+                    pit <- switch(object$dist,
+                      "beta"   =  pbetar(y, mu = mu, phi = phi),
+                      "xbeta"  =  pxbeta(y, mu = mu, phi = phi, nu = nu),
+                      "xbetax" = pxbetax(y, mu = mu, phi = phi, nu = nu, quad = object$control$quad)
+                    )
+                    ## boundary observations?
+                    if(any(i0 <- y <= 0)) pit[i0] <- pit[i0] * runif(sum(i0))
+                    if(any(i1 <- y >= 1)) {
+                      pit1 <- switch(object$dist,
+                        "beta"   =  pbetar(y, mu = mu, phi = phi, lower.tail = FALSE),
+                        "xbeta"  =  pxbeta(y, mu = mu, phi = phi, nu = nu, lower.tail = FALSE),
+                        "xbetax" = pxbetax(y, mu = mu, phi = phi, nu = nu, lower.tail = FALSE, quad = object$control$quad)
+                      )
+                      pit[i1] <- 1 - (pit1[i1] * runif(sum(i1)))
+                    }
+                    qnorm(pit)
                   },
 
                   "deviance" = {

@@ -9,6 +9,10 @@ Changes in Version 3.2-0
     "nu" parameter. "cbetax" = censored exponential mixture beta distribution
     which allows for estimation of "nu".
 
+  o Quantile residuals are added to the residuals() method for "betareg" objects.
+    They are easy to compute and have good distributional properties. Hence,
+    they are the new default residuals.
+
   o Bug fix in pseudo.r.squared computation for weighted models where previously
     the weights were erroneously ignored (reported by Ray Tayek).
 
