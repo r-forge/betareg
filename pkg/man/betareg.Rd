@@ -120,15 +120,16 @@ betareg.fit(x, y, z = NULL, weights = NULL, offset = NULL,
   the estimation does not change, only the reported information in output from \code{print},
   \code{summary}, or \code{coef} (among others) will be different. See also \code{\link{betareg.control}}.
 
-FIXME
-The extended-support beta distribution (\code{"xbeta"}) leverages an underlying
-symmetric four-parameter beta distribution with exceedence parameter \code{nu}
-to obtain support [-nu, 1 + nu] that is subsequently censored to [0, 1] in order
-to obtain point masses as the boundary values 0 and 1. The extended-support
-beta mixture distribution  (\code{"xbetax"}) is a continuous mixture of extended-support
-beta distributions where the exceedence parameter follows an exponential distribution
-with mean \code{nu} (rather than a fixed value of \code{nu}).
-
+  The extended-support beta distribution (\code{"xbeta"}) leverages an underlying
+  symmetric four-parameter beta distribution with exceedence parameter \code{nu}
+  to obtain support [-nu, 1 + nu] that is subsequently censored to [0, 1] in order
+  to obtain point masses as the boundary values 0 and 1. The extended-support
+  beta mixture distribution  (\code{"xbetax"}) is a continuous mixture of extended-support
+  beta distributions where the exceedence parameter follows an exponential distribution
+  with mean \code{nu} (rather than a fixed value of \code{nu}). The latter \code{"xbetax"}
+  specification is used by default in case of boundary observations at 0 and/or 1.
+  The \code{"xbeta"} specification with fixed \code{nu} is mostly for testing and
+  debugging purposes.
 
   A set of standard extractor functions for fitted model objects is available for
   objects of class \code{"betareg"}, including methods to the generic functions
