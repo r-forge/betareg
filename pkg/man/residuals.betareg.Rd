@@ -76,6 +76,7 @@ data("GasolineYield", package = "betareg")
 gy <- betareg(yield ~ gravity + pressure + temp10 + temp, data = GasolineYield)
 
 gy_res <- cbind(
+  residuals(gy, type = "quantile"),
   residuals(gy, type = "pearson"),
   residuals(gy, type = "deviance"),
   residuals(gy, type = "response"),
