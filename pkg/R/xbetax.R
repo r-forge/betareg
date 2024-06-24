@@ -73,9 +73,11 @@ pxbetax <- function(q, mu, phi, nu = 0, lower.tail = TRUE, log.p = FALSE, quad =
   if(lower.tail) {
     out[q <  0] <- 0
     out[q >= 1] <- 1
+    out[q <= 0 & nu <= 0] <- 0 ## for nu = 0 no point mass at 0
   } else {
     out[q <= 0] <- 1
     out[q >  1] <- 0
+    out[q >= 1 & nu <= 0] <- 0 ## for nu = 0 no point mass at 1
   }
 
   ## additional arguments
