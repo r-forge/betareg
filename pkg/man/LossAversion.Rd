@@ -85,13 +85,16 @@ LossAversion <- subset(LossAversion, grade == "10-12")
 
 ## ad hoc scaling (a la Smithson & Verkuilen)
 LossAversion$invests <- ((LossAversion$invest * (nrow(LossAversion) - 1) + 0.5)/nrow(LossAversion))
+
+## fraction of boundary observations for ad hoc extended-support beta specification (xbeta)
 p01 <- mean(LossAversion$invest <= 0 | LossAversion$invest >= 1)
 
 ## main effects models: Gaussian, beta, extended-support beta, extended-support beta mixture
 la_gr  <- glm(invest      ~ arrangement + male + age,                      data = LossAversion)
 la_br  <- betareg(invests ~ arrangement + male + age | arrangement + male, data = LossAversion)
-la_xb  <- betareg(invest  ~ arrangement + male + age | arrangement + male, data = LossAversion, dist = "xbeta", nu = p01/2)
 la_xbx <- betareg(invest  ~ arrangement + male + age | arrangement + male, data = LossAversion)
+la_xb  <- betareg(invest  ~ arrangement + male + age | arrangement + male, data = LossAversion,
+  dist = "xbeta", nu = p01/2)
 
 }
 
