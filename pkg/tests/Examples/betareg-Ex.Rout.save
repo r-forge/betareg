@@ -700,14 +700,17 @@ detaching ‘package:flexmix’, ‘package:lattice’
 > 
 > ## ad hoc scaling (a la Smithson & Verkuilen)
 > LossAversion$invests <- ((LossAversion$invest * (nrow(LossAversion) - 1) + 0.5)/nrow(LossAversion))
+> 
+> ## fraction of boundary observations for ad hoc extended-support beta specification (xbeta)
 > p01 <- mean(LossAversion$invest <= 0 | LossAversion$invest >= 1)
 > 
 > ## main effects models: Gaussian, beta, extended-support beta, extended-support beta mixture
 > la_gr  <- glm(invest      ~ arrangement + male + age,                      data = LossAversion)
 > la_br  <- betareg(invests ~ arrangement + male + age | arrangement + male, data = LossAversion)
-> la_xb  <- betareg(invest  ~ arrangement + male + age | arrangement + male, data = LossAversion, dist = "xbeta", nu = p01/2)
-Loading required namespace: numDeriv
 > la_xbx <- betareg(invest  ~ arrangement + male + age | arrangement + male, data = LossAversion)
+Loading required namespace: numDeriv
+> la_xb  <- betareg(invest  ~ arrangement + male + age | arrangement + male, data = LossAversion,
++   dist = "xbeta", nu = p01/2)
 > 
 > 
 > 
@@ -1218,7 +1221,7 @@ The following object is masked from ‘package:grDevices’:
 > cdf(X, 0)
 [1] 0.00000000 0.16127596 0.02230181
 > cdf(X, 1, lower.tail = FALSE)
-[1] 2.220446e-16 1.612760e-01 4.004398e-01
+[1] 0.0000000 0.1612760 0.4004398
 > 
 > ## simulate random variables
 > random(X, 5)
@@ -2229,7 +2232,7 @@ Number of iterations: 33 (BFGS) + 28 (Fisher scoring)
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  13.809 0.116 13.936 0 0 
+Time elapsed:  13.209 0.092 13.315 0 0 
 > grDevices::dev.off()
 null device 
           1 
