@@ -29,7 +29,7 @@ A data frame containing 570 observations on 7 variables.
 \details{
   Myopic loss aversion is a phenomenon in behavioral economics,
   where individuals do not behave economically rationally when making short-term
-  decisions under uncertainty. Example: In lotteries with positive expectation
+  decisions under uncertainty. Example: In lotteries with positive expected payouts
   investments are lower than the maximum possible (loss aversion). This effect
   is enhanced for short-term investments (myopia or short-sightedness).
 
