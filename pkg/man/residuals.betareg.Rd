@@ -12,7 +12,7 @@
 
 \usage{
 \method{residuals}{betareg}(object, type = c("quantile",
-  "sweighted2", "deviance", "pearson", "response", "weighted", "sweighted"),
+  "deviance", "pearson", "response", "weighted", "sweighted", "sweighted2"),
   \dots)
 }
 

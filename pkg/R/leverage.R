@@ -11,9 +11,9 @@ gleverage.betareg <- function(model, ...)
 {
   ## unify list component names
   if(model$dist == "beta") {
-    for(n in names(model)[names(model) %in% fix_names_mu_phi]) names(model[[n]])[1L:2L] <- c("mu", "phi")
+    for(n in intersect(names(model), fix_names_mu_phi)) names(model[[n]])[1L:2L] <- c("mu", "phi")
   } else {
-    stop("not yet implemented")
+    stop("not yet implemented for extended-support beta regression")
   }
 
   ## extract response y and regressors X
@@ -89,9 +89,9 @@ hatvalues.betareg <- function(model, ...)
 {
   ## unify list component names
   if(model$dist == "beta") {
-    for(n in names(model)[names(model) %in% fix_names_mu_phi]) names(model[[n]])[1L:2L] <- c("mu", "phi")
+    for(n in intersect(names(model), fix_names_mu_phi)) names(model[[n]])[1L:2L] <- c("mu", "phi")
   } else {
-    stop("not yet implemented")
+    stop("not yet implemented for extended-support beta regression")
   }
 
   ## extract response y and regressors X and Z
