@@ -1,6 +1,6 @@
 
-R version 3.5.1 (2018-07-02) -- "Feather Spray"
-Copyright (C) 2018 The R Foundation for Statistical Computing
+R version 4.3.3 (2024-02-29) -- "Angel Food Cake"
+Copyright (C) 2024 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -25,6 +25,398 @@ Type 'q()' to quit R.
 > base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
 > base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
 > cleanEx()
+> nameEx("Beta01")
+> ### * Beta01
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Beta01
+> ### Title: Create a Zero- and/or One-Inflated Beta Distribution
+> ### Aliases: Beta01 mean.Beta01 variance.Beta01 skewness.Beta01
+> ###   kurtosis.Beta01 pdf.Beta01 log_pdf.Beta01 cdf.Beta01 quantile.Beta01
+> ###   random.Beta01 support.Beta01 is_discrete.Beta01 is_continuous.Beta01
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+>  if(!requireNamespace("distributions3")) {
++   if(interactive() || is.na(Sys.getenv("_R_CHECK_PACKAGE_NAME_", NA))) {
++     stop("not all packages required for the example are installed")
++   } else q() }
+Loading required namespace: distributions3
+> ## End(Don't show)
+> ## package and random seed
+> library("distributions3")
+
+Attaching package: ‘distributions3’
+
+The following object is masked from ‘package:stats’:
+
+    Gamma
+
+The following object is masked from ‘package:grDevices’:
+
+    pdf
+
+> set.seed(6020)
+> 
+> ## three beta distributions
+> X <- Beta01(
++   mu  = c(0.25, 0.50, 0.75),
++   phi = c(1, 1, 2),
++   p0 = c(0.1, 0, 0),
++   p1 = c(0, 0, 0.3)
++ )
+> X
+[1] "Beta01(mu = 0.25, phi = 1, p0 = 0.1, p1 = 0.0)"
+[2] "Beta01(mu = 0.50, phi = 1, p0 = 0.0, p1 = 0.0)"
+[3] "Beta01(mu = 0.75, phi = 2, p0 = 0.0, p1 = 0.3)"
+> 
+> ## compute moments of the distribution
+> mean(X)
+[1] 0.225 0.500 0.825
+> variance(X)
+[1] 0.090000 0.125000 0.056875
+> 
+> ## support interval (minimum and maximum)
+> support(X)
+     min max
+[1,]   0   1
+[2,]   0   1
+[3,]   0   1
+> 
+> ## simulate random variables
+> random(X, 5)
+            r_1         r_2         r_3        r_4       r_5
+[1,] 0.01770077 0.031967958 0.009185013 0.09774271 0.5297302
+[2,] 0.11888790 0.004743561 0.209872794 0.56026234 0.7010201
+[3,] 0.43181699 0.757365599 0.612582662 0.76991426 0.3122026
+> 
+> ## histograms of 1,000 simulated observations
+> x <- random(X, 1000)
+> hist(x[1, ])
+> hist(x[2, ])
+> hist(x[3, ])
+> 
+> ## probability density function (PDF) and log-density (or log-likelihood)
+> x <- c(0.25, 0.5, 0.75)
+> pdf(X, x)
+[1] 0.6156832 0.6366198 0.7718605
+> pdf(X, x, log = TRUE)
+[1] -0.4850227 -0.4515827 -0.2589515
+> log_pdf(X, x)
+[1] -0.4850227 -0.4515827 -0.2589515
+> 
+> ## cumulative distribution function (CDF)
+> cdf(X, x)
+[1] 0.6808374 0.5000000 0.2737016
+> 
+> ## quantiles
+> quantile(X, 0.5)
+[1] 0.05868041 0.50000000 0.94876688
+> 
+> ## cdf() and quantile() are inverses
+> cdf(X, quantile(X, 0.5))
+[1] 0.5 0.5 0.5
+> quantile(X, cdf(X, 1))
+[1] 1 1 1
+> 
+> ## point mass probabilities (if any) on boundary
+> cdf(X, 0, lower.tail = TRUE)
+[1] 0.1 0.0 0.0
+> cdf(X, 1, lower.tail = FALSE)
+[1] 0.0 0.0 0.3
+> 
+> ## all methods above can either be applied elementwise or for
+> ## all combinations of X and x, if length(X) = length(x),
+> ## also the result can be assured to be a matrix via drop = FALSE
+> p <- c(0.05, 0.5, 0.95)
+> quantile(X, p, elementwise = FALSE)
+         q_0.05      q_0.5    q_0.95
+[1,] 0.00000000 0.05868041 0.8991438
+[2,] 0.00615583 0.50000000 0.9938442
+[3,] 0.28573175 0.94876688 1.0000000
+> quantile(X, p, elementwise = TRUE)
+[1] 0.0 0.5 1.0
+> quantile(X, p, elementwise = TRUE, drop = FALSE)
+     quantile
+[1,]      0.0
+[2,]      0.5
+[3,]      1.0
+> 
+> ## compare theoretical and empirical mean from 1,000 simulated observations
+> cbind(
++   "theoretical" = mean(X),
++   "empirical" = rowMeans(random(X, 1000))
++ )
+     theoretical empirical
+[1,]       0.225 0.2275291
+[2,]       0.500 0.5091324
+[3,]       0.825 0.8103725
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:distributions3’
+
+> nameEx("Beta4")
+> ### * Beta4
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Beta4
+> ### Title: Create a 4-Parameter Beta Distribution
+> ### Aliases: Beta4 mean.Beta4 variance.Beta4 skewness.Beta4 kurtosis.Beta4
+> ###   pdf.Beta4 log_pdf.Beta4 cdf.Beta4 quantile.Beta4 random.Beta4
+> ###   support.Beta4 is_discrete.Beta4 is_continuous.Beta4
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+>  if(!requireNamespace("distributions3")) {
++   if(interactive() || is.na(Sys.getenv("_R_CHECK_PACKAGE_NAME_", NA))) {
++     stop("not all packages required for the example are installed")
++   } else q() }
+> ## End(Don't show)
+> ## package and random seed
+> library("distributions3")
+
+Attaching package: ‘distributions3’
+
+The following object is masked from ‘package:stats’:
+
+    Gamma
+
+The following object is masked from ‘package:grDevices’:
+
+    pdf
+
+> set.seed(6020)
+> 
+> ## three beta distributions
+> X <- Beta4(
++   mu  = c(0.25, 0.50, 0.75),
++   phi = c(1, 1, 2),
++   theta1 = c(0, -0.1, -0.1),
++   theta2 = c(1, 1.1, 1.5)
++ )
+> X
+[1] "Beta4(mu = 0.25, phi = 1, theta1 =  0.0, theta2 = 1.0)"
+[2] "Beta4(mu = 0.50, phi = 1, theta1 = -0.1, theta2 = 1.1)"
+[3] "Beta4(mu = 0.75, phi = 2, theta1 = -0.1, theta2 = 1.5)"
+> 
+> ## compute moments of the distribution
+> mean(X)
+[1] 0.25 0.50 1.10
+> variance(X)
+[1] 0.09375 0.18000 0.16000
+> 
+> ## support interval (minimum and maximum)
+> support(X)
+      min max
+[1,]  0.0 1.0
+[2,] -0.1 1.1
+[3,] -0.1 1.5
+> 
+> ## simulate random variables
+> random(X, 5)
+           r_1       r_2         r_3        r_4         r_5
+[1,] 0.7497152 0.8385523  0.03196796 0.91882879  0.54543668
+[2,] 0.1263742 1.0978772 -0.09430773 0.07151503 -0.00499443
+[3,] 1.4311350 1.4850582  1.11178496 1.36985916  1.24450679
+> 
+> ## histograms of 1,000 simulated observations
+> x <- random(X, 1000)
+> hist(x[1, ])
+> hist(x[2, ])
+> hist(x[3, ])
+> 
+> ## probability density function (PDF) and log-density (or log-likelihood)
+> x <- c(0.25, 0.5, 0.75)
+> pdf(X, x)
+[1] 0.6840925 0.5305165 0.4235834
+> pdf(X, x, log = TRUE)
+[1] -0.3796622 -0.6339043 -0.8590048
+> log_pdf(X, x)
+[1] -0.3796622 -0.6339043 -0.8590048
+> 
+> ## cumulative distribution function (CDF)
+> cdf(X, x)
+[1] 0.6453748 0.5000000 0.2022198
+> 
+> ## quantiles
+> quantile(X, 0.5)
+[1] 0.09331223 0.50000000 1.23888962
+> 
+> ## cdf() and quantile() are inverses
+> cdf(X, quantile(X, 0.5))
+[1] 0.5 0.5 0.5
+> quantile(X, cdf(X, 1))
+[1] 1 1 1
+> 
+> ## all methods above can either be applied elementwise or for
+> ## all combinations of X and x, if length(X) = length(x),
+> ## also the result can be assured to be a matrix via drop = FALSE
+> p <- c(0.05, 0.5, 0.95)
+> quantile(X, p, elementwise = FALSE)
+            q_0.05      q_0.5    q_0.95
+[1,]  9.512588e-06 0.09331223 0.9118445
+[2,] -9.261300e-02 0.50000000 1.0926130
+[3,]  2.656317e-01 1.23888962 1.4975313
+> quantile(X, p, elementwise = TRUE)
+[1] 9.512588e-06 5.000000e-01 1.497531e+00
+> quantile(X, p, elementwise = TRUE, drop = FALSE)
+         quantile
+[1,] 9.512588e-06
+[2,] 5.000000e-01
+[3,] 1.497531e+00
+> 
+> ## compare theoretical and empirical mean from 1,000 simulated observations
+> cbind(
++   "theoretical" = mean(X),
++   "empirical" = rowMeans(random(X, 1000))
++ )
+     theoretical empirical
+[1,]        0.25 0.2464581
+[2,]        0.50 0.4930360
+[3,]        1.10 1.1068752
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:distributions3’
+
+> nameEx("BetaR")
+> ### * BetaR
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: BetaR
+> ### Title: Create a Beta Regression Distribution
+> ### Aliases: BetaR mean.BetaR variance.BetaR skewness.BetaR kurtosis.BetaR
+> ###   pdf.BetaR log_pdf.BetaR cdf.BetaR quantile.BetaR random.BetaR
+> ###   support.BetaR is_discrete.BetaR is_continuous.BetaR
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+>  if(!requireNamespace("distributions3")) {
++   if(interactive() || is.na(Sys.getenv("_R_CHECK_PACKAGE_NAME_", NA))) {
++     stop("not all packages required for the example are installed")
++   } else q() }
+> ## End(Don't show)
+> ## package and random seed
+> library("distributions3")
+
+Attaching package: ‘distributions3’
+
+The following object is masked from ‘package:stats’:
+
+    Gamma
+
+The following object is masked from ‘package:grDevices’:
+
+    pdf
+
+> set.seed(6020)
+> 
+> ## three beta distributions
+> X <- BetaR(
++   mu  = c(0.25, 0.50, 0.75),
++   phi = c(1, 1, 2)
++ )
+> X
+[1] "BetaR(mu = 0.25, phi = 1)" "BetaR(mu = 0.50, phi = 1)"
+[3] "BetaR(mu = 0.75, phi = 2)"
+> 
+> ## compute moments of the distribution
+> mean(X)
+[1] 0.25 0.50 0.75
+> variance(X)
+[1] 0.09375 0.12500 0.06250
+> skewness(X)
+[1] -0.1666667 -1.5000000  0.0000000
+> kurtosis(X)
+[1] -0.1666667 -1.5000000  0.0000000
+> 
+> ## support interval (minimum and maximum)
+> support(X)
+     min max
+[1,]   0   1
+[2,]   0   1
+[3,]   0   1
+> 
+> ## simulate random variables
+> random(X, 5)
+           r_1       r_2         r_3       r_4        r_5
+[1,] 0.7497152 0.8385523 0.031967958 0.9188288 0.54543668
+[2,] 0.1886452 0.9982310 0.004743561 0.1429292 0.07917131
+[3,] 0.9569594 0.9906614 0.757365599 0.9186620 0.84031674
+> 
+> ## histograms of 1,000 simulated observations
+> x <- random(X, 1000)
+> hist(x[1, ])
+> hist(x[2, ])
+> hist(x[3, ])
+> 
+> ## probability density function (PDF) and log-density (or log-likelihood)
+> x <- c(0.25, 0.5, 0.75)
+> pdf(X, x)
+[1] 0.6840925 0.6366198 1.1026578
+> pdf(X, x, log = TRUE)
+[1] -0.37966219 -0.45158271  0.09772344
+> log_pdf(X, x)
+[1] -0.37966219 -0.45158271  0.09772344
+> 
+> ## cumulative distribution function (CDF)
+> cdf(X, x)
+[1] 0.6453748 0.5000000 0.3910022
+> 
+> ## quantiles
+> quantile(X, 0.5)
+[1] 0.09331223 0.50000000 0.83680601
+> 
+> ## cdf() and quantile() are inverses (except at censoring points)
+> cdf(X, quantile(X, 0.5))
+[1] 0.5 0.5 0.5
+> quantile(X, cdf(X, 1))
+[1] 1 1 1
+> 
+> ## all methods above can either be applied elementwise or for
+> ## all combinations of X and x, if length(X) = length(x),
+> ## also the result can be assured to be a matrix via drop = FALSE
+> p <- c(0.05, 0.5, 0.95)
+> quantile(X, p, elementwise = FALSE)
+           q_0.05      q_0.5    q_0.95
+[1,] 9.512588e-06 0.09331223 0.9118445
+[2,] 6.155830e-03 0.50000000 0.9938442
+[3,] 2.285198e-01 0.83680601 0.9984571
+> quantile(X, p, elementwise = TRUE)
+[1] 9.512588e-06 5.000000e-01 9.984571e-01
+> quantile(X, p, elementwise = TRUE, drop = FALSE)
+         quantile
+[1,] 9.512588e-06
+[2,] 5.000000e-01
+[3,] 9.984571e-01
+> 
+> ## compare theoretical and empirical mean from 1,000 simulated observations
+> cbind(
++   "theoretical" = mean(X),
++   "empirical" = rowMeans(random(X, 1000))
++ )
+     theoretical empirical
+[1,]        0.25 0.2464581
+[2,]        0.50 0.4941967
+[3,]        0.75 0.7542970
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:distributions3’
+
 > nameEx("CarTask")
 > ### * CarTask
 > 
@@ -131,6 +523,7 @@ detaching ‘package:lmtest’, ‘package:zoo’
 > 
 > ### ** Examples
 > 
+> ## IGNORE_RDIFF_BEGIN
 > data("GasolineYield", package = "betareg")
 > 
 > gy1 <- betareg(yield ~ gravity + pressure + temp10 + temp, data = GasolineYield)
@@ -160,7 +553,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 Type of estimator: ML (maximum likelihood)
 Log-likelihood: 75.68 on 6 Df
 Pseudo R-squared: 0.9398
-Number of iterations: 144 (BFGS) + 5 (Fisher scoring) 
+Number of iterations: 147 (BFGS) + 4 (Fisher scoring) 
 > 
 > ## Ferrari and Cribari-Neto (2004)
 > gy2 <- betareg(yield ~ batch + temp, data = GasolineYield)
@@ -257,6 +650,7 @@ Type of estimator: ML (maximum likelihood)
 Log-likelihood: 86.62 on 12 Df
 Pseudo R-squared: 0.9662
 Number of iterations: 51 (BFGS) + 4 (Fisher scoring) 
+> ## IGNORE_RDIFF_END
 > 
 > 
 > 
@@ -288,6 +682,37 @@ Loading required package: lattice
 
 detaching ‘package:flexmix’, ‘package:lattice’
 
+> nameEx("LossAversion")
+> ### * LossAversion
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: LossAversion
+> ### Title: (No) Myopic Loss Aversion in Adolescents
+> ### Aliases: LossAversion
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> ## data for students in higher grades
+> data("LossAversion", package = "betareg")
+> LossAversion <- subset(LossAversion, grade == "10-12")
+> 
+> ## ad hoc scaling (a la Smithson & Verkuilen)
+> LossAversion$invests <- ((LossAversion$invest * (nrow(LossAversion) - 1) + 0.5)/nrow(LossAversion))
+> p01 <- mean(LossAversion$invest <= 0 | LossAversion$invest >= 1)
+> 
+> ## main effects models: Gaussian, beta, extended-support beta, extended-support beta mixture
+> la_gr  <- glm(invest      ~ arrangement + male + age,                      data = LossAversion)
+> la_br  <- betareg(invests ~ arrangement + male + age | arrangement + male, data = LossAversion)
+> la_xb  <- betareg(invest  ~ arrangement + male + age | arrangement + male, data = LossAversion, dist = "xbeta", nu = p01/2)
+Loading required namespace: numDeriv
+> la_xbx <- betareg(invest  ~ arrangement + male + age | arrangement + male, data = LossAversion)
+> 
+> 
+> 
+> 
+> cleanEx()
 > nameEx("MockJurors")
 > ### * MockJurors
 > 
@@ -470,6 +895,8 @@ Number of iterations in BFGS optimization: 25
 > nd <- data.frame(dyslexia = "yes", iq = -30:30/10)
 > lines(nd$iq, predict(rs_beta, nd), col = 2)
 > lines(nd$iq, plogis(predict(rs_ols, nd)), col = 2, lty = 2)
+> legend("topleft", c("Dyslexia: no", "Dyslexia: yes", "OLS", "Beta"),
++   lty = c(0, 0, 2, 1), pch = c(19, 19, NA, NA), col = c(1, 2, 1, 1), bty = "n")
 > 
 > ## see demo("SmithsonVerkuilen2006", package = "betareg") for more details
 > 
@@ -593,6 +1020,275 @@ Loading required package: lattice
 
 detaching ‘package:flexmix’, ‘package:lattice’
 
+> nameEx("XBeta")
+> ### * XBeta
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: XBeta
+> ### Title: Create an Extended-Support Beta Distribution
+> ### Aliases: XBeta mean.XBeta variance.XBeta skewness.XBeta kurtosis.XBeta
+> ###   pdf.XBeta log_pdf.XBeta cdf.XBeta quantile.XBeta random.XBeta
+> ###   support.XBeta is_discrete.XBeta is_continuous.XBeta
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+>  if(!requireNamespace("distributions3")) {
++   if(interactive() || is.na(Sys.getenv("_R_CHECK_PACKAGE_NAME_", NA))) {
++     stop("not all packages required for the example are installed")
++   } else q() }
+> ## End(Don't show)
+> ## package and random seed
+> library("distributions3")
+
+Attaching package: ‘distributions3’
+
+The following object is masked from ‘package:stats’:
+
+    Gamma
+
+The following object is masked from ‘package:grDevices’:
+
+    pdf
+
+> set.seed(6020)
+> 
+> ## three beta distributions
+> X <- XBeta(
++   mu  = c(0.25, 0.50, 0.75),
++   phi = c(1, 1, 2),
++   nu = c(0, 0.1, 0.2)
++ )
+> X
+[1] "XBeta(mu = 0.25, phi = 1, nu = 0.0)" "XBeta(mu = 0.50, phi = 1, nu = 0.1)"
+[3] "XBeta(mu = 0.75, phi = 2, nu = 0.2)"
+> 
+> ## compute moments of the distribution
+> mean(X)
+[1] 0.2500000 0.5000000 0.7886591
+> variance(X)
+[1] 0.09375000 0.15331441 0.08617379
+> 
+> ## support interval (minimum and maximum)
+> support(X)
+     min max
+[1,]   0   1
+[2,]   0   1
+[3,]   0   1
+> 
+> ## it is only continuous when there are no point masses on the boundary
+> is_continuous(X)
+[1]  TRUE FALSE FALSE
+> cdf(X, 0)
+[1] 0.0000000 0.1864295 0.0239812
+> cdf(X, 1, lower.tail = FALSE)
+[1] 0.0000000 0.1864295 0.4695222
+> 
+> ## simulate random variables
+> random(X, 5)
+           r_1       r_2        r_3        r_4       r_5
+[1,] 0.7497152 0.8385523 0.03196796 0.91882879 0.5454367
+[2,] 0.1263742 1.0000000 0.00000000 0.07151503 0.0000000
+[3,] 1.0000000 1.0000000 0.86031184 1.00000000 0.9764434
+> 
+> ## histograms of 1,000 simulated observations
+> x <- random(X, 1000)
+> hist(x[1, ])
+> hist(x[2, ])
+> hist(x[3, ])
+> 
+> ## probability density function (PDF) and log-density (or log-likelihood)
+> x <- c(0.25, 0.5, 0.75)
+> pdf(X, x)
+[1] 0.6840925 0.5305165 0.6607051
+> pdf(X, x, log = TRUE)
+[1] -0.3796622 -0.6339043 -0.4144477
+> log_pdf(X, x)
+[1] -0.3796622 -0.6339043 -0.4144477
+> 
+> ## cumulative distribution function (CDF)
+> cdf(X, x)
+[1] 0.6453748 0.5000000 0.3189318
+> 
+> ## quantiles
+> quantile(X, 0.5)
+[1] 0.09331223 0.50000000 0.97152842
+> 
+> ## cdf() and quantile() are inverses (except at censoring points)
+> cdf(X, quantile(X, 0.5))
+[1] 0.5 0.5 0.5
+> quantile(X, cdf(X, 1))
+[1] 1 1 1
+> 
+> ## all methods above can either be applied elementwise or for
+> ## all combinations of X and x, if length(X) = length(x),
+> ## also the result can be assured to be a matrix via drop = FALSE
+> p <- c(0.05, 0.5, 0.95)
+> quantile(X, p, elementwise = FALSE)
+           q_0.05      q_0.5    q_0.95
+[1,] 9.512588e-06 0.09331223 0.9118445
+[2,] 0.000000e+00 0.50000000 1.0000000
+[3,] 1.199277e-01 0.97152842 1.0000000
+> quantile(X, p, elementwise = TRUE)
+[1] 9.512588e-06 5.000000e-01 1.000000e+00
+> quantile(X, p, elementwise = TRUE, drop = FALSE)
+         quantile
+[1,] 9.512588e-06
+[2,] 5.000000e-01
+[3,] 1.000000e+00
+> 
+> ## compare theoretical and empirical mean from 1,000 simulated observations
+> cbind(
++   "theoretical" = mean(X),
++   "empirical" = rowMeans(random(X, 1000))
++ )
+     theoretical empirical
+[1,]   0.2500000 0.2464581
+[2,]   0.5000000 0.4949177
+[3,]   0.7886591 0.7955785
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:distributions3’
+
+> nameEx("XBetaX")
+> ### * XBetaX
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: XBetaX
+> ### Title: Create an Extended-Support Beta Mixture Distribution
+> ### Aliases: XBetaX mean.XBetaX variance.XBetaX skewness.XBetaX
+> ###   kurtosis.XBetaX pdf.XBetaX log_pdf.XBetaX cdf.XBetaX quantile.XBetaX
+> ###   random.XBetaX support.XBetaX is_discrete.XBetaX is_continuous.XBetaX
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+>  if(!requireNamespace("distributions3")) {
++   if(interactive() || is.na(Sys.getenv("_R_CHECK_PACKAGE_NAME_", NA))) {
++     stop("not all packages required for the example are installed")
++   } else q() }
+> ## End(Don't show)
+> ## package and random seed
+> library("distributions3")
+
+Attaching package: ‘distributions3’
+
+The following object is masked from ‘package:stats’:
+
+    Gamma
+
+The following object is masked from ‘package:grDevices’:
+
+    pdf
+
+> set.seed(6020)
+> 
+> ## three beta distributions
+> X <- XBetaX(
++   mu  = c(0.25, 0.50, 0.75),
++   phi = c(1, 1, 2),
++   nu = c(0, 0.1, 0.2)
++ )
+> X
+[1] "XBetaX(mu = 0.25, phi = 1, nu = 0.0)"
+[2] "XBetaX(mu = 0.50, phi = 1, nu = 0.1)"
+[3] "XBetaX(mu = 0.75, phi = 2, nu = 0.2)"
+> 
+> ## compute moments of the distribution
+> mean(X)
+[1] 0.2500000 0.5000000 0.7812779
+> variance(X)
+[1] 0.09375000 0.14932803 0.08290156
+> 
+> ## support interval (minimum and maximum)
+> support(X)
+     min max
+[1,]   0   1
+[2,]   0   1
+[3,]   0   1
+> 
+> ## it is only continuous when there are no point masses on the boundary
+> is_continuous(X)
+[1]  TRUE FALSE FALSE
+> cdf(X, 0)
+[1] 0.00000000 0.16127596 0.02230181
+> cdf(X, 1, lower.tail = FALSE)
+[1] 2.220446e-16 1.612760e-01 4.004398e-01
+> 
+> ## simulate random variables
+> random(X, 5)
+            r_1        r_2         r_3       r_4        r_5
+[1,] 0.01770077 0.03196796 0.009185013 0.3511111 0.03417845
+[2,] 0.03065274 0.00000000 0.159692910 0.4697419 0.62766314
+[3,] 0.40195437 1.00000000 0.675081997 0.9255527 1.00000000
+> 
+> ## histograms of 1,000 simulated observations
+> x <- random(X, 1000)
+> hist(x[1, ])
+> hist(x[2, ])
+> hist(x[3, ])
+> 
+> ## probability density function (PDF) and log-density (or log-likelihood)
+> x <- c(0.25, 0.5, 0.75)
+> pdf(X, x)
+[1] 0.6840925 0.5424706 0.7405552
+> pdf(X, x, log = TRUE)
+[1] -0.3796622 -0.6116213 -0.3003551
+> log_pdf(X, x)
+[1] -0.3796622 -0.6116213 -0.3003551
+> 
+> ## cumulative distribution function (CDF)
+> cdf(X, x)
+[1] 0.6453748 0.5000000 0.3312063
+> 
+> ## quantiles
+> quantile(X, 0.5)
+[1] 0.09331223 0.50000000 0.93231291
+> 
+> ## cdf() and quantile() are inverses (except at censoring points)
+> cdf(X, quantile(X, 0.5))
+[1] 0.5 0.5 0.5
+> quantile(X, cdf(X, 1))
+[1] 1 1 1
+> 
+> ## all methods above can either be applied elementwise or for
+> ## all combinations of X and x, if length(X) = length(x),
+> ## also the result can be assured to be a matrix via drop = FALSE
+> p <- c(0.05, 0.5, 0.95)
+> quantile(X, p, elementwise = FALSE)
+           q_0.05      q_0.5    q_0.95
+[1,] 9.512588e-06 0.09331223 0.9118445
+[2,] 0.000000e+00 0.50000000 1.0000000
+[3,] 1.353857e-01 0.93231291 1.0000000
+> quantile(X, p, elementwise = TRUE)
+[1] 9.512588e-06 5.000000e-01 1.000000e+00
+> quantile(X, p, elementwise = TRUE, drop = FALSE)
+         quantile
+[1,] 9.512588e-06
+[2,] 5.000000e-01
+[3,] 1.000000e+00
+> 
+> ## compare theoretical and empirical mean from 1,000 simulated observations
+> cbind(
++   "theoretical" = mean(X),
++   "empirical" = rowMeans(random(X, 1000))
++ )
+     theoretical empirical
+[1,]   0.2500000 0.2403159
+[2,]   0.5000000 0.4935615
+[3,]   0.7812779 0.7936076
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:distributions3’
+
 > nameEx("betamix")
 > ### * betamix
 > 
@@ -644,8 +1340,10 @@ detaching ‘package:flexmix’, ‘package:lattice’
 +    lines(iq, plogis(cf[i, 1] + cf[i, 2] * iq), lwd = 2,
 +          col = col0[i])
 > 
-> ## refit the model including a concomitant variable model
-> ## using the dyslexia information
+> ## refit the model including a concomitant variable model using the
+> ## dyslexia information with some noise to avoid complete separation
+> ## between concomitant variable and component memberships
+> set.seed(4040)
 > w <- rnorm(nrow(ReadingSkills), 
 +            c(-1, 1)[as.integer(ReadingSkills$dyslexia)])
 > 
@@ -661,22 +1359,22 @@ Loading required package: lattice
 +   coef = 0.99, delta = 0.01), cluster = posterior(rs_mix),
 +   FLXconcomitant = FLXPmultinom(~w))
 > coef(rs_mix2, which = "concomitant")
-  (Intercept)     w
-1       0.000 0.000
-2       2.799 2.825
-3       1.950 1.033
+  (Intercept)       w
+1      0.0000  0.0000
+2      0.8114  1.0778
+3     -0.1195 -0.3488
 > summary(rs_mix2, which = "concomitant")
 $Comp.2
-            Estimate Std. Error z value Pr(>|z|)   
-(Intercept)    2.813      1.590    1.77   0.0769 . 
-w              2.827      0.894    3.16   0.0016 **
+            Estimate Std. Error z value Pr(>|z|)  
+(Intercept)    0.821      0.882    0.93     0.35  
+w              1.078      0.497    2.17     0.03 *
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 $Comp.3
             Estimate Std. Error z value Pr(>|z|)
-(Intercept)    1.961      1.473    1.33     0.18
-w              1.037      0.759    1.37     0.17
+(Intercept)   -0.113      0.812   -0.14     0.89
+w             -0.346      0.452   -0.77     0.44
 
 > 
 > 
@@ -1006,11 +1704,11 @@ Number of iterations: 51 (BFGS) + 3 (Fisher scoring)
 > ### ** Examples
 > 
 > options(digits = 4)
+> suppressWarnings(RNGversion("3.5.0"))
 > 
 > ## data with two groups of dyslexic and non-dyslexic children
 > data("ReadingSkills", package = "betareg")
 > ## additional random noise (not associated with reading scores)
-> suppressWarnings(RNGversion("3.5.0"))
 > set.seed(1071)
 > ReadingSkills$x1 <- rnorm(nrow(ReadingSkills))
 > ReadingSkills$x2 <- runif(nrow(ReadingSkills))
@@ -1029,6 +1727,31 @@ Number of iterations: 51 (BFGS) + 3 (Fisher scoring)
   (Intercept)       iq (phi)_(Intercept) (phi)_iq
 2      1.6565  1.46571             1.273    2.048
 3      0.3809 -0.08623             4.808    0.826
+> if(require("strucchange")) sctest(bt)
+Loading required package: strucchange
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+Loading required package: sandwich
+$`1`
+           dyslexia     x1     x2     x3
+statistic 2.269e+01 8.5251 5.5699 1.0568
+p.value   5.848e-04 0.9095 0.9987 0.9999
+
+$`2`
+          dyslexia     x1     x2     x3
+statistic        0 6.4116 4.5170 4.2308
+p.value         NA 0.8412 0.9752 0.7566
+
+$`3`
+NULL
+
+> ## IGNORE_RDIFF_BEGIN
 > summary(bt, node = 2)
 
 Call:
@@ -1053,7 +1776,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 Type of estimator: ML (maximum likelihood)
 Log-likelihood: 39.4 on 4 Df
 Pseudo R-squared: 0.149
-Number of iterations: 17 (BFGS) + 1 (Fisher scoring) 
+Number of iterations: 17 (BFGS) + 2 (Fisher scoring) 
 > summary(bt, node = 3)
 
 Call:
@@ -1078,31 +1801,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 Type of estimator: ML (maximum likelihood)
 Log-likelihood: 27.3 on 4 Df
 Pseudo R-squared: 0.0391
-Number of iterations: 16 (BFGS) + 1 (Fisher scoring) 
-> library("strucchange")
-Loading required package: zoo
-
-Attaching package: ‘zoo’
-
-The following objects are masked from ‘package:base’:
-
-    as.Date, as.Date.numeric
-
-Loading required package: sandwich
-> sctest(bt)
-$`1`
-           dyslexia     x1     x2     x3
-statistic 2.269e+01 8.5251 5.5699 1.0568
-p.value   5.848e-04 0.9095 0.9987 0.9999
-
-$`2`
-          dyslexia     x1     x2     x3
-statistic        0 6.4116 4.5170 4.2308
-p.value         NA 0.8412 0.9752 0.7566
-
-$`3`
-NULL
-
+Number of iterations: 16 (BFGS) + 2 (Fisher scoring) 
+> ## IGNORE_RDIFF_END
 > 
 > ## add a numerical variable with relevant information for splitting
 > ReadingSkills$x4 <- rnorm(nrow(ReadingSkills), c(-1.5, 1.5)[ReadingSkills$dyslexia])
@@ -1113,23 +1813,26 @@ NULL
 > 
 > ## inspect result
 > coef(bt2)
-  (Intercept)     iq (phi)_(Intercept) (phi)_iq
-2       1.460 1.7332            0.6222   2.8365
-3       1.127 0.3416            1.4104  -0.3735
-> sctest(bt2)
+  (Intercept)      iq (phi)_(Intercept) (phi)_iq
+2      1.7060 1.47402             1.293   2.0841
+3      0.5048 0.03391             3.131  -0.7684
+> if(require("strucchange")) sctest(bt2)
 $`1`
               x1     x2     x3       x4
 statistic 8.5251 5.5699 1.0568 19.94405
 p.value   0.9095 0.9987 0.9999  0.03485
 
 $`2`
-NULL
+              x1     x2     x3     x4
+statistic 8.9467 3.5888 3.5677 4.7049
+p.value   0.5964 0.9985 0.9197 0.9848
 
 $`3`
-              x1     x2     x3       x4
-statistic 6.4811 6.6100 1.9526 17.63629
-p.value   0.9678 0.9625 0.9957  0.05837
+              x1     x2     x3     x4
+statistic 5.5413 1.2373 4.8649 4.9921
+p.value   0.6595 0.9997 0.7619 0.7432
 
+> ## IGNORE_RDIFF_BEGIN
 > summary(bt2, node = 2)
 
 Call:
@@ -1137,24 +1840,24 @@ betatree(formula = accuracy ~ iq | iq, data = ReadingSkills)
 
 Standardized weighted residuals 2:
    Min     1Q Median     3Q    Max 
--1.718 -0.482 -0.034  0.885  0.944 
+-1.860 -0.492  0.026  0.815  1.014 
 
 Coefficients (mean model with logit link):
             Estimate Std. Error z value Pr(>|z|)    
-(Intercept)    1.460      0.486    3.00   0.0027 ** 
-iq             1.733      0.369    4.69  2.7e-06 ***
+(Intercept)    1.706      0.292    5.85  4.9e-09 ***
+iq             1.474      0.248    5.95  2.7e-09 ***
 
 Phi coefficients (precision model with log link):
             Estimate Std. Error z value Pr(>|z|)    
-(Intercept)    0.622      0.506    1.23     0.22    
-iq             2.836      0.503    5.64  1.7e-08 ***
+(Intercept)    1.293      0.312    4.14  3.4e-05 ***
+iq             2.084      0.333    6.25  4.0e-10 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 
 Type of estimator: ML (maximum likelihood)
-Log-likelihood: 23.5 on 4 Df
-Pseudo R-squared: 0.348
-Number of iterations: 16 (BFGS) + 1 (Fisher scoring) 
+Log-likelihood: 38.6 on 4 Df
+Pseudo R-squared: 0.163
+Number of iterations: 17 (BFGS) + 1 (Fisher scoring) 
 > summary(bt2, node = 3)
 
 Call:
@@ -1162,24 +1865,25 @@ betatree(formula = accuracy ~ iq | iq, data = ReadingSkills)
 
 Standardized weighted residuals 2:
    Min     1Q Median     3Q    Max 
--1.173 -0.622 -0.406  0.141  3.619 
+-2.090 -0.611 -0.178  0.642  2.572 
 
 Coefficients (mean model with logit link):
             Estimate Std. Error z value Pr(>|z|)    
-(Intercept)    1.127      0.209    5.39  7.2e-08 ***
-iq             0.342      0.198    1.73    0.084 .  
+(Intercept)   0.5048     0.1245    4.05    5e-05 ***
+iq            0.0339     0.0998    0.34     0.73    
 
 Phi coefficients (precision model with log link):
             Estimate Std. Error z value Pr(>|z|)    
-(Intercept)    1.410      0.262    5.38  7.4e-08 ***
-iq            -0.373      0.264   -1.42     0.16    
+(Intercept)    3.131      0.370    8.45   <2e-16 ***
+iq            -0.768      0.359   -2.14    0.032 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 
 Type of estimator: ML (maximum likelihood)
-Log-likelihood: 15.7 on 4 Df
-Pseudo R-squared: 0.161
+Log-likelihood: 22.4 on 4 Df
+Pseudo R-squared: 0.0378
 Number of iterations: 16 (BFGS) + 1 (Fisher scoring) 
+> ## IGNORE_RDIFF_END
 > 
 > 
 > 
@@ -1244,7 +1948,7 @@ detaching ‘package:strucchange’, ‘package:sandwich’, ‘package:zoo’
 > 
 > ### Name: predict.betareg
 > ### Title: Prediction Method for betareg Objects
-> ### Aliases: predict.betareg
+> ### Aliases: predict.betareg pit.betareg rootogram.betareg
 > ### Keywords: regression
 > 
 > ### ** Examples
@@ -1296,6 +2000,33 @@ detaching ‘package:strucchange’, ‘package:sandwich’, ‘package:zoo’
 31 0.11952 -1.9970  978.71 1.074e-04 0.11239 0.11926 0.12637
 32 0.18402 -1.4894 1998.57 7.509e-05 0.17811 0.18391 0.18980
 > 
+> ## evaluate cumulative _p_robabilities for (small) new data set
+> gyd <- GasolineYield[c(1, 5, 10), ]
+> ## CDF at 0.1 for each observation
+> predict(gy2, newdata = gyd, type = "probability", at = 0.1)
+Warning: contrasts dropped from factor batch
+        1         5        10 
+5.407e-01 7.165e-01 6.053e-40 
+> ## CDF at each combination of 0.1/0.2 and observations
+> predict(gy2, newdata = gyd, type = "probability", at = c(0.1, 0.2))
+Warning: contrasts dropped from factor batch
+       p_0.1     p_0.2
+1  5.407e-01 9.933e-01
+5  7.165e-01 9.991e-01
+10 6.053e-40 5.828e-09
+> ## CDF at pairwise combinations of 0.1/0.2/0.3 and observations
+> predict(gy2, newdata = gyd, type = "probability", at = c(0.1, 0.2, 0.3))
+Warning: contrasts dropped from factor batch
+     1      5     10 
+0.5407 0.9991 0.4549 
+> ## CDF at all combinations of 0.1/0.2/0.3 and observations
+> predict(gy2, newdata = gyd, type = "probability", at = rbind(c(0.1, 0.2, 0.3)))
+Warning: contrasts dropped from factor batch
+       p_0.1     p_0.2  p_0.3
+1  5.407e-01 9.933e-01 1.0000
+5  7.165e-01 9.991e-01 1.0000
+10 6.053e-40 5.828e-09 0.4549
+> 
 > 
 > 
 > cleanEx()
@@ -1318,16 +2049,25 @@ detaching ‘package:strucchange’, ‘package:sandwich’, ‘package:zoo’
 > gy <- betareg(yield ~ gravity + pressure + temp10 + temp, data = GasolineYield)
 > 
 > gy_res <- cbind(
-+   residuals(gy, type = "pearson"),
-+   residuals(gy, type = "deviance"),
-+   residuals(gy, type = "response"),
-+   residuals(gy, type = "weighted"),
-+   residuals(gy, type = "sweighted"),
-+   residuals(gy, type = "sweighted2")
++   "quantile"   = residuals(gy, type = "quantile"),
++   "pearson"    = residuals(gy, type = "pearson"),
++   "deviance"   = residuals(gy, type = "deviance"),
++   "response"   = residuals(gy, type = "response"),
++   "weighted"   = residuals(gy, type = "weighted"),
++   "sweighted"  = residuals(gy, type = "sweighted"),
++   "sweighted2" = residuals(gy, type = "sweighted2")
 + )
-> colnames(gy_res) <- c("pearson", "deviance", "response",
-+   "weighted", "sweighted", "sweighted2")
 > pairs(gy_res)
+> 
+> cor(gy_res)
+           quantile pearson deviance response weighted sweighted sweighted2
+quantile     1.0000  0.9980   0.9997   0.9659   0.9995    0.9995     0.9980
+pearson      0.9980  1.0000   0.9984   0.9739   0.9956    0.9956     0.9941
+deviance     0.9997  0.9984   1.0000   0.9682   0.9989    0.9989     0.9976
+response     0.9659  0.9739   0.9682   1.0000   0.9609    0.9609     0.9652
+weighted     0.9995  0.9956   0.9989   0.9609   1.0000    1.0000     0.9985
+sweighted    0.9995  0.9956   0.9989   0.9609   1.0000    1.0000     0.9985
+sweighted2   0.9980  0.9941   0.9976   0.9652   0.9985    0.9985     1.0000
 > 
 > 
 > 
@@ -1489,7 +2229,7 @@ Number of iterations: 33 (BFGS) + 28 (Fisher scoring)
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  12.571 0.148 12.721 0 0 
+Time elapsed:  13.809 0.116 13.936 0 0 
 > grDevices::dev.off()
 null device 
           1 
