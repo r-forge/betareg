@@ -76,17 +76,17 @@ data("GasolineYield", package = "betareg")
 gy <- betareg(yield ~ gravity + pressure + temp10 + temp, data = GasolineYield)
 
 gy_res <- cbind(
-  residuals(gy, type = "quantile"),
-  residuals(gy, type = "pearson"),
-  residuals(gy, type = "deviance"),
-  residuals(gy, type = "response"),
-  residuals(gy, type = "weighted"),
-  residuals(gy, type = "sweighted"),
-  residuals(gy, type = "sweighted2")
+  "quantile"   = residuals(gy, type = "quantile"),
+  "pearson"    = residuals(gy, type = "pearson"),
+  "deviance"   = residuals(gy, type = "deviance"),
+  "response"   = residuals(gy, type = "response"),
+  "weighted"   = residuals(gy, type = "weighted"),
+  "sweighted"  = residuals(gy, type = "sweighted"),
+  "sweighted2" = residuals(gy, type = "sweighted2")
 )
-colnames(gy_res) <- c("pearson", "deviance", "response",
-  "weighted", "sweighted", "sweighted2")
 pairs(gy_res)
+
+cor(gy_res)
 }
 
 \keyword{regression}
