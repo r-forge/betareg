@@ -1,7 +1,7 @@
 # include <stdio.h>
 # include <math.h>
 
-/* A naive implementation of the 3_F_2 required for CB4 derivatives */
+/* A naive implementation of the 3_F_2 required for XBeta derivatives */
 /* Author: Ioannis Kosmidis */
 /* Date: 03/03/2017 */
 void h3f2 (double* a, double* b, double* z, int* n, int* maxiter, double* eps, double* out)
