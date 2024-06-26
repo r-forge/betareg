@@ -41,7 +41,7 @@ the \code{\link[distributions3]{Beta}} distribution with parameters
 A \code{BetaR} distribution object.
 }
 
-\seealso{\code{\link{dbeta}}, \code{\link[distributions3]{Beta}}}
+\seealso{\code{\link{dbetar}}, \code{\link[distributions3]{Beta}}}
 
 \examples{
 \dontshow{ if(!requireNamespace("distributions3")) {

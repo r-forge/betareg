@@ -44,7 +44,7 @@ random variable with intercept \code{theta1} and slope \code{theta2 - theta1}.
 A \code{Beta4} distribution object.
 }
 
-\seealso{\code{\link{dbeta}}, \code{\link[distributions3]{Beta}}}
+\seealso{\code{\link{dbeta4}}, \code{\link{BetaR}}}
 
 \examples{
 \dontshow{ if(!requireNamespace("distributions3")) {

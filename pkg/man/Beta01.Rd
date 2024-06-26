@@ -47,7 +47,7 @@ It is rather a hurdle or two-part (or three-part) model.
 A \code{Beta01} distribution object.
 }
 
-\seealso{\code{\link{dbeta}}, \code{\link[distributions3]{Beta}}}
+\seealso{\code{\link{dbeta01}}, \code{\link{BetaR}}}
 
 \examples{
 \dontshow{ if(!requireNamespace("distributions3")) {
