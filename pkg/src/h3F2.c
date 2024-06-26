@@ -1,5 +1,8 @@
 # include <stdio.h>
 # include <math.h>
+#include <R.h>
+#include <Rinternals.h>
+#include <R_ext/Rdynload.h>
 
 /* A naive implementation of the 3_F_2 required for XBeta derivatives */
 /* Author: Ioannis Kosmidis */

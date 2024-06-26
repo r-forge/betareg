@@ -1,12 +1,12 @@
 h3f2 <- function(a, b, z, n, maxiter = 5000, eps = 1e-14) {
-    res <- .C("h3f2",
-              a = as.double(a),
-              b = as.double(b),
-              z = as.double(z),
-              n = as.integer(n),
-              maxiter = as.integer(maxiter),
-              eps = as.double(eps),
-              out = double(n))
+    res <- .Call("h3f2",
+                 a = as.double(a),
+                 b = as.double(b),
+                 z = as.double(z),
+                 n = as.integer(n),
+                 maxiter = as.integer(maxiter),
+                 eps = as.double(eps),
+                 out = double(n))
     res$out
 }
 
