@@ -1316,6 +1316,7 @@ residuals.betareg <- function(object,
     if(object$dist == "beta") {
         for(n in intersect(names(object), fix_names_mu_phi)) names(object[[n]])[1L:2L] <- c("mu", "phi")
     } else {
+        ## FIXME: Support more types of residuals, at least "deviance"?
         if (!(type %in% c("quantile", "response", "pearson")))
             stop(sprintf("only types 'quantile', 'response', and 'pearson' are implemented for '%s'", object$dist))
     }
