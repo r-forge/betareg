@@ -6,7 +6,9 @@ dbetar <- function(x, mu, phi, log = FALSE) {
     "parameter 'mu' must always be in [0, 1]" = all(mu >= 0 & mu <= 1),
     "parameter 'phi' must always be non-negative" = all(phi >= 0)
   )
-  dbeta(x, shape1 = mu * phi, shape2 = (1 - mu) * phi, log = log)
+  d <- dbeta(x, shape1 = mu * phi, shape2 = (1 - mu) * phi, log = log)
+  d[x <= 0 | x >= 1] <- if(log) -Inf else 0
+  return(d)
 }
 
 pbetar <- function(q, mu, phi, lower.tail = TRUE, log.p = FALSE) {
