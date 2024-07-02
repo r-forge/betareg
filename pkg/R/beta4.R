@@ -10,6 +10,7 @@ dbeta4 <- function(x, mu, phi, theta1 = 0, theta2 = 1 - theta1, log = FALSE) {
   out <- dbeta((x - theta1) / (theta2 - theta1),
     shape1 = mu * phi, shape2 = (1 - mu) * phi, log = log
   )
+  out[x <= theta1 | x >= theta2] <- if(log) -Inf else 0
   out <- if(log) out - log(theta2 - theta1) else out/(theta2 - theta1)
   return(out)
 }
