@@ -102,6 +102,8 @@ legend("topleft", c("Control", "Dyslexic"), pch = pch, col = pal, bty = "n")
 
 <img src="man/figures/README-plot-1.png" style="width:75.0%" />
 
+## Extended models
+
 For going beyond this basic analysis the following extensions can be
 considered:
 
