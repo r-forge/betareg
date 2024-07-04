@@ -22,3 +22,5 @@ Depends: R (>= 3.6.0)
 Imports: graphics, grDevices, methods, stats, flexmix, Formula, lmtest, modeltools, sandwich
 Suggests: car, distributions3 (>= 0.2.1), lattice, numDeriv, partykit, statmod, strucchange
 License: GPL-2 | GPL-3
+URL: https://betareg.R-Forge.R-project.org/, https://hclwizard.org/
+BugReports: https://betareg.R-Forge.R-project.org/contact.html

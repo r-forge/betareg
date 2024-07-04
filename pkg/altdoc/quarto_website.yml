@@ -96,6 +96,8 @@ website:
         file: $ALTDOC_NEWS
       - text: Citation
         file: $ALTDOC_CITATION
+      - text: Contact
+        file: contact.qmd
 
 format:
   html:
