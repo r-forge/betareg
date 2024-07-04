@@ -105,26 +105,50 @@ legend("topleft", c("Control", "Dyslexic"), pch = pch, col = pal, bty = "n")
 ## Extended models
 
 For going beyond this basic analysis the following extensions can be
-considered:
+considered.
 
--   Bias-reduced estimation (instead of the default maximum likelihood
-    estimation) can be used by adding the argument `type = "BR"` in
-    `betareg()`. This slightly shrinks all coefficient estimates but
-    leads to qualitatively identical results.  
-    `betareg(accuracy ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills, type = "BR")`
--   To analyze the original accuracy scores in \[0, 1\] (without scaling
-    the perfect scores of `1` to `0.99`) use the variable `accuracy1` in
-    the code above. The `betareg()` model then estimates an additional
-    exceedence parameter that accounts for the boundary probability of a
-    perfect score.  
-    `betareg(accuracy1 ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills)`
--   To find subgroups in a beta regression by recursively splitting
-    subsamples (rather than fixing the dyslexia interaction in advance),
-    beta regression trees can be used:  
-    `betatree(accuracy ~ iq | iq, ~ dyslexia + ..., data = ReadingSkills, minsize = 10)`  
-    See the documentation of `betatree()` for more details.
--   To find clusters in a beta regression (without even having the
-    dyslexia information), finite mixtures of beta regressions can be
-    used:  
-    `betamix(accuracy ~ iq, data = ReadingSkills, k = 3, ...)`  
-    See the documentation of `betamix()` for more details.
+### Bias reduction
+
+Bias-reduced estimation (instead of the default maximum likelihood
+estimation) can be used by adding the argument `type = "BR"` in
+`betareg()`. This slightly shrinks all coefficient estimates but leads
+to qualitatively identical results.
+
+``` r
+betareg(accuracy ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills, type = "BR")
+```
+
+### Extended-support beta regression
+
+To analyze the original accuracy scores in \[0, 1\] (without scaling the
+perfect scores of `1` to `0.99`) use the variable `accuracy1` in the
+code above. The `betareg()` model then estimates an additional
+exceedence parameter that accounts for the boundary probability of a
+perfect score.
+
+``` r
+betareg(accuracy1 ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills)
+```
+
+### Beta regression trees
+
+To find subgroups in a beta regression by recursively splitting
+subsamples (rather than fixing the dyslexia interaction in advance),
+beta regression trees can be used:
+
+``` r
+betatree(accuracy ~ iq | iq, ~ dyslexia + ..., data = ReadingSkills, minsize = 10)
+```
+
+See the documentation of `betatree()` for more details.
+
+### Finite mixture models of beta regressions
+
+To find clusters in a beta regression (without even having the dyslexia
+information), finite mixtures of beta regressions can be used:
+
+``` r
+betamix(accuracy ~ iq, data = ReadingSkills, k = 3, ...)
+```
+
+See the documentation of `betamix()` for more details.

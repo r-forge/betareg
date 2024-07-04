@@ -1,1 +1,5 @@
-paper
+^paper$
+^_quarto$
+^altdoc$
+^docs$
+^README\.qmd$

@@ -1,0 +1,115 @@
+project:
+  type: website
+  output-dir: ../../www/
+
+website:
+  title: "betareg"
+  site-url: "https://betareg.R-Forge.R-project.org/"
+  favicon: "betareg.png"
+  image: "betareg.png"
+  open-graph:
+    image: "betareg.png"
+  twitter-card:
+    site: "@AchimZeileis"
+    card-style: "summary"
+    image: "betareg.png"
+    image-alt: "betareg: Beta Regression in R"
+  navbar:
+    logo: "betareg.png"
+    logo-alt: "betareg logo"
+    search: true
+    right:
+      - icon: code
+        href: "https://R-Forge.R-project.org/projects/betareg"
+        aria-label: "betareg @ R-Forge"
+  sidebar:
+    style: docked
+    collapse-level: 1
+    contents:
+      - text: Home
+        file: index.qmd
+      - section: "Beta regression"
+        contents:
+          - text: betareg
+            file: man/betareg.qmd
+          - text: betareg.control
+            file: man/betareg.control.qmd
+          - text: summary.betareg
+            file: man/summary.betareg.qmd
+          - text: plot.betareg
+            file: man/plot.betareg.qmd
+          - text: predict.betareg
+            file: man/predict.betareg.qmd
+          - text: residuals.betareg
+            file: man/residuals.betareg.qmd
+          - text: betatree
+            file: man/betatree.qmd
+          - text: betamix
+            file: man/betamix.qmd
+          - text: gleverage
+            file: man/gleverage.qmd
+      - section: "Data sets"
+        contents:
+          - text: CarTask
+            file: man/CarTask.qmd
+          - text: FoodExpenditure
+            file: man/FoodExpenditure.qmd
+          - text: GasolineYield
+            file: man/GasolineYield.qmd
+          - text: ImpreciseTask
+            file: man/ImpreciseTask.qmd
+          - text: LossAversion
+            file: man/LossAversion.qmd
+          - text: MockJurors
+            file: man/MockJurors.qmd
+          - text: ReadingSkills
+            file: man/ReadingSkills.qmd
+          - text: StressAnxiety
+            file: man/StressAnxiety.qmd
+          - text: WeatherTask
+            file: man/WeatherTask.qmd
+      - section: "Distributions"
+        contents:
+          - text: dbetar
+            file: man/dbetar.qmd
+          - text: dbeta4
+            file: man/dbeta4.qmd
+          - text: dbeta01
+            file: man/dbeta01.qmd
+          - text: dxbeta
+            file: man/dxbeta.qmd
+          - text: dxbetax
+            file: man/dxbetax.qmd
+      - section: "distributions3 objects"
+        contents:
+          - text: BetaR
+            file: man/BetaR.qmd
+          - text: Beta4
+            file: man/Beta4.qmd
+          - text: Beta01
+            file: man/Beta01.qmd
+          - text: XBeta
+            file: man/XBeta.qmd
+          - text: XBetaX
+            file: man/XBetaX.qmd
+      - text: News
+        file: $ALTDOC_NEWS
+      - text: Citation
+        file: $ALTDOC_CITATION
+
+format:
+  html:
+    toc: true
+    theme:
+      - cosmo
+      - custom.scss
+    number-sections: false
+    fontsize: '110%'
+    fontcolor: "#333333"
+    linkcolor: "#069580"
+    code-copy: true
+    code-overflow: scroll
+    title-block-style: none
+    grid: 
+      sidebar-width: 340px
+      margin-width: 340px
