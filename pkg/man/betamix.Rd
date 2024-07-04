@@ -1,5 +1,5 @@
 \name{betamix}
-\encoding{latin1}
+\encoding{utf8}
 
 \alias{betamix}
 \alias{extraComponent}
@@ -101,7 +101,7 @@ extraComponent(type = c("uniform", "betareg"), coef, delta,
   The arguments and the model specification are similar to
   \code{\link{betareg}}. Internally \code{\link[flexmix]{stepFlexmix}}
   is called with suitable arguments to fit the finite mixture model with
-  the EM algorithm. See Grün et al. (2012) for more details.
+  the EM algorithm. See GrÃ¼n et al. (2012) for more details.
 
   \code{extra_components} is a list where each element corresponds to a
   component where the parameters are fixed a-priori.
@@ -118,12 +118,12 @@ Cribari-Neto, F., and Zeileis, A. (2010). Beta Regression in R.
   \emph{Journal of Statistical Software}, \bold{34}(2), 1--24.
   \doi{10.18637/jss.v034.i02}
 
-Grün, B., Kosmidis, I., and Zeileis, A. (2012).
+GrÃ¼n, B., Kosmidis, I., and Zeileis, A. (2012).
   Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned.
   \emph{Journal of Statistical Software}, \bold{48}(11), 1--25.
   \doi{10.18637/jss.v048.i11}
 
-Grün, B., and Leisch, F. (2008). FlexMix Version 2: Finite Mixtures
+GrÃ¼n, B., and Leisch, F. (2008). FlexMix Version 2: Finite Mixtures
   with Concomitant Variables and Varying and Constant Parameters.
   \emph{Journal of Statistical Software}, \bold{28}(4), 1--35.
   \doi{10.18637/jss.v028.i04}
@@ -135,7 +135,7 @@ Leisch, F. (2004). FlexMix: A General Framework for Finite Mixture
 }
 
 \author{
-  Bettina Grün and Achim Zeileis
+  Bettina GrÃ¼n and Achim Zeileis
 }
 
 \seealso{

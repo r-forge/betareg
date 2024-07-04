@@ -1,5 +1,5 @@
 \name{LossAversion}
-\encoding{latin1}
+\encoding{utf8}
 
 \alias{LossAversion}
 
@@ -34,7 +34,7 @@ A data frame containing 570 observations on 7 variables.
   is enhanced for short-term investments (myopia or short-sightedness).
 
   The data in \code{LossAversion} were collected by Matthias Sutter and
-  Daniela Glätzle-Rützler (Universität Innsbruck) in an experiment with
+  Daniela GlÃ¤tzle-RÃ¼tzler (UniversitÃ¤t Innsbruck) in an experiment with
   high-school students in Tyrol, Austria (Schwaz and Innsbruck). The students
   could invest X points (0-100) in each of 9 rounds in a lottery. The payouts
   were 100 + 2.5 * X points with probability 1/3 and 100 - X points with
@@ -54,7 +54,7 @@ A data frame containing 570 observations on 7 variables.
     \item higher for (teams with) male players,
     \item increase with age/grade.
   }
-  See Glätzle-Rützler et al. (2015) for more details and references to the
+  See GlÃ¤tzle-RÃ¼tzler et al. (2015) for more details and references to the
   literature. In their original analysis, the investments are analyzes using
   a panel structure (i.e., 9 separate investments for each team). Here, the
   data are averaged across rounds for each player, leading to qualitatively
@@ -63,14 +63,14 @@ A data frame containing 570 observations on 7 variables.
 }
 
 \source{
-Glätzle-Rützler D, Sutter M, Zeileis A (2020).
+GlÃ¤tzle-RÃ¼tzler D, Sutter M, Zeileis A (2020).
   Replication Data for: No Myopic Loss Aversion in Adolescents? - An Experimental Note.
   \emph{Harvard Dataverse}, UNF:6:6hVtbHavJAFYfL7dDl7jqA==.
   \doi{10.7910/DVN/IHFZAK}
 }
 
 \references{
-Glätzle-Rützler D, Sutter M, Zeileis A (2015).
+GlÃ¤tzle-RÃ¼tzler D, Sutter M, Zeileis A (2015).
   No Myopic Loss Aversion in Adolescents? - An Experimental Note.
   \emph{Journal of Economic Behavior & Organization}, \bold{111}, 169-176.
   \doi{10.1016/j.jebo.2014.12.021}
