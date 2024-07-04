@@ -113,7 +113,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-sidebar docked nav-fixed">
+<body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -121,10 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../betareg.png" alt="betareg logo" class="navbar-logo">
-    </a>
-    <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">betareg</span>
+    <img src="../betareg-wide.png" alt="betareg logo" class="navbar-logo">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -132,7 +129,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Get started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../man/betareg.html" aria-current="page"> 
+<span class="menu-text">Documentation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../NEWS.html"> 
+<span class="menu-text">News</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../CITATION.html"> 
+<span class="menu-text">Citation</span></a>
+  </li>  
+</ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../contact.html"> 
+<span class="menu-text">Contact</span></a>
+  </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://R-Forge.R-project.org/projects/betareg"> <i class="bi bi-code" role="img" aria-label="betareg @ R-Forge">
 </i> 
@@ -158,15 +177,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Home</span></a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
@@ -379,24 +392,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">News</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../CITATION.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Citation</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../contact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Contact</span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -562,7 +557,7 @@ Estimation is performed by maximum likelihood (ML) via <code>optim</code> using 
 <p>In the beta regression as introduced by Ferrari and Cribari-Neto (2004), the mean of the response is linked to a linear predictor described by <code>y ~ x1 + x2</code> using a <code>link</code> function while the precision parameter phi is assumed to be constant. Simas et al.&nbsp;(2009) suggest to extend this model by linking phi to an additional set of regressors (<code>z1 + z2</code>, say): In <code>betareg</code> this can be specified in a formula of type <code>y ~ x1 + x2 | z1 + z2</code> where the regressors in the two parts can be overlapping. In the precision model (for phi), the link function <code>link.phi</code> is used. The default is a <code>“log”</code> link unless no precision model is specified. In the latter case (i.e., when the formula is of type <code>y ~ x1 + x2</code>), the <code>“identity”</code> link is used by default for backward compatibility.</p>
 <p>Simas et al.&nbsp;(2009) also suggest further extensions (non-linear specificiations, bias correction) which are not yet implemented in <code>betareg</code>. However, Kosmidis and Firth (2010) discuss general algorithms for bias correction/reduction, both of which are available in <code>betareg</code> by setting the <code>type</code> argument accordingly. (Technical note: In case, either bias correction or reduction is requested, the second derivative of the inverse link function is required for <code>link</code> and <code>link.phi</code>. If the two links are specified by their names (as done by default in <code>betareg</code>), then the <code>“link-glm”</code> objects are enhanced automatically by the required additional <code>d2mu.deta</code> function. However, if a <code>“link-glm”</code> object is supplied directly by the user, it needs to have the <code>d2mu.deta</code> function or, for backward compatibility, <code>dmu.deta</code>.)</p>
 <p>The main parameters of interest are the coefficients in the linear predictor of the mean model. The additional parameters in the precision model (phi) can either be treated as full model parameters (default) or as nuisance parameters. In the latter case the estimation does not change, only the reported information in output from <code>print</code>, <code>summary</code>, or <code>coef</code> (among others) will be different. See also <code>betareg.control</code>.</p>
-<p>The extended-support beta distribution (<code>“xbeta”</code>) leverages an underlying symmetric four-parameter beta distribution with exceedence parameter <code>nu</code> to obtain support [-nu, 1 + nu] that is subsequently censored to [0, 1] in order to obtain point masses as the boundary values 0 and 1. The extended-support beta mixture distribution (<code>“xbetax”</code>) is a continuous mixture of extended-support beta distributions where the exceedence parameter follows an exponential distribution with mean <code>nu</code> (rather than a fixed value of <code>nu</code>). The latter <code>“xbetax”</code> specification is used by default in case of boundary observations at 0 and/or 1. The <code>“xbeta”</code> specification with fixed <code>nu</code> is mostly for testing and debugging purposes.</p>
+<p>The extended-support beta distribution (<code>“xbeta”</code>) leverages an underlying symmetric four-parameter beta distribution with exceedence parameter <code>nu</code> to obtain support [-nu, 1 + nu] that is subsequently censored to [0, 1] in order to obtain point masses at the boundary values 0 and 1. The extended-support beta mixture distribution (<code>“xbetax”</code>) is a continuous mixture of extended-support beta distributions where the exceedence parameter follows an exponential distribution with mean <code>nu</code> (rather than a fixed value of <code>nu</code>). The latter <code>“xbetax”</code> specification is used by default in case of boundary observations at 0 and/or 1. The <code>“xbeta”</code> specification with fixed <code>nu</code> is mostly for testing and debugging purposes.</p>
 <p>A set of standard extractor functions for fitted model objects is available for objects of class <code>“betareg”</code>, including methods to the generic functions <code>print</code>, <code>summary</code>, <code>plot</code>, <code>coef</code>, <code>vcov</code>, <code>logLik</code>, <code>residuals</code>, <code>predict</code>, <code>terms</code>, <code>model.frame</code>, <code>model.matrix</code>, <code>cooks.distance</code> and <code>hatvalues</code> (see <code>influence.measures</code>), <code>gleverage</code> (new generic), <code>estfun</code> and <code>bread</code> (from the <span class="pkg">sandwich</span> package), and <code>coeftest</code> (from the <span class="pkg">lmtest</span> package).</p>
 <p>See <code>predict.betareg</code>, <code>residuals.betareg</code>, <code>plot.betareg</code>, and <code>summary.betareg</code> for more details on all methods.</p>
 <p>The original version of the package was written by Alexandre B. Simas and Andrea V. Rocha (up to version 1.2). Starting from version 2.0-0 the code was rewritten by Achim Zeileis.</p>
@@ -791,9 +786,9 @@ a list with elements <code>“mean”</code> and <code>“precision”</code> co
 </section>
 <section id="references" class="level3">
 <h3 class="anchored" data-anchor-id="references">References</h3>
-<p>Cribari-Neto, F., and Zeileis, A. (2010). Beta Regression in R. <em>Journal of Statistical Software</em>, <b>34</b>(2), 1–24. </p>
+<p>Cribari-Neto, F., and Zeileis, A. (2010). Beta Regression in R. <em>Journal of Statistical Software</em>, <b>34</b>(2), 1–24. <a href="https://doi.org/10.18637/jss.v034.i02">doi:10.18637/jss.v034.i02</a></p>
 <p>Ferrari, S.L.P., and Cribari-Neto, F. (2004). Beta Regression for Modeling Rates and Proportions. <em>Journal of Applied Statistics</em>, <b>31</b>(7), 799–815.</p>
-<p>Grün, B., Kosmidis, I., and Zeileis, A. (2012). Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned. <em>Journal of Statistical Software</em>, <b>48</b>(11), 1–25. </p>
+<p>Grün, B., Kosmidis, I., and Zeileis, A. (2012). Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned. <em>Journal of Statistical Software</em>, <b>48</b>(11), 1–25. <a href="https://doi.org/10.18637/jss.v048.i11">doi:10.18637/jss.v048.i11</a></p>
 <p>Kosmidis, I., and Firth, D. (2010). A Generic Algorithm for Reducing Bias in Parametric Estimation. <em>Electronic Journal of Statistics</em>, <b>4</b>, 1097–1112.</p>
 <p>Simas, A.B., Barreto-Souza, W., and Rocha, A.V. (2010). Improved Estimators for a General Class of Beta Regression Models. <em>Computational Statistics &amp; Data Analysis</em>, <b>54</b>(2), 348–366.</p>
 </section>
@@ -804,7 +799,7 @@ a list with elements <code>“mean”</code> and <code>“precision”</code> co
 <section id="examples" class="level3">
 <h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(betareg)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"betareg"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">digits =</span> <span class="dv">4</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
