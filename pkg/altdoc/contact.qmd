@@ -19,7 +19,7 @@ For discussions we also try to follow these channels:
 * Francisco Cribari-Neto
   [![ORCID](orcid.svg){width=18px}](https://orcid.org/0000-0002-5909-6698)
   [🌐](https://www.de.ufpe.br/~cribari/)
-* Bettina Gruen
+* Bettina Grün
   [![ORCID](orcid.svg){width=18px}](https://orcid.org/0000-0001-7265-4773)
   [🌐](https://statmath.wu.ac.at/~gruen/)
 * Ioannis Kosmidis

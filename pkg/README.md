@@ -35,7 +35,7 @@ The latest development version can be installed from R-universe:
 install.packages("betareg", repos = "https://zeileis.R-universe.dev")
 ```
 
-## Getting started
+## Illustration
 
 A nice first illustration of beta regression is the analysis of reading
 accuracy scores from primary school children from Smithson & Verkuilen
