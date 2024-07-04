@@ -123,7 +123,7 @@ betareg.fit(x, y, z = NULL, weights = NULL, offset = NULL,
   The extended-support beta distribution (\code{"xbeta"}) leverages an underlying
   symmetric four-parameter beta distribution with exceedence parameter \code{nu}
   to obtain support [-nu, 1 + nu] that is subsequently censored to [0, 1] in order
-  to obtain point masses as the boundary values 0 and 1. The extended-support
+  to obtain point masses at the boundary values 0 and 1. The extended-support
   beta mixture distribution  (\code{"xbetax"}) is a continuous mixture of extended-support
   beta distributions where the exceedence parameter follows an exponential distribution
   with mean \code{nu} (rather than a fixed value of \code{nu}). The latter \code{"xbetax"}

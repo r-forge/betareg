@@ -14,8 +14,8 @@ Authors@R: c(person(given = "Achim", family = "Zeileis", role = c("aut", "cre"),
              person(given = c("Andrea", "V."), family = "Rocha", role = "ctb", comment = "earlier version by"))
 Description: Beta regression for modeling beta-distributed dependent variables on the open unit interval (0, 1),
   e.g., rates and proportions, see Cribari-Neto and Zeileis (2010) <doi:10.18637/jss.v034.i02>.
-  Moreover, extended-support beta mixture regression models can accomodate dependent variables with
-  0 and/or 1 boundary observations. For the classical beta regression model, alternative specifications are
+  Moreover, extended-support beta regression models can accomodate dependent variables with
+  boundary observations at 0 and/or 1. For the classical beta regression model, alternative specifications are
   provided: Bias-corrected and bias-reduced estimation, finite mixture models, and recursive partitioning for
   beta regression, see Gruen, Kosmidis, and Zeileis (2012) <doi:10.18637/jss.v048.i11>.
 Depends: R (>= 3.6.0)

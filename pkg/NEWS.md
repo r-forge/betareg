@@ -7,7 +7,7 @@
   response distributions:  The extended-support beta distribution (`"xbeta"`)
   leverages an underlying symmetric four-parameter beta distribution with
   exceedence parameter `nu` to obtain support [-nu, 1 + nu] that is subsequently
-  censored to [0, 1] in order to obtain point masses as the boundary values 0
+  censored to [0, 1] in order to obtain point masses at the boundary values 0
   and 1. The extended-support beta mixture distribution  (`"xbetax"`) is a
   continuous mixture of extended-support beta distributions where the exceedence
   parameter follows an exponential distribution with mean `nu` (rather than a

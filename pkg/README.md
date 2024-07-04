@@ -11,9 +11,9 @@
     Cribari-Neto and Zeileis (2010,
     [doi:10.18637/jss.v034.i02](https://doi.org/10.18637/jss.v034.i02)).
 
--   Extended-support beta mixture regression models for variables on the
-    closed unit interval \[0, 1\] with 0 and/or 1 boundary observations
-    see Kosmidis and Zeileis (2024, forthcoming).
+-   Extended-support beta regression models for variables on the closed
+    unit interval \[0, 1\] with boundary observations at 0 and/or 1 see
+    Kosmidis and Zeileis (2024, forthcoming).
 
 -   Alternative specifications of the classical beta regression model:
     Bias-corrected and bias-reduced estimation, finite mixture models,
