@@ -1,0 +1,1 @@
+Sitemap: https://betareg.R-Forge.R-project.org/sitemap.xml
