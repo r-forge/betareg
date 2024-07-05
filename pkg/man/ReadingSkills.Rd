@@ -34,6 +34,9 @@ A data frame containing 44 observations on 3 variables.
   that can be obtained in the test: \code{accuracy1 = (original_accuracy - a) / (b - a)}
   (\code{a} and \code{b} are not provided). Subsequently, \code{accuracy} was obtained
   from \code{accuracy1} by replacing all observations with a value of 1 with 0.99.
+  
+  Kosmidis and Zeileis (2024) propose to investigate the original unrestricted
+  \code{accuracy1} variable using their extended-support beta mixture regression.
 }
 
 \source{
@@ -49,6 +52,10 @@ Grün, B., Kosmidis, I., and Zeileis, A. (2012).
   Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned.
   \emph{Journal of Statistical Software}, \bold{48}(11), 1--25.
   \doi{10.18637/jss.v048.i11}
+
+Kosmidis I, Zeileis A (2024).
+  Extended-Support Beta Regression for [0, 1] Responses.
+  \emph{Unpublished manuscript}.
 
 Pammer, K., and Kevan, A. (2004).
   The Contribution of Visual Sensitivity, Phonological Processing
@@ -77,18 +84,27 @@ rs_beta <- betareg(accuracy ~ dyslexia * iq | dyslexia + iq,
   data = ReadingSkills, hessian = TRUE)
 summary(rs_beta)
 
-## visualization
-plot(accuracy ~ iq, data = ReadingSkills, col = as.numeric(dyslexia), pch = 19)
-nd <- data.frame(dyslexia = "no", iq = -30:30/10)
-lines(nd$iq, predict(rs_beta, nd))
-lines(nd$iq, plogis(predict(rs_ols, nd)), lty = 2)
-nd <- data.frame(dyslexia = "yes", iq = -30:30/10)
-lines(nd$iq, predict(rs_beta, nd), col = 2)
-lines(nd$iq, plogis(predict(rs_ols, nd)), col = 2, lty = 2)
-legend("topleft", c("Dyslexia: no", "Dyslexia: yes", "OLS", "Beta"),
-  lty = c(0, 0, 2, 1), pch = c(19, 19, NA, NA), col = c(1, 2, 1, 1), bty = "n")
+## Extended-support beta mixture regression (Kosmidis & Zeileis 2024)
+rs_xbx <- betareg(accuracy1 ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills)
+summary(rs_xbx)
 
-## see demo("SmithsonVerkuilen2006", package = "betareg") for more details
+## Coefficients in XBX are typically somewhat shrunken compared to beta
+cbind(XBX = coef(rs_xbx), Beta = c(coef(rs_beta), NA))
+
+## Visualization
+plot(accuracy1 ~ iq, data = ReadingSkills, col = c(4, 2)[dyslexia], pch = 19)
+nd <- data.frame(dyslexia = "no", iq = -30:30/10)
+lines(nd$iq, predict(rs_xbx, nd), col = 4)
+lines(nd$iq, predict(rs_beta, nd), col = 4, lty = 5)
+lines(nd$iq, plogis(predict(rs_ols, nd)), col = 4, lty = 3)
+nd <- data.frame(dyslexia = "yes", iq = -30:30/10)
+lines(nd$iq, predict(rs_xbx, nd), col = 2)
+lines(nd$iq, predict(rs_beta, nd), col = 2, lty = 5)
+lines(nd$iq, plogis(predict(rs_ols, nd)), col = 2, lty = 3)
+legend("topleft", c("Dyslexia: no", "Dyslexia: yes", "OLS", "XBX", "Beta"),
+  lty = c(0, 0, 3, 1, 5), pch = c(19, 19, NA, NA, NA), col = c(4, 2, 1, 1, 1), bty = "n")
+
+## see demo("SmithsonVerkuilen2006", package = "betareg") for further details
 }
 
 \keyword{datasets}
