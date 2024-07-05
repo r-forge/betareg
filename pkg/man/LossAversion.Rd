@@ -93,6 +93,7 @@ la_b <- betareg(invests ~ grade * (arrangement + age) + male | arrangement + mal
   data = LossAversion)
 summary(la_b)
 
+\donttest{
 la_xbx <- betareg(invest ~ grade * (arrangement + age) + male | arrangement + male + grade,
   data = LossAversion)
 summary(la_xbx)
@@ -134,6 +135,7 @@ matplot(la_nd[, paste0("prob_", tolower(la_mod))], type = "l",
   col = la_col, lty = la_lty, lwd = 2, ylab = "P(Y > 0.95)", main = "P(Y > 0.95)", xaxt = "n")
 axis(1, at = 1:2, labels = la_nd$arrangement)
 legend("topleft", la_mod, col = la_col, lty = la_lty, lwd = 2, bty = "n")
+}
 }
 
 \keyword{datasets}
