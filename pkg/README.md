@@ -142,7 +142,7 @@ betatree(accuracy ~ iq | iq, ~ dyslexia + ..., data = ReadingSkills, minsize = 1
 
 See the documentation of `betatree()` for more details.
 
-### Finite mixture models of beta regressions
+### Finite mixtures of beta regressions
 
 To find clusters in a beta regression (without even having the dyslexia
 information), finite mixtures of beta regressions can be used:
