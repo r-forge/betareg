@@ -1,7 +1,7 @@
 
-R version 4.3.3 (2024-02-29) -- "Angel Food Cake"
+R version 4.4.1 (2024-06-14) -- "Race for Your Life"
 Copyright (C) 2024 The R Foundation for Statistical Computing
-Platform: x86_64-pc-linux-gnu (64-bit)
+Platform: x86_64-pc-linux-gnu
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -694,24 +694,173 @@ detaching ‘package:flexmix’, ‘package:lattice’
 > 
 > ### ** Examples
 > 
-> ## data for students in higher grades
+> ## data and add ad-hoc scaling (a la Smithson & Verkuilen)
 > data("LossAversion", package = "betareg")
-> LossAversion <- subset(LossAversion, grade == "10-12")
+> LossAversion <- transform(LossAversion,
++   invests = (invest * (nrow(LossAversion) - 1) + 0.5)/nrow(LossAversion))
 > 
-> ## ad hoc scaling (a la Smithson & Verkuilen)
-> LossAversion$invests <- ((LossAversion$invest * (nrow(LossAversion) - 1) + 0.5)/nrow(LossAversion))
 > 
-> ## fraction of boundary observations for ad hoc extended-support beta specification (xbeta)
-> p01 <- mean(LossAversion$invest <= 0 | LossAversion$invest >= 1)
+> ## models: normal (with constant variance), beta, extended-support beta mixture
+> la_n <- lm(invest ~ grade * (arrangement + age) + male, data = LossAversion)
+> summary(la_n)
+
+Call:
+lm(formula = invest ~ grade * (arrangement + age) + male, data = LossAversion)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.77350 -0.19670  0.00237  0.19161  0.57240 
+
+Coefficients:
+                           Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                 0.28445    0.15745   1.807 0.071364 .  
+grade10-12                 -0.84374    0.28146  -2.998 0.002840 ** 
+arrangementteam             0.06277    0.03016   2.081 0.037879 *  
+age                         0.01154    0.01235   0.935 0.350415    
+maleyes                     0.10353    0.02322   4.459 9.93e-06 ***
+grade10-12:arrangementteam  0.15074    0.04546   3.316 0.000971 ***
+grade10-12:age              0.04577    0.01853   2.470 0.013798 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.2473 on 563 degrees of freedom
+Multiple R-squared:  0.1584,	Adjusted R-squared:  0.1494 
+F-statistic: 17.66 on 6 and 563 DF,  p-value: < 2.2e-16
+
 > 
-> ## main effects models: Gaussian, beta, extended-support beta, extended-support beta mixture
-> la_gr  <- glm(invest      ~ arrangement + male + age,                      data = LossAversion)
-> la_br  <- betareg(invests ~ arrangement + male + age | arrangement + male, data = LossAversion)
-> la_xbx <- betareg(invest  ~ arrangement + male + age | arrangement + male, data = LossAversion)
+> la_b <- betareg(invests ~ grade * (arrangement + age) + male | arrangement + male + grade,
++   data = LossAversion)
+> summary(la_b)
+
+Call:
+betareg(formula = invests ~ grade * (arrangement + age) + male | arrangement + 
+    male + grade, data = LossAversion)
+
+Quantile residuals:
+    Min      1Q  Median      3Q     Max 
+-3.9475 -0.5942 -0.0417  0.5537  4.4388 
+
+Coefficients (mean model with logit link):
+                           Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                -1.41389    0.61972  -2.282  0.02252 *  
+grade10-12                 -2.94347    1.25203  -2.351  0.01873 *  
+arrangementteam             0.22498    0.11746   1.915  0.05544 .  
+age                         0.09061    0.04857   1.865  0.06211 .  
+maleyes                     0.45534    0.09901   4.599 4.25e-06 ***
+grade10-12:arrangementteam  0.65487    0.20033   3.269  0.00108 ** 
+grade10-12:age              0.15129    0.08059   1.877  0.06050 .  
+
+Phi coefficients (precision model with log link):
+                Estimate Std. Error z value Pr(>|z|)    
+(Intercept)      1.19429    0.08402  14.214  < 2e-16 ***
+arrangementteam  0.40631    0.12202   3.330 0.000869 ***
+maleyes         -0.55481    0.11250  -4.931 8.16e-07 ***
+grade10-12      -0.55271    0.10415  -5.307 1.12e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Type of estimator: ML (maximum likelihood)
+Log-likelihood: 94.41 on 11 Df
+Pseudo R-squared: 0.1543
+Number of iterations: 24 (BFGS) + 3 (Fisher scoring) 
+> 
+> la_xbx <- betareg(invest ~ grade * (arrangement + age) + male | arrangement + male + grade,
++   data = LossAversion)
 Loading required namespace: numDeriv
-> la_xb  <- betareg(invest  ~ arrangement + male + age | arrangement + male, data = LossAversion,
-+   dist = "xbeta", nu = p01/2)
+> summary(la_xbx)
+
+Call:
+betareg(formula = invest ~ grade * (arrangement + age) + male | arrangement + 
+    male + grade, data = LossAversion)
+
+Randomized quantile residuals:
+    Min      1Q  Median      3Q     Max 
+-3.2326 -0.6929 -0.0152  0.6981  3.2965 
+
+Coefficients (mu model with logit link):
+                           Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                -0.86495    0.51926  -1.666 0.095766 .  
+grade10-12                 -3.09624    1.05293  -2.941 0.003276 ** 
+arrangementteam             0.20790    0.09865   2.107 0.035083 *  
+age                         0.04889    0.04061   1.204 0.228566    
+maleyes                     0.37925    0.08418   4.505 6.64e-06 ***
+grade10-12:arrangementteam  0.56724    0.16904   3.356 0.000792 ***
+grade10-12:age              0.16866    0.06772   2.491 0.012751 *  
+
+Phi coefficients (phi model with log link):
+                Estimate Std. Error z value Pr(>|z|)    
+(Intercept)       1.7563     0.1282  13.701  < 2e-16 ***
+arrangementteam   0.3252     0.1446   2.250 0.024461 *  
+maleyes          -0.4841     0.1360  -3.559 0.000372 ***
+grade10-12       -0.3159     0.1313  -2.407 0.016084 *  
+
+Exceedence parameter (extended-support xbetax model):
+        Estimate Std. Error z value Pr(>|z|)    
+Log(nu)  -2.2729     0.2451  -9.272   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Exceedence parameter nu: 0.103
+Type of estimator: ML (maximum likelihood)
+Log-likelihood: -71.83 on 12 Df
+Number of iterations in BFGS optimization: 45 
 > 
+> ## coefficients in XBX are typically somewhat shrunken compared to beta
+> cbind(XBX = coef(la_xbx), Beta = c(coef(la_b), NA))
+                                   XBX        Beta
+(Intercept)                -0.86495291 -1.41389038
+grade10-12                 -3.09623621 -2.94347126
+arrangementteam             0.20789668  0.22498395
+age                         0.04889305  0.09060676
+maleyes                     0.37924725  0.45533783
+grade10-12:arrangementteam  0.56723700  0.65487226
+grade10-12:age              0.16865955  0.15128516
+(phi)_(Intercept)           1.75629298  1.19429327
+(phi)_arrangementteam       0.32524604  0.40631228
+(phi)_maleyes              -0.48405797 -0.55480937
+(phi)_grade10-12           -0.31592599 -0.55270553
+Log(nu)                    -2.27289360          NA
+> 
+> 
+> ## predictions on subset: (at least one) male players, higher grades, around age 16
+> la <- subset(LossAversion, male == "yes" & grade == "10-12" & age >= 15 &  age <= 17)
+> la_nd <- data.frame(arrangement = c("single", "team"), male = "yes", age = 16, grade = "10-12")
+> 
+> ## empirical vs fitted E(Y)
+> la_nd$mean_emp <- aggregate(invest ~ arrangement, data = la, FUN = mean)$invest 
+> la_nd$mean_n <- predict(la_n, la_nd)
+> la_nd$mean_b <- predict(la_b, la_nd)
+> la_nd$mean_xbx <- predict(la_xbx, la_nd)
+> la_nd
+  arrangement male age grade  mean_emp    mean_n    mean_b  mean_xbx
+1      single  yes  16 10-12 0.4823671 0.4612230 0.4920624 0.4713302
+2        team  yes  16 10-12 0.6647893 0.6747405 0.7001691 0.6860841
+> 
+> ## visualization: all means rather similar
+> la_mod <- c("Emp", "N", "B", "XBX")
+> la_col <- unname(palette.colors())[c(1, 2, 4, 4)]
+> la_lty <- c(1, 5, 5, 1)
+> matplot(la_nd[, paste0("mean_", tolower(la_mod))], type = "l",
++   col = la_col, lty = la_lty, lwd = 2, ylab = "E(Y)", main = "E(Y)", xaxt = "n")
+> axis(1, at = 1:2, labels = la_nd$arrangement)
+> legend("topleft", la_mod, col = la_col, lty = la_lty, lwd = 2, bty = "n")
+> 
+> 
+> ## empirical vs. fitted P(Y > 0.95)
+> la_nd$prob_emp <- aggregate(invest >= 0.95 ~ arrangement, data = la, FUN = mean)$invest
+> la_nd$prob_n <- pnorm(0.95, mean = la_nd$mean_n, sd = summary(la_n)$sigma, lower.tail = FALSE)
+> la_nd$prob_b <- 1 - predict(la_b, la_nd, type = "probability", at = 0.95)
+> la_nd$prob_xbx <- 1 - predict(la_xbx, la_nd, type = "probability", at = 0.95)
+> la_nd[, -(5:8)]
+  arrangement male age grade   prob_emp     prob_n    prob_b   prob_xbx
+1      single  yes  16 10-12 0.08695652 0.02403004 0.1245430 0.07160801
+2        team  yes  16 10-12 0.20689655 0.13279522 0.2487441 0.18501206
+> 
+> ## visualization: only XBX works well
+> matplot(la_nd[, paste0("prob_", tolower(la_mod))], type = "l",
++   col = la_col, lty = la_lty, lwd = 2, ylab = "P(Y > 0.95)", main = "P(Y > 0.95)", xaxt = "n")
+> axis(1, at = 1:2, labels = la_nd$arrangement)
+> legend("topleft", la_mod, col = la_col, lty = la_lty, lwd = 2, bty = "n")
 > 
 > 
 > 
@@ -890,18 +1039,67 @@ Log-likelihood:  65.9 on 7 Df
 Pseudo R-squared: 0.5756
 Number of iterations in BFGS optimization: 25 
 > 
-> ## visualization
-> plot(accuracy ~ iq, data = ReadingSkills, col = as.numeric(dyslexia), pch = 19)
-> nd <- data.frame(dyslexia = "no", iq = -30:30/10)
-> lines(nd$iq, predict(rs_beta, nd))
-> lines(nd$iq, plogis(predict(rs_ols, nd)), lty = 2)
-> nd <- data.frame(dyslexia = "yes", iq = -30:30/10)
-> lines(nd$iq, predict(rs_beta, nd), col = 2)
-> lines(nd$iq, plogis(predict(rs_ols, nd)), col = 2, lty = 2)
-> legend("topleft", c("Dyslexia: no", "Dyslexia: yes", "OLS", "Beta"),
-+   lty = c(0, 0, 2, 1), pch = c(19, 19, NA, NA), col = c(1, 2, 1, 1), bty = "n")
+> ## Extended-support beta mixture regression (Kosmidis & Zeileis 2024)
+> rs_xbx <- betareg(accuracy1 ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills)
+> summary(rs_xbx)
+
+Call:
+betareg(formula = accuracy1 ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills)
+
+Randomized quantile residuals:
+    Min      1Q  Median      3Q     Max 
+-2.4179 -0.5977  0.0098  0.8046  1.7211 
+
+Coefficients (mu model with logit link):
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)   0.9030     0.2167   4.167 3.08e-05 ***
+dyslexia     -0.6065     0.1816  -3.340 0.000837 ***
+iq            0.3288     0.1878   1.751 0.079887 .  
+dyslexia:iq  -0.3875     0.1995  -1.943 0.052055 .  
+
+Phi coefficients (phi model with log link):
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)   3.4990     0.5302   6.600 4.12e-11 ***
+dyslexia      1.7360     0.4494   3.863 0.000112 ***
+iq            0.6965     0.5709   1.220 0.222432    
+
+Exceedence parameter (extended-support xbetax model):
+        Estimate Std. Error z value Pr(>|z|)  
+Log(nu)  -1.7905     0.8541  -2.096    0.036 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Exceedence parameter nu: 0.1669
+Type of estimator: ML (maximum likelihood)
+Log-likelihood: 18.46 on 8 Df
+Number of iterations in BFGS optimization: 29 
 > 
-> ## see demo("SmithsonVerkuilen2006", package = "betareg") for more details
+> ## Coefficients in XBX are typically somewhat shrunken compared to beta
+> cbind(XBX = coef(rs_xbx), Beta = c(coef(rs_beta), NA))
+                         XBX       Beta
+(Intercept)        0.9029626  1.1232251
+dyslexia          -0.6064597 -0.7416450
+iq                 0.3288295  0.4863696
+dyslexia:iq       -0.3875287 -0.5812569
+(phi)_(Intercept)  3.4989601  3.3044312
+(phi)_dyslexia     1.7360157  1.7465642
+(phi)_iq           0.6965472  1.2290731
+Log(nu)           -1.7904871         NA
+> 
+> ## Visualization
+> plot(accuracy1 ~ iq, data = ReadingSkills, col = c(4, 2)[dyslexia], pch = 19)
+> nd <- data.frame(dyslexia = "no", iq = -30:30/10)
+> lines(nd$iq, predict(rs_xbx, nd), col = 4)
+> lines(nd$iq, predict(rs_beta, nd), col = 4, lty = 5)
+> lines(nd$iq, plogis(predict(rs_ols, nd)), col = 4, lty = 3)
+> nd <- data.frame(dyslexia = "yes", iq = -30:30/10)
+> lines(nd$iq, predict(rs_xbx, nd), col = 2)
+> lines(nd$iq, predict(rs_beta, nd), col = 2, lty = 5)
+> lines(nd$iq, plogis(predict(rs_ols, nd)), col = 2, lty = 3)
+> legend("topleft", c("Dyslexia: no", "Dyslexia: yes", "OLS", "XBX", "Beta"),
++   lty = c(0, 0, 3, 1, 5), pch = c(19, 19, NA, NA, NA), col = c(4, 2, 1, 1, 1), bty = "n")
+> 
+> ## see demo("SmithsonVerkuilen2006", package = "betareg") for further details
 > 
 > 
 > 
@@ -2232,7 +2430,7 @@ Number of iterations: 33 (BFGS) + 28 (Fisher scoring)
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  14.44 0.108 14.552 0 0 
+Time elapsed:  25.905 0.191 26.115 0 0 
 > grDevices::dev.off()
 null device 
           1 
