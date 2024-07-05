@@ -1029,7 +1029,7 @@ predict.betareg <- function(object, newdata = NULL,
             }
             pars$mu <- object$link$mu$linkinv(drop(X %*% object$coefficients$mu + offset[[1L]]))
         }
-        if(!(type %in% c("response", "link"))) {
+        if(!(object$dist == "beta" && type %in% c("response", "link"))) {
             Z <- model.matrix(object$terms$phi, mf, contrasts = object$contrasts$phi)
             if(!is.null(off.num <- attr(object$terms$phi, "offset"))) {
                 for(j in off.num) offset[[2L]] <- offset[[2L]] + eval(attr(object$terms$phi, "variables")[[j + 1L]], newdata)
