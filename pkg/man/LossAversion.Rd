@@ -10,7 +10,7 @@ Data for assessing the extent of myopic loss aversion among
 adolescents (mostly aged 11 to 19).
 }
 
-\usage{data("LossAversion")}
+\usage{data("LossAversion", package = "betareg")}
 
 \format{
 A data frame containing 570 observations on 7 variables.

@@ -10,7 +10,7 @@ Data for assessing the contribution of non-verbal IQ to
 children's reading skills in dyslexic and non-dyslexic children.
 }
 
-\usage{data("ReadingSkills")}
+\usage{data("ReadingSkills", package = "betareg")}
 
 \format{
 A data frame containing 44 observations on 3 variables.
