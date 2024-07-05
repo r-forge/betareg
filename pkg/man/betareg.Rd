@@ -222,7 +222,7 @@ Kosmidis I, Firth D (2010).
 
 Kosmidis I, Zeileis A (2024).
   Extended-Support Beta Regression for [0, 1] Responses.
-  Unpublished manuscript.
+  \emph{Unpublished manuscript}.
 
 Simas AB, Barreto-Souza W, Rocha AV (2010).
   Improved Estimators for a General Class of Beta Regression Models.
