@@ -116,6 +116,7 @@ format:
     fontsize: 110%
     fontcolor: '#333333'
     linkcolor: '#069580'
+    code-link: true
     code-copy: true
     code-overflow: scroll
     title-block-style: none
