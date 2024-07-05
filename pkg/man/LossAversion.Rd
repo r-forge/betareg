@@ -79,23 +79,61 @@ Glätzle-Rützler D, Sutter M, Zeileis A (2015).
 \seealso{\code{\link{betareg}}}
 
 \examples{
-## data for students in higher grades
+## data and add ad-hoc scaling (a la Smithson & Verkuilen)
 data("LossAversion", package = "betareg")
-LossAversion <- subset(LossAversion, grade == "10-12")
+LossAversion <- transform(LossAversion,
+  invests = (invest * (nrow(LossAversion) - 1) + 0.5)/nrow(LossAversion))
 
-## ad hoc scaling (a la Smithson & Verkuilen)
-LossAversion$invests <- ((LossAversion$invest * (nrow(LossAversion) - 1) + 0.5)/nrow(LossAversion))
 
-## fraction of boundary observations for ad hoc extended-support beta specification (xbeta)
-p01 <- mean(LossAversion$invest <= 0 | LossAversion$invest >= 1)
+## models: normal (with constant variance), beta, extended-support beta mixture
+la_n <- lm(invest ~ grade * (arrangement + age) + male, data = LossAversion)
+summary(la_n)
 
-## main effects models: Gaussian, beta, extended-support beta, extended-support beta mixture
-la_gr  <- glm(invest      ~ arrangement + male + age,                      data = LossAversion)
-la_br  <- betareg(invests ~ arrangement + male + age | arrangement + male, data = LossAversion)
-la_xbx <- betareg(invest  ~ arrangement + male + age | arrangement + male, data = LossAversion)
-la_xb  <- betareg(invest  ~ arrangement + male + age | arrangement + male, data = LossAversion,
-  dist = "xbeta", nu = p01/2)
+la_b <- betareg(invests ~ grade * (arrangement + age) + male | arrangement + male + grade,
+  data = LossAversion)
+summary(la_b)
 
+la_xbx <- betareg(invest ~ grade * (arrangement + age) + male | arrangement + male + grade,
+  data = LossAversion)
+summary(la_xbx)
+
+## coefficients in XBX are typically somewhat shrunken compared to beta
+cbind(XBX = coef(la_xbx), Beta = c(coef(la_b), NA))
+
+
+## predictions on subset: (at least one) male players, higher grades, around age 16
+la <- subset(LossAversion, male == "yes" & grade == "10-12" & age >= 15 &  age <= 17)
+la_nd <- data.frame(arrangement = c("single", "team"), male = "yes", age = 16, grade = "10-12")
+
+## empirical vs fitted E(Y)
+la_nd$mean_emp <- aggregate(invest ~ arrangement, data = la, FUN = mean)$invest 
+la_nd$mean_n <- predict(la_n, la_nd)
+la_nd$mean_b <- predict(la_b, la_nd)
+la_nd$mean_xbx <- predict(la_xbx, la_nd)
+la_nd
+
+## visualization: all means rather similar
+la_mod <- c("Emp", "N", "B", "XBX")
+la_col <- unname(palette.colors())[c(1, 2, 4, 4)]
+la_lty <- c(1, 5, 5, 1)
+matplot(la_nd[, paste0("mean_", tolower(la_mod))], type = "l",
+  col = la_col, lty = la_lty, lwd = 2, ylab = "E(Y)", main = "E(Y)", xaxt = "n")
+axis(1, at = 1:2, labels = la_nd$arrangement)
+legend("topleft", la_mod, col = la_col, lty = la_lty, lwd = 2, bty = "n")
+
+
+## empirical vs. fitted P(Y > 0.95)
+la_nd$prob_emp <- aggregate(invest >= 0.95 ~ arrangement, data = la, FUN = mean)$invest
+la_nd$prob_n <- pnorm(0.95, mean = la_nd$mean_n, sd = summary(la_n)$sigma, lower.tail = FALSE)
+la_nd$prob_b <- 1 - predict(la_b, la_nd, type = "probability", at = 0.95)
+la_nd$prob_xbx <- 1 - predict(la_xbx, la_nd, type = "probability", at = 0.95)
+la_nd[, -(5:8)]
+
+## visualization: only XBX works well
+matplot(la_nd[, paste0("prob_", tolower(la_mod))], type = "l",
+  col = la_col, lty = la_lty, lwd = 2, ylab = "P(Y > 0.95)", main = "P(Y > 0.95)", xaxt = "n")
+axis(1, at = 1:2, labels = la_nd$arrangement)
+legend("topleft", la_mod, col = la_col, lty = la_lty, lwd = 2, bty = "n")
 }
 
 \keyword{datasets}
