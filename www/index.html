@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.53">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
 <title>betareg</title>
 <style>
 code{white-space: pre-wrap;}
@@ -56,7 +53,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
@@ -73,8 +69,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -101,8 +96,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-
-
 <meta property="og:title" content="betareg">
 <meta property="og:image" content="https://betareg.R-Forge.R-project.org/betareg.png">
 <meta property="og:site_name" content="betareg">
@@ -116,17 +109,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="twitter:image-height" content="75">
 <meta name="twitter:image-width" content="75">
 </head>
-
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./betareg-wide.png" alt="betareg logo" class="navbar-logo">
-    </a>
+    <img src="./betareg-wide.png" alt="betareg logo" class="navbar-logo"></a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -134,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link active" href="./index.html" aria-current="page"> 
 <span class="menu-text">Get started</span></a>
   </li>  
@@ -151,8 +140,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Citation</span></a>
   </li>  
 </ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
     <a class="nav-link" href="./contact.html"> 
 <span class="menu-text">Contact</span></a>
   </li>  
@@ -162,158 +151,129 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#betareg-beta-regression-in-r" id="toc-betareg-beta-regression-in-r" class="nav-link active" data-scroll-target="#betareg-beta-regression-in-r">betareg: Beta Regression in R</a>
+<li>
+<a href="#betareg-beta-regression-in-r" id="toc-betareg-beta-regression-in-r" class="nav-link active" data-scroll-target="#betareg-beta-regression-in-r">betareg: Beta Regression in R</a>
   <ul class="collapse">
-  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a></li>
+<li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a></li>
   <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
   <li><a href="#illustration" id="toc-illustration" class="nav-link" data-scroll-target="#illustration">Illustration</a></li>
-  <li><a href="#extended-models" id="toc-extended-models" class="nav-link" data-scroll-target="#extended-models">Extended models</a>
+  <li>
+<a href="#extended-models" id="toc-extended-models" class="nav-link" data-scroll-target="#extended-models">Extended models</a>
   <ul class="collapse">
-  <li><a href="#bias-reduction" id="toc-bias-reduction" class="nav-link" data-scroll-target="#bias-reduction">Bias reduction</a></li>
+<li><a href="#bias-reduction" id="toc-bias-reduction" class="nav-link" data-scroll-target="#bias-reduction">Bias reduction</a></li>
   <li><a href="#extended-support-beta-regression" id="toc-extended-support-beta-regression" class="nav-link" data-scroll-target="#extended-support-beta-regression">Extended-support beta regression</a></li>
   <li><a href="#beta-regression-trees" id="toc-beta-regression-trees" class="nav-link" data-scroll-target="#beta-regression-trees">Beta regression trees</a></li>
-  <li><a href="#finite-mixture-models-of-beta-regressions" id="toc-finite-mixture-models-of-beta-regressions" class="nav-link" data-scroll-target="#finite-mixture-models-of-beta-regressions">Finite mixture models of beta regressions</a></li>
-  </ul></li>
-  </ul></li>
+  <li><a href="#finite-mixtures-of-beta-regressions" id="toc-finite-mixtures-of-beta-regressions" class="nav-link" data-scroll-target="#finite-mixtures-of-beta-regressions">Finite mixtures of beta regressions</a></li>
   </ul>
-</nav>
+</li>
+  </ul>
+</li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-
-
-
-<!-- README.md is generated from README.qmd via: quarto render README.qmd --to gfm -->
-<section id="betareg-beta-regression-in-r" class="level1">
-<h1>betareg: Beta Regression in R</h1>
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<main class="content" id="quarto-document-content"><!-- README.md is generated from README.qmd via: quarto render README.qmd --to gfm --><section id="betareg-beta-regression-in-r" class="level1"><h1>betareg: Beta Regression in R</h1>
+<section id="overview" class="level2"><h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <ul>
 <li><p>Beta regression for modeling beta-distributed dependent variables on the open unit interval (0, 1), e.g., rates and proportions, see Cribari-Neto and Zeileis (2010, <a href="https://doi.org/10.18637/jss.v034.i02">doi:10.18637/jss.v034.i02</a>).</p></li>
 <li><p>Extended-support beta regression models for variables on the closed unit interval [0, 1] with boundary observations at 0 and/or 1 see Kosmidis and Zeileis (2024, forthcoming).</p></li>
 <li><p>Alternative specifications of the classical beta regression model: Bias-corrected and bias-reduced estimation, finite mixture models, and recursive partitioning for (0, 1) beta regression, see Grün, Kosmidis, and Zeileis (2012, <a href="https://doi.org/10.18637/jss.v048.i11">doi:10.18637/jss.v048.i11</a>).</p></li>
-</ul>
-</section>
-<section id="installation" class="level2">
-<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+</ul></section><section id="installation" class="level2"><h2 class="anchored" data-anchor-id="installation">Installation</h2>
 <p>The stable version of <code>betareg</code> is available on CRAN:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"betareg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"betareg"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The latest development version can be installed from R-universe:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"betareg"</span>, <span class="at">repos =</span> <span class="st">"https://zeileis.R-universe.dev"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="illustration" class="level2">
-<h2 class="anchored" data-anchor-id="illustration">Illustration</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"betareg"</span>, repos <span class="op">=</span> <span class="st">"https://zeileis.R-universe.dev"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="illustration" class="level2"><h2 class="anchored" data-anchor-id="illustration">Illustration</h2>
 <p>A nice first illustration of beta regression is the analysis of reading accuracy scores from primary school children from Smithson &amp; Verkuilen (2006). Package and data can be loaded via:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"betareg"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"ReadingSkills"</span>, <span class="at">package =</span> <span class="st">"betareg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://betareg.R-Forge.R-project.org/">"betareg"</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"ReadingSkills"</span>, package <span class="op">=</span> <span class="st">"betareg"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The reading <code>accuracy</code> was scaled to be within (0, 1). Its mean is explained by verbal <code>iq</code> score with separate lines by <code>dyslexia</code> (control vs.&nbsp;dyslexic). The precision parameter is explained by main effects of the two explanatory variables. More details are provided in <code>?ReadingSkills</code>.</p>
+<p>The reading <code>accuracy</code> was scaled to be within (0, 1). Its mean is explained by verbal <code>iq</code> score with separate lines by <code>dyslexia</code> (control vs.&nbsp;dyslexic). The precision parameter is explained by main effects of the two explanatory variables. More details are provided in <code><a href="https://rdrr.io/pkg/betareg/man/ReadingSkills.html">?ReadingSkills</a></code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>br <span class="ot">&lt;-</span> <span class="fu">betareg</span>(accuracy <span class="sc">~</span> dyslexia <span class="sc">*</span> iq <span class="sc">|</span> dyslexia <span class="sc">+</span> iq, <span class="at">data =</span> ReadingSkills)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(br)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; betareg(formula = accuracy ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills)</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Quantile residuals:</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -2.3625 -0.5872  0.3026  0.9425  1.5874 </span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients (mean model with logit link):</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)   1.1232     0.1428   7.864 3.73e-15 ***</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dyslexia     -0.7416     0.1428  -5.195 2.04e-07 ***</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; iq            0.4864     0.1331   3.653 0.000259 ***</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dyslexia:iq  -0.5813     0.1327  -4.381 1.18e-05 ***</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Phi coefficients (precision model with log link):</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)   3.3044     0.2227  14.835  &lt; 2e-16 ***</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dyslexia      1.7466     0.2623   6.658 2.77e-11 ***</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; iq            1.2291     0.2672   4.600 4.23e-06 ***</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 </span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Type of estimator: ML (maximum likelihood)</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Log-likelihood:  65.9 on 7 Df</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Pseudo R-squared: 0.5756</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of iterations: 25 (BFGS) + 1 (Fisher scoring)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">br</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">dyslexia</span> <span class="op">*</span> <span class="va">iq</span> <span class="op">|</span> <span class="va">dyslexia</span> <span class="op">+</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">br</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; betareg(formula = accuracy ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Quantile residuals:</span></span>
+<span><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
+<span><span class="co">#&gt; -2.3625 -0.5872  0.3026  0.9425  1.5874 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients (mean model with logit link):</span></span>
+<span><span class="co">#&gt;             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">#&gt; (Intercept)   1.1232     0.1428   7.864 3.73e-15 ***</span></span>
+<span><span class="co">#&gt; dyslexia     -0.7416     0.1428  -5.195 2.04e-07 ***</span></span>
+<span><span class="co">#&gt; iq            0.4864     0.1331   3.653 0.000259 ***</span></span>
+<span><span class="co">#&gt; dyslexia:iq  -0.5813     0.1327  -4.381 1.18e-05 ***</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Phi coefficients (precision model with log link):</span></span>
+<span><span class="co">#&gt;             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">#&gt; (Intercept)   3.3044     0.2227  14.835  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; dyslexia      1.7466     0.2623   6.658 2.77e-11 ***</span></span>
+<span><span class="co">#&gt; iq            1.2291     0.2672   4.600 4.23e-06 ***</span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Type of estimator: ML (maximum likelihood)</span></span>
+<span><span class="co">#&gt; Log-likelihood:  65.9 on 7 Df</span></span>
+<span><span class="co">#&gt; Pseudo R-squared: 0.5756</span></span>
+<span><span class="co">#&gt; Number of iterations: 25 (BFGS) + 1 (Fisher scoring)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The regression summary shows that <code>accuracy</code> increases with <code>iq</code> for the control group but not for the dyslexic group (even slightly decreases). This can be brought out more clearly graphically. This also highlights that the model employs a logit link so that the fitted curves always remain within (0, 1).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">palette.colors</span>()[<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">8</span>)]</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pch <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">19</span>, <span class="dv">17</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(accuracy <span class="sc">~</span> iq, <span class="at">data =</span> ReadingSkills, <span class="at">col =</span> pal[dyslexia], <span class="at">pch =</span> pch[dyslexia])</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>iq <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">30</span><span class="sc">:</span><span class="dv">30</span><span class="sc">/</span><span class="dv">10</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(iq, <span class="fu">predict</span>(br, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">dyslexia =</span> <span class="st">"no"</span>, <span class="at">iq =</span> iq)), <span class="at">col =</span> pal[<span class="dv">1</span>], <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(iq, <span class="fu">predict</span>(br, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">dyslexia =</span> <span class="st">"yes"</span>, <span class="at">iq =</span> iq)), <span class="at">col =</span> pal[<span class="dv">2</span>], <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"Dyslexic"</span>), <span class="at">pch =</span> pch, <span class="at">col =</span> pal, <span class="at">bty =</span> <span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palette.html">palette.colors</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">8</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">pch</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">17</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, col <span class="op">=</span> <span class="va">pal</span><span class="op">[</span><span class="va">dyslexia</span><span class="op">]</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">[</span><span class="va">dyslexia</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">iq</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">30</span><span class="op">:</span><span class="fl">30</span><span class="op">/</span><span class="fl">10</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">iq</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">br</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>dyslexia <span class="op">=</span> <span class="st">"no"</span>, iq <span class="op">=</span> <span class="va">iq</span><span class="op">)</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">pal</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">iq</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">br</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>dyslexia <span class="op">=</span> <span class="st">"yes"</span>, iq <span class="op">=</span> <span class="va">iq</span><span class="op">)</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">pal</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="st">"Dyslexic"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="va">pch</span>, col <span class="op">=</span> <span class="va">pal</span>, bty <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="man/figures/README-plot-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+<figure class="figure"><p><img src="man/figures/README-plot-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
-<section id="extended-models" class="level2">
-<h2 class="anchored" data-anchor-id="extended-models">Extended models</h2>
+</section><section id="extended-models" class="level2"><h2 class="anchored" data-anchor-id="extended-models">Extended models</h2>
 <p>For going beyond this basic analysis the following extensions can be considered.</p>
-<section id="bias-reduction" class="level3">
-<h3 class="anchored" data-anchor-id="bias-reduction">Bias reduction</h3>
-<p>Bias-reduced estimation (instead of the default maximum likelihood estimation) can be used by adding the argument <code>type = "BR"</code> in <code>betareg()</code>. This slightly shrinks all coefficient estimates but leads to qualitatively identical results.</p>
+<section id="bias-reduction" class="level3"><h3 class="anchored" data-anchor-id="bias-reduction">Bias reduction</h3>
+<p>Bias-reduced estimation (instead of the default maximum likelihood estimation) can be used by adding the argument <code>type = "BR"</code> in <code><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg()</a></code>. This slightly shrinks all coefficient estimates but leads to qualitatively identical results.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">betareg</span>(accuracy <span class="sc">~</span> dyslexia <span class="sc">*</span> iq <span class="sc">|</span> dyslexia <span class="sc">+</span> iq, <span class="at">data =</span> ReadingSkills, <span class="at">type =</span> <span class="st">"BR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">dyslexia</span> <span class="op">*</span> <span class="va">iq</span> <span class="op">|</span> <span class="va">dyslexia</span> <span class="op">+</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, type <span class="op">=</span> <span class="st">"BR"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="extended-support-beta-regression" class="level3">
-<h3 class="anchored" data-anchor-id="extended-support-beta-regression">Extended-support beta regression</h3>
-<p>To analyze the original accuracy scores in [0, 1] (without scaling the perfect scores of <code>1</code> to <code>0.99</code>) use the variable <code>accuracy1</code> in the code above. The <code>betareg()</code> model then estimates an additional exceedence parameter that accounts for the boundary probability of a perfect score.</p>
+</section><section id="extended-support-beta-regression" class="level3"><h3 class="anchored" data-anchor-id="extended-support-beta-regression">Extended-support beta regression</h3>
+<p>To analyze the original accuracy scores in [0, 1] (without scaling the perfect scores of <code>1</code> to <code>0.99</code>) use the variable <code>accuracy1</code> in the code above. The <code><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg()</a></code> model then estimates an additional exceedence parameter that accounts for the boundary probability of a perfect score.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">betareg</span>(accuracy1 <span class="sc">~</span> dyslexia <span class="sc">*</span> iq <span class="sc">|</span> dyslexia <span class="sc">+</span> iq, <span class="at">data =</span> ReadingSkills)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">accuracy1</span> <span class="op">~</span> <span class="va">dyslexia</span> <span class="op">*</span> <span class="va">iq</span> <span class="op">|</span> <span class="va">dyslexia</span> <span class="op">+</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="beta-regression-trees" class="level3">
-<h3 class="anchored" data-anchor-id="beta-regression-trees">Beta regression trees</h3>
+</section><section id="beta-regression-trees" class="level3"><h3 class="anchored" data-anchor-id="beta-regression-trees">Beta regression trees</h3>
 <p>To find subgroups in a beta regression by recursively splitting subsamples (rather than fixing the dyslexia interaction in advance), beta regression trees can be used:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">betatree</span>(accuracy <span class="sc">~</span> iq <span class="sc">|</span> iq, <span class="sc">~</span> dyslexia <span class="sc">+</span> ..., <span class="at">data =</span> ReadingSkills, <span class="at">minsize =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betatree.html">betatree</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span> <span class="op">|</span> <span class="va">iq</span>, <span class="op">~</span> <span class="va">dyslexia</span> <span class="op">+</span> <span class="va">...</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, minsize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>See the documentation of <code>betatree()</code> for more details.</p>
-</section>
-<section id="finite-mixture-models-of-beta-regressions" class="level3">
-<h3 class="anchored" data-anchor-id="finite-mixture-models-of-beta-regressions">Finite mixture models of beta regressions</h3>
+<p>See the documentation of <code><a href="https://rdrr.io/pkg/betareg/man/betatree.html">betatree()</a></code> for more details.</p>
+</section><section id="finite-mixtures-of-beta-regressions" class="level3"><h3 class="anchored" data-anchor-id="finite-mixtures-of-beta-regressions">Finite mixtures of beta regressions</h3>
 <p>To find clusters in a beta regression (without even having the dyslexia information), finite mixtures of beta regressions can be used:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">betamix</span>(accuracy <span class="sc">~</span> iq, <span class="at">data =</span> ReadingSkills, <span class="at">k =</span> <span class="dv">3</span>, ...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betamix.html">betamix</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, k <span class="op">=</span> <span class="fl">3</span>, <span class="va">...</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>See the documentation of <code>betamix()</code> for more details.</p>
+<p>See the documentation of <code><a href="https://rdrr.io/pkg/betareg/man/betamix.html">betamix()</a></code> for more details.</p>
 
 
-</section>
-</section>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -734,7 +694,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-
 
 
 

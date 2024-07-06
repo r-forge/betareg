@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.53">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
 <title>betamix – betareg</title>
 <style>
 code{white-space: pre-wrap;}
@@ -56,7 +53,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -73,8 +69,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -101,8 +96,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-
-
 <meta property="og:title" content="betareg">
 <meta property="og:image" content="https://betareg.R-Forge.R-project.org/man/betareg.png">
 <meta property="og:site_name" content="betareg">
@@ -112,17 +105,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="twitter:site" content="@AchimZeileis">
 <meta name="twitter:card" content="summary">
 </head>
-
 <body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../betareg-wide.png" alt="betareg logo" class="navbar-logo">
-    </a>
+    <img src="../betareg-wide.png" alt="betareg logo" class="navbar-logo"></a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -130,7 +119,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Get started</span></a>
   </li>  
@@ -147,8 +136,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Citation</span></a>
   </li>  
 </ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
     <a class="nav-link" href="../contact.html"> 
 <span class="menu-text">Contact</span></a>
   </li>  
@@ -158,13 +147,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -172,15 +159,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item sidebar-item-section">
+<li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Beta regression</span></a>
@@ -188,8 +171,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/betareg.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">betareg</span></a>
@@ -244,7 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
@@ -253,8 +236,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/CarTask.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">CarTask</span></a>
@@ -309,7 +292,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
@@ -318,8 +301,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/dbetar.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">dbetar</span></a>
@@ -350,7 +333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -359,8 +342,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/BetaR.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">BetaR</span></a>
@@ -391,20 +374,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#finite-mixtures-of-beta-regression-for-rates-and-proportions" id="toc-finite-mixtures-of-beta-regression-for-rates-and-proportions" class="nav-link active" data-scroll-target="#finite-mixtures-of-beta-regression-for-rates-and-proportions">Finite Mixtures of Beta Regression for Rates and Proportions</a>
+<li>
+<a href="#finite-mixtures-of-beta-regression-for-rates-and-proportions" id="toc-finite-mixtures-of-beta-regression-for-rates-and-proportions" class="nav-link active" data-scroll-target="#finite-mixtures-of-beta-regression-for-rates-and-proportions">Finite Mixtures of Beta Regression for Rates and Proportions</a>
   <ul class="collapse">
-  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+<li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
@@ -413,24 +395,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also">See Also</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
-  </ul></li>
   </ul>
-</nav>
+</li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-
-
-
-<section id="finite-mixtures-of-beta-regression-for-rates-and-proportions" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="finite-mixtures-of-beta-regression-for-rates-and-proportions">Finite Mixtures of Beta Regression for Rates and Proportions</h2>
-<section id="description" class="level3">
-<h3 class="anchored" data-anchor-id="description">Description</h3>
+<main class="content" id="quarto-document-content"><section id="finite-mixtures-of-beta-regression-for-rates-and-proportions" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="finite-mixtures-of-beta-regression-for-rates-and-proportions">Finite Mixtures of Beta Regression for Rates and Proportions</h2>
+<section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
 <p>Fit finite mixtures of beta regression models for rates and proportions via maximum likelihood with the EM algorithm using a parametrization with mean (depending through a link function on the covariates) and precision parameter (called phi).</p>
-</section>
-<section id="usage" class="level3">
-<h3 class="anchored" data-anchor-id="usage">Usage</h3>
+</section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
 <pre><code class="language-R">betamix(formula, data, k, subset, na.action, weights, offset,
   link = c("logit", "probit", "cloglog", "cauchit", "log",
     "loglog"), link.phi = "log",
@@ -442,9 +415,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 extraComponent(type = c("uniform", "betareg"), coef, delta,
   link = "logit", link.phi = "log")
 </code></pre>
-</section>
-<section id="arguments" class="level3">
-<h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
+</section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
 <table>
 <tbody><tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
@@ -579,7 +550,7 @@ symbolic description of the model for the parameters fixed over components (of t
 <code id="extra_components">extra_components</code>
 </td>
 <td>
-a list containing objects returned by <code>extraComponent()</code>.
+a list containing objects returned by <code><a href="https://rdrr.io/pkg/betareg/man/betamix.html">extraComponent()</a></code>.
 </td>
 </tr>
 <tr>
@@ -614,104 +585,90 @@ a vector with the coefficients to determine the midpoint of the uniform distribu
 numeric; half-length of the interval of the uniform distribution.
 </td>
 </tr>
-</tbody></table>
-</section>
-<section id="details" class="level3">
-<h3 class="anchored" data-anchor-id="details">Details</h3>
+</tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
 <p>The arguments and the model specification are similar to <code>betareg</code>. Internally <code>stepFlexmix</code> is called with suitable arguments to fit the finite mixture model with the EM algorithm. See Grün et al.&nbsp;(2012) for more details.</p>
 <p><code>extra_components</code> is a list where each element corresponds to a component where the parameters are fixed a-priori.</p>
-</section>
-<section id="value" class="level3">
-<h3 class="anchored" data-anchor-id="value">Value</h3>
+</section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>An object of class <code>“flexmix”</code> containing the best model with respect to the log likelihood or the one selected according to <code>which</code> if <code>k</code> is a vector of integers longer than 1.</p>
-</section>
-<section id="authors" class="level3">
-<h3 class="anchored" data-anchor-id="authors">Author(s)</h3>
+</section><section id="authors" class="level3"><h3 class="anchored" data-anchor-id="authors">Author(s)</h3>
 <p>Bettina Grün and Achim Zeileis</p>
-</section>
-<section id="references" class="level3">
-<h3 class="anchored" data-anchor-id="references">References</h3>
+</section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
 <p>Cribari-Neto, F., and Zeileis, A. (2010). Beta Regression in R. <em>Journal of Statistical Software</em>, <b>34</b>(2), 1–24. <a href="https://doi.org/10.18637/jss.v034.i02">doi:10.18637/jss.v034.i02</a></p>
 <p>Grün, B., Kosmidis, I., and Zeileis, A. (2012). Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned. <em>Journal of Statistical Software</em>, <b>48</b>(11), 1–25. <a href="https://doi.org/10.18637/jss.v048.i11">doi:10.18637/jss.v048.i11</a></p>
 <p>Grün, B., and Leisch, F. (2008). FlexMix Version 2: Finite Mixtures with Concomitant Variables and Varying and Constant Parameters. <em>Journal of Statistical Software</em>, <b>28</b>(4), 1–35. <a href="https://doi.org/10.18637/jss.v028.i04">doi:10.18637/jss.v028.i04</a></p>
 <p>Leisch, F. (2004). FlexMix: A General Framework for Finite Mixture Models and Latent Class Regression in R. <em>Journal of Statistical Software</em>, <b>11</b>(8), 1–18. <a href="https://doi.org/10.18637/jss.v011.i08">doi:10.18637/jss.v011.i08</a></p>
-</section>
-<section id="see-also" class="level3">
-<h3 class="anchored" data-anchor-id="see-also">See Also</h3>
+</section><section id="see-also" class="level3"><h3 class="anchored" data-anchor-id="see-also">See Also</h3>
 <p><code>betareg</code>, <code>flexmix</code>, <code>stepFlexmix</code></p>
-</section>
-<section id="examples" class="level3">
-<h3 class="anchored" data-anchor-id="examples">Examples</h3>
+</section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"betareg"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">digits =</span> <span class="dv">4</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## data with two groups of dyslexic and non-dyslexic children</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"ReadingSkills"</span>, <span class="at">package =</span> <span class="st">"betareg"</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressWarnings</span>(<span class="fu">RNGversion</span>(<span class="st">"3.5.0"</span>))</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4040</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## try to capture accuracy ~ iq relationship (without using dyslexia</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## information) using two beta regression components and one additional</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="do">## extra component for a perfect reading score</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>rs_mix <span class="ot">&lt;-</span> <span class="fu">betamix</span>(accuracy <span class="sc">~</span> iq, <span class="at">data =</span> ReadingSkills, <span class="at">k =</span> <span class="dv">3</span>,</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">nstart =</span> <span class="dv">10</span>, <span class="at">extra_components =</span> <span class="fu">extraComponent</span>(<span class="at">type =</span> <span class="st">"uniform"</span>,</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">coef =</span> <span class="fl">0.99</span>, <span class="at">delta =</span> <span class="fl">0.01</span>))</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="do">## visualize result</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="do">## intensities based on posterior probabilities</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (<span class="fu">posterior</span>(rs_mix)[<span class="fu">cbind</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ReadingSkills),</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>   <span class="fu">clusters</span>(rs_mix))] <span class="sc">-</span> <span class="fl">0.5</span>)</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="do">## associated HCL colors</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>col0 <span class="ot">&lt;-</span> <span class="fu">hcl</span>(<span class="fu">c</span>(<span class="dv">260</span>, <span class="dv">0</span>, <span class="dv">130</span>), <span class="dv">65</span>, <span class="dv">45</span>, <span class="at">fixup =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>col1 <span class="ot">&lt;-</span> col0[<span class="fu">clusters</span>(rs_mix)]</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>col2 <span class="ot">&lt;-</span> <span class="fu">hcl</span>(<span class="fu">c</span>(<span class="dv">260</span>, <span class="dv">0</span>, <span class="dv">130</span>)[<span class="fu">clusters</span>(rs_mix)], <span class="dv">65</span> <span class="sc">*</span> <span class="fu">abs</span>(prob)<span class="sc">^</span><span class="fl">1.5</span>,</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>   <span class="dv">95</span> <span class="sc">-</span> <span class="dv">50</span> <span class="sc">*</span> <span class="fu">abs</span>(prob)<span class="sc">^</span><span class="fl">1.5</span>, <span class="at">fixup =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="do">## scatter plot</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(accuracy <span class="sc">~</span> iq, <span class="at">data =</span> ReadingSkills, <span class="at">col =</span> col2, <span class="at">pch =</span> <span class="dv">19</span>,</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>   <span class="at">cex =</span> <span class="fl">1.5</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(accuracy <span class="sc">~</span> iq, <span class="at">data =</span> ReadingSkills, <span class="at">cex =</span> <span class="fl">1.5</span>, <span class="at">pch =</span> <span class="dv">1</span>,</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>   <span class="at">col =</span> col1)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="do">## fitted lines</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>iq <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">30</span><span class="sc">:</span><span class="dv">30</span><span class="sc">/</span><span class="dv">10</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>cf <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">coef</span>(rs_mix, <span class="at">model =</span> <span class="st">"mean"</span>, <span class="at">component =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>),</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>   <span class="fu">c</span>(<span class="fu">qlogis</span>(<span class="fl">0.99</span>), <span class="dv">0</span>))</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>   <span class="fu">lines</span>(iq, <span class="fu">plogis</span>(cf[i, <span class="dv">1</span>] <span class="sc">+</span> cf[i, <span class="dv">2</span>] <span class="sc">*</span> iq), <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> col0[i])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://betareg.R-Forge.R-project.org/">"betareg"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## data with two groups of dyslexic and non-dyslexic children</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"ReadingSkills"</span>, package <span class="op">=</span> <span class="st">"betareg"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">RNGversion</a></span><span class="op">(</span><span class="st">"3.5.0"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">4040</span><span class="op">)</span></span>
+<span><span class="co">## try to capture accuracy ~ iq relationship (without using dyslexia</span></span>
+<span><span class="co">## information) using two beta regression components and one additional</span></span>
+<span><span class="co">## extra component for a perfect reading score</span></span>
+<span><span class="va">rs_mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betamix.html">betamix</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, k <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  nstart <span class="op">=</span> <span class="fl">10</span>, extra_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betamix.html">extraComponent</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"uniform"</span>,</span>
+<span>  coef <span class="op">=</span> <span class="fl">0.99</span>, delta <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## visualize result</span></span>
+<span><span class="co">## intensities based on posterior probabilities</span></span>
+<span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="op">(</span><span class="fu">posterior</span><span class="op">(</span><span class="va">rs_mix</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">ReadingSkills</span><span class="op">)</span>,</span>
+<span>   <span class="fu">clusters</span><span class="op">(</span><span class="va">rs_mix</span><span class="op">)</span><span class="op">)</span><span class="op">]</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="co">## associated HCL colors</span></span>
+<span><span class="va">col0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/hcl.html">hcl</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">260</span>, <span class="fl">0</span>, <span class="fl">130</span><span class="op">)</span>, <span class="fl">65</span>, <span class="fl">45</span>, fixup <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">col1</span> <span class="op">&lt;-</span> <span class="va">col0</span><span class="op">[</span><span class="fu">clusters</span><span class="op">(</span><span class="va">rs_mix</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">col2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/hcl.html">hcl</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">260</span>, <span class="fl">0</span>, <span class="fl">130</span><span class="op">)</span><span class="op">[</span><span class="fu">clusters</span><span class="op">(</span><span class="va">rs_mix</span><span class="op">)</span><span class="op">]</span>, <span class="fl">65</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">prob</span><span class="op">)</span><span class="op">^</span><span class="fl">1.5</span>,</span>
+<span>   <span class="fl">95</span> <span class="op">-</span> <span class="fl">50</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">prob</span><span class="op">)</span><span class="op">^</span><span class="fl">1.5</span>, fixup <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">## scatter plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, col <span class="op">=</span> <span class="va">col2</span>, pch <span class="op">=</span> <span class="fl">19</span>,</span>
+<span>   cex <span class="op">=</span> <span class="fl">1.5</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, cex <span class="op">=</span> <span class="fl">1.5</span>, pch <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>   col <span class="op">=</span> <span class="va">col1</span><span class="op">)</span></span>
+<span><span class="co">## fitted lines</span></span>
+<span><span class="va">iq</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">30</span><span class="op">:</span><span class="fl">30</span><span class="op">/</span><span class="fl">10</span></span>
+<span><span class="va">cf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">rs_mix</span>, model <span class="op">=</span> <span class="st">"mean"</span>, component <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>   <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">qlogis</a></span><span class="op">(</span><span class="fl">0.99</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span>   <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">iq</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span><span class="op">(</span><span class="va">cf</span><span class="op">[</span><span class="va">i</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">cf</span><span class="op">[</span><span class="va">i</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">iq</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>         col <span class="op">=</span> <span class="va">col0</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="betamix_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="betamix_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## refit the model including a concomitant variable model using the</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## dyslexia information with some noise to avoid complete separation</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">## between concomitant variable and component memberships</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4040</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(ReadingSkills), </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)[<span class="fu">as.integer</span>(ReadingSkills<span class="sc">$</span>dyslexia)])</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">## The argument FLXconcomitant can be omitted when specifying</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">## the model via a three part formula given by</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">## accuracy ~ iq | 1 | w</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## The posteriors from the previously fitted model are used</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## for initialization.</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"flexmix"</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>rs_mix2 <span class="ot">&lt;-</span> <span class="fu">betamix</span>(accuracy <span class="sc">~</span> iq, <span class="at">data =</span> ReadingSkills,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">extra_components =</span> <span class="fu">extraComponent</span>(<span class="at">type =</span> <span class="st">"uniform"</span>,</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">coef =</span> <span class="fl">0.99</span>, <span class="at">delta =</span> <span class="fl">0.01</span>), <span class="at">cluster =</span> <span class="fu">posterior</span>(rs_mix),</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">FLXconcomitant =</span> <span class="fu">FLXPmultinom</span>(<span class="sc">~</span>w))</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(rs_mix2, <span class="at">which =</span> <span class="st">"concomitant"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## refit the model including a concomitant variable model using the</span></span>
+<span><span class="co">## dyslexia information with some noise to avoid complete separation</span></span>
+<span><span class="co">## between concomitant variable and component memberships</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">4040</span><span class="op">)</span></span>
+<span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">ReadingSkills</span><span class="op">)</span>, </span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">ReadingSkills</span><span class="op">$</span><span class="va">dyslexia</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## The argument FLXconcomitant can be omitted when specifying</span></span>
+<span><span class="co">## the model via a three part formula given by</span></span>
+<span><span class="co">## accuracy ~ iq | 1 | w</span></span>
+<span><span class="co">## The posteriors from the previously fitted model are used</span></span>
+<span><span class="co">## for initialization.</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"flexmix"</span><span class="op">)</span></span>
+<span><span class="va">rs_mix2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betamix.html">betamix</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>,</span>
+<span>  extra_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betamix.html">extraComponent</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"uniform"</span>,</span>
+<span>  coef <span class="op">=</span> <span class="fl">0.99</span>, delta <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>, cluster <span class="op">=</span> <span class="fu">posterior</span><span class="op">(</span><span class="va">rs_mix</span><span class="op">)</span>,</span>
+<span>  FLXconcomitant <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/flexmix/man/FLXconcomitant.html">FLXPmultinom</a></span><span class="op">(</span><span class="op">~</span><span class="va">w</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">rs_mix2</span>, which <span class="op">=</span> <span class="st">"concomitant"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  (Intercept)       w
 1      0.0000  0.0000
 2      0.8114  1.0778
 3     -0.1195 -0.3488</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rs_mix2, <span class="at">which =</span> <span class="st">"concomitant"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">rs_mix2</span>, which <span class="op">=</span> <span class="st">"concomitant"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Comp.2
             Estimate Std. Error z value Pr(&gt;|z|)  
@@ -728,11 +685,7 @@ w             -0.346      0.452   -0.77     0.44</code></pre>
 </div>
 
 
-</section>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1153,7 +1106,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-
 
 
 

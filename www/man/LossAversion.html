@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.53">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
 <title>lossaversion – betareg</title>
 <style>
 code{white-space: pre-wrap;}
@@ -56,7 +53,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -73,8 +69,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -101,8 +96,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-
-
 <meta property="og:title" content="betareg">
 <meta property="og:image" content="https://betareg.R-Forge.R-project.org/man/betareg.png">
 <meta property="og:site_name" content="betareg">
@@ -112,17 +105,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="twitter:site" content="@AchimZeileis">
 <meta name="twitter:card" content="summary">
 </head>
-
 <body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../betareg-wide.png" alt="betareg logo" class="navbar-logo">
-    </a>
+    <img src="../betareg-wide.png" alt="betareg logo" class="navbar-logo"></a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -130,7 +119,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Get started</span></a>
   </li>  
@@ -147,8 +136,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Citation</span></a>
   </li>  
 </ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
     <a class="nav-link" href="../contact.html"> 
 <span class="menu-text">Contact</span></a>
   </li>  
@@ -158,13 +147,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -172,15 +159,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item sidebar-item-section">
+<li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
  <span class="menu-text">Beta regression</span></a>
@@ -188,8 +171,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/betareg.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">betareg</span></a>
@@ -244,7 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -253,8 +236,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/CarTask.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">CarTask</span></a>
@@ -309,7 +292,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
@@ -318,8 +301,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/dbetar.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">dbetar</span></a>
@@ -350,7 +333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -359,8 +342,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/BetaR.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">BetaR</span></a>
@@ -391,20 +374,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#no-myopic-loss-aversion-in-adolescents" id="toc-no-myopic-loss-aversion-in-adolescents" class="nav-link active" data-scroll-target="#no-myopic-loss-aversion-in-adolescents">(No) Myopic Loss Aversion in Adolescents</a>
+<li>
+<a href="#no-myopic-loss-aversion-in-adolescents" id="toc-no-myopic-loss-aversion-in-adolescents" class="nav-link active" data-scroll-target="#no-myopic-loss-aversion-in-adolescents">(No) Myopic Loss Aversion in Adolescents</a>
   <ul class="collapse">
-  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+<li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#format" id="toc-format" class="nav-link" data-scroll-target="#format">Format</a></li>
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
@@ -412,28 +394,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also">See Also</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
-  </ul></li>
   </ul>
-</nav>
+</li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-
-
-
-<section id="no-myopic-loss-aversion-in-adolescents" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="no-myopic-loss-aversion-in-adolescents">(No) Myopic Loss Aversion in Adolescents</h2>
-<section id="description" class="level3">
-<h3 class="anchored" data-anchor-id="description">Description</h3>
+<main class="content" id="quarto-document-content"><section id="no-myopic-loss-aversion-in-adolescents" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="no-myopic-loss-aversion-in-adolescents">(No) Myopic Loss Aversion in Adolescents</h2>
+<section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
 <p>Data for assessing the extent of myopic loss aversion among adolescents (mostly aged 11 to 19).</p>
-</section>
-<section id="usage" class="level3">
-<h3 class="anchored" data-anchor-id="usage">Usage</h3>
-<pre><code class="language-R">data("LossAversion")</code></pre>
-</section>
-<section id="format" class="level3">
-<h3 class="anchored" data-anchor-id="format">Format</h3>
+</section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
+<pre><code class="language-R">data("LossAversion", package = "betareg")</code></pre>
+</section><section id="format" class="level3"><h3 class="anchored" data-anchor-id="format">Format</h3>
 <p>A data frame containing 570 observations on 7 variables.</p>
 <dl>
 <dt>
@@ -478,10 +449,7 @@ arrangement
 <dd>
 factor. Is the player a single player or team of two?
 </dd>
-</dl>
-</section>
-<section id="details" class="level3">
-<h3 class="anchored" data-anchor-id="details">Details</h3>
+</dl></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
 <p>Myopic loss aversion is a phenomenon in behavioral economics, where individuals do not behave economically rationally when making short-term decisions under uncertainty. Example: In lotteries with positive expected payouts investments are lower than the maximum possible (loss aversion). This effect is enhanced for short-term investments (myopia or short-sightedness).</p>
 <p>The data in <code>LossAversion</code> were collected by Matthias Sutter and Daniela Glätzle-Rützler (Universität Innsbruck) in an experiment with high-school students in Tyrol, Austria (Schwaz and Innsbruck). The students could invest X points (0-100) in each of 9 rounds in a lottery. The payouts were 100 + 2.5 * X points with probability 1/3 and 100 - X points with probability 2/3. Thus, the expected payouts were 100 + 1/6 * X points. Depending on the treatment in the experiment, the investments could either be modified in each round (treatment: "short") or only in round 1, 4, 7 (treatment "long"). Decisions were either made alone or in teams of two. The points were converted to monetary payouts using a conversion of EUR 0.5 per 100 points for lower grades (Unterstufe, 6-8) or EUR 1.0 per 100 points for upper grades (Oberstufe, 10-12).</p>
 <p>From the myopic loss aversion literature (on adults) one would expect that the investments of the players (either single players or teams of two) would depend on all factors: Investments should be</p>
@@ -500,48 +468,202 @@ factor. Is the player a single player or team of two?
 </li>
 </ul>
 <p>See Glätzle-Rützler et al.&nbsp;(2015) for more details and references to the literature. In their original analysis, the investments are analyzes using a panel structure (i.e., 9 separate investments for each team). Here, the data are averaged across rounds for each player, leading to qualitatively similar results. The full data along with replication materials are available in the Harvard Dataverse.</p>
-</section>
-<section id="source" class="level3">
-<h3 class="anchored" data-anchor-id="source">Source</h3>
+</section><section id="source" class="level3"><h3 class="anchored" data-anchor-id="source">Source</h3>
 <p>Glätzle-Rützler D, Sutter M, Zeileis A (2020). Replication Data for: No Myopic Loss Aversion in Adolescents? - An Experimental Note. <em>Harvard Dataverse</em>, UNF:6:6hVtbHavJAFYfL7dDl7jqA==. <a href="https://doi.org/10.7910/DVN/IHFZAK">doi:10.7910/DVN/IHFZAK</a></p>
-</section>
-<section id="references" class="level3">
-<h3 class="anchored" data-anchor-id="references">References</h3>
+</section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
 <p>Glätzle-Rützler D, Sutter M, Zeileis A (2015). No Myopic Loss Aversion in Adolescents? - An Experimental Note. <em>Journal of Economic Behavior &amp; Organization</em>, <b>111</b>, 169-176. <a href="https://doi.org/10.1016/j.jebo.2014.12.021">doi:10.1016/j.jebo.2014.12.021</a></p>
-</section>
-<section id="see-also" class="level3">
-<h3 class="anchored" data-anchor-id="see-also">See Also</h3>
+</section><section id="see-also" class="level3"><h3 class="anchored" data-anchor-id="see-also">See Also</h3>
 <p><code>betareg</code></p>
-</section>
-<section id="examples" class="level3">
-<h3 class="anchored" data-anchor-id="examples">Examples</h3>
+</section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"betareg"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## data for students in higher grades</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"LossAversion"</span>, <span class="at">package =</span> <span class="st">"betareg"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>LossAversion <span class="ot">&lt;-</span> <span class="fu">subset</span>(LossAversion, grade <span class="sc">==</span> <span class="st">"10-12"</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## ad hoc scaling (a la Smithson &amp; Verkuilen)</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>LossAversion<span class="sc">$</span>invests <span class="ot">&lt;-</span> ((LossAversion<span class="sc">$</span>invest <span class="sc">*</span> (<span class="fu">nrow</span>(LossAversion) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.5</span>)<span class="sc">/</span><span class="fu">nrow</span>(LossAversion))</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## fraction of boundary observations for ad hoc extended-support beta specification (xbeta)</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>p01 <span class="ot">&lt;-</span> <span class="fu">mean</span>(LossAversion<span class="sc">$</span>invest <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">|</span> LossAversion<span class="sc">$</span>invest <span class="sc">&gt;=</span> <span class="dv">1</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="do">## main effects models: Gaussian, beta, extended-support beta, extended-support beta mixture</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>la_gr  <span class="ot">&lt;-</span> <span class="fu">glm</span>(invest      <span class="sc">~</span> arrangement <span class="sc">+</span> male <span class="sc">+</span> age,                      <span class="at">data =</span> LossAversion)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>la_br  <span class="ot">&lt;-</span> <span class="fu">betareg</span>(invests <span class="sc">~</span> arrangement <span class="sc">+</span> male <span class="sc">+</span> age <span class="sc">|</span> arrangement <span class="sc">+</span> male, <span class="at">data =</span> LossAversion)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>la_xbx <span class="ot">&lt;-</span> <span class="fu">betareg</span>(invest  <span class="sc">~</span> arrangement <span class="sc">+</span> male <span class="sc">+</span> age <span class="sc">|</span> arrangement <span class="sc">+</span> male, <span class="at">data =</span> LossAversion)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>la_xb  <span class="ot">&lt;-</span> <span class="fu">betareg</span>(invest  <span class="sc">~</span> arrangement <span class="sc">+</span> male <span class="sc">+</span> age <span class="sc">|</span> arrangement <span class="sc">+</span> male, <span class="at">data =</span> LossAversion,</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">dist =</span> <span class="st">"xbeta"</span>, <span class="at">nu =</span> p01<span class="sc">/</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://betareg.R-Forge.R-project.org/">"betareg"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## data and add ad-hoc scaling (a la Smithson &amp; Verkuilen)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"LossAversion"</span>, package <span class="op">=</span> <span class="st">"betareg"</span><span class="op">)</span></span>
+<span><span class="va">LossAversion</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/transform.html">transform</a></span><span class="op">(</span><span class="va">LossAversion</span>,</span>
+<span>  invests <span class="op">=</span> <span class="op">(</span><span class="va">invest</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">LossAversion</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">LossAversion</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## models: normal (with constant variance), beta, extended-support beta mixture</span></span>
+<span><span class="va">la_n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">invest</span> <span class="op">~</span> <span class="va">grade</span> <span class="op">*</span> <span class="op">(</span><span class="va">arrangement</span> <span class="op">+</span> <span class="va">age</span><span class="op">)</span> <span class="op">+</span> <span class="va">male</span>, data <span class="op">=</span> <span class="va">LossAversion</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">la_n</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = invest ~ grade * (arrangement + age) + male, data = LossAversion)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-0.7735 -0.1967  0.0024  0.1916  0.5724 
+
+Coefficients:
+                           Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                  0.2844     0.1575    1.81  0.07136 .  
+grade10-12                  -0.8437     0.2815   -3.00  0.00284 ** 
+arrangementteam              0.0628     0.0302    2.08  0.03788 *  
+age                          0.0115     0.0124    0.93  0.35041    
+maleyes                      0.1035     0.0232    4.46  9.9e-06 ***
+grade10-12:arrangementteam   0.1507     0.0455    3.32  0.00097 ***
+grade10-12:age               0.0458     0.0185    2.47  0.01380 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.247 on 563 degrees of freedom
+Multiple R-squared:  0.158, Adjusted R-squared:  0.149 
+F-statistic: 17.7 on 6 and 563 DF,  p-value: &lt;2e-16</code></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">la_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">invests</span> <span class="op">~</span> <span class="va">grade</span> <span class="op">*</span> <span class="op">(</span><span class="va">arrangement</span> <span class="op">+</span> <span class="va">age</span><span class="op">)</span> <span class="op">+</span> <span class="va">male</span> <span class="op">|</span> <span class="va">arrangement</span> <span class="op">+</span> <span class="va">male</span> <span class="op">+</span> <span class="va">grade</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">LossAversion</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">la_b</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+betareg(formula = invests ~ grade * (arrangement + age) + male | arrangement + 
+    male + grade, data = LossAversion)
+
+Quantile residuals:
+   Min     1Q Median     3Q    Max 
+-3.948 -0.594 -0.042  0.554  4.439 
+
+Coefficients (mean model with logit link):
+                           Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)                 -1.4139     0.6197   -2.28   0.0225 *  
+grade10-12                  -2.9435     1.2520   -2.35   0.0187 *  
+arrangementteam              0.2250     0.1175    1.92   0.0554 .  
+age                          0.0906     0.0486    1.87   0.0621 .  
+maleyes                      0.4553     0.0990    4.60  4.2e-06 ***
+grade10-12:arrangementteam   0.6549     0.2003    3.27   0.0011 ** 
+grade10-12:age               0.1513     0.0806    1.88   0.0605 .  
+
+Phi coefficients (precision model with log link):
+                Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)        1.194      0.084   14.21  &lt; 2e-16 ***
+arrangementteam    0.406      0.122    3.33  0.00087 ***
+maleyes           -0.555      0.113   -4.93  8.2e-07 ***
+grade10-12        -0.553      0.104   -5.31  1.1e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Type of estimator: ML (maximum likelihood)
+Log-likelihood: 94.4 on 11 Df
+Pseudo R-squared: 0.154
+Number of iterations: 24 (BFGS) + 3 (Fisher scoring) </code></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">la_xbx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">invest</span> <span class="op">~</span> <span class="va">grade</span> <span class="op">*</span> <span class="op">(</span><span class="va">arrangement</span> <span class="op">+</span> <span class="va">age</span><span class="op">)</span> <span class="op">+</span> <span class="va">male</span> <span class="op">|</span> <span class="va">arrangement</span> <span class="op">+</span> <span class="va">male</span> <span class="op">+</span> <span class="va">grade</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">LossAversion</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">la_xbx</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+betareg(formula = invest ~ grade * (arrangement + age) + male | arrangement + 
+    male + grade, data = LossAversion)
+
+Randomized quantile residuals:
+   Min     1Q Median     3Q    Max 
+-2.838 -0.693 -0.015  0.698  3.796 
+
+Coefficients (mu model with logit link):
+                           Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)                 -0.8650     0.5193   -1.67  0.09577 .  
+grade10-12                  -3.0962     1.0529   -2.94  0.00328 ** 
+arrangementteam              0.2079     0.0987    2.11  0.03508 *  
+age                          0.0489     0.0406    1.20  0.22857    
+maleyes                      0.3792     0.0842    4.50  6.6e-06 ***
+grade10-12:arrangementteam   0.5672     0.1690    3.36  0.00079 ***
+grade10-12:age               0.1687     0.0677    2.49  0.01275 *  
+
+Phi coefficients (phi model with log link):
+                Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)        1.756      0.128   13.70  &lt; 2e-16 ***
+arrangementteam    0.325      0.145    2.25  0.02446 *  
+maleyes           -0.484      0.136   -3.56  0.00037 ***
+grade10-12        -0.316      0.131   -2.41  0.01608 *  
+
+Exceedence parameter (extended-support xbetax model):
+        Estimate Std. Error z value Pr(&gt;|z|)    
+Log(nu)   -2.273      0.245   -9.27   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Exceedence parameter nu: 0.103
+Type of estimator: ML (maximum likelihood)
+Log-likelihood: -71.8 on 12 Df
+Number of iterations in BFGS optimization: 45 </code></pre>
+</div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## coefficients in XBX are typically somewhat shrunken compared to beta</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>XBX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">la_xbx</span><span class="op">)</span>, Beta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">la_b</span><span class="op">)</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                XBX     Beta
+(Intercept)                -0.86495 -1.41389
+grade10-12                 -3.09624 -2.94347
+arrangementteam             0.20790  0.22498
+age                         0.04889  0.09061
+maleyes                     0.37925  0.45534
+grade10-12:arrangementteam  0.56724  0.65487
+grade10-12:age              0.16866  0.15129
+(phi)_(Intercept)           1.75629  1.19429
+(phi)_arrangementteam       0.32525  0.40631
+(phi)_maleyes              -0.48406 -0.55481
+(phi)_grade10-12           -0.31593 -0.55271
+Log(nu)                    -2.27289       NA</code></pre>
+</div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## predictions on subset: (at least one) male players, higher grades, around age 16</span></span>
+<span><span class="va">la</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">LossAversion</span>, <span class="va">male</span> <span class="op">==</span> <span class="st">"yes"</span> <span class="op">&amp;</span> <span class="va">grade</span> <span class="op">==</span> <span class="st">"10-12"</span> <span class="op">&amp;</span> <span class="va">age</span> <span class="op">&gt;=</span> <span class="fl">15</span> <span class="op">&amp;</span>  <span class="va">age</span> <span class="op">&lt;=</span> <span class="fl">17</span><span class="op">)</span></span>
+<span><span class="va">la_nd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>arrangement <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"single"</span>, <span class="st">"team"</span><span class="op">)</span>, male <span class="op">=</span> <span class="st">"yes"</span>, age <span class="op">=</span> <span class="fl">16</span>, grade <span class="op">=</span> <span class="st">"10-12"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## empirical vs fitted E(Y)</span></span>
+<span><span class="va">la_nd</span><span class="op">$</span><span class="va">mean_emp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">invest</span> <span class="op">~</span> <span class="va">arrangement</span>, data <span class="op">=</span> <span class="va">la</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span><span class="op">$</span><span class="va">invest</span> </span>
+<span><span class="va">la_nd</span><span class="op">$</span><span class="va">mean_n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">la_n</span>, <span class="va">la_nd</span><span class="op">)</span></span>
+<span><span class="va">la_nd</span><span class="op">$</span><span class="va">mean_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">la_b</span>, <span class="va">la_nd</span><span class="op">)</span></span>
+<span><span class="va">la_nd</span><span class="op">$</span><span class="va">mean_xbx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">la_xbx</span>, <span class="va">la_nd</span><span class="op">)</span></span>
+<span><span class="va">la_nd</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  arrangement male age grade mean_emp mean_n mean_b mean_xbx
+1      single  yes  16 10-12   0.4824 0.4612 0.4921   0.4713
+2        team  yes  16 10-12   0.6648 0.6747 0.7002   0.6861</code></pre>
+</div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## visualization: all means rather similar</span></span>
+<span><span class="va">la_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Emp"</span>, <span class="st">"N"</span>, <span class="st">"B"</span>, <span class="st">"XBX"</span><span class="op">)</span></span>
+<span><span class="va">la_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html">unname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palette.html">palette.colors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">la_lty</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="va">la_nd</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"mean_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">tolower</a></span><span class="op">(</span><span class="va">la_mod</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">"l"</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">la_col</span>, lty <span class="op">=</span> <span class="va">la_lty</span>, lwd <span class="op">=</span> <span class="fl">2</span>, ylab <span class="op">=</span> <span class="st">"E(Y)"</span>, main <span class="op">=</span> <span class="st">"E(Y)"</span>, xaxt <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span><span class="fl">1</span>, at <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, labels <span class="op">=</span> <span class="va">la_nd</span><span class="op">$</span><span class="va">arrangement</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, <span class="va">la_mod</span>, col <span class="op">=</span> <span class="va">la_col</span>, lty <span class="op">=</span> <span class="va">la_lty</span>, lwd <span class="op">=</span> <span class="fl">2</span>, bty <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="LossAversion_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## empirical vs. fitted P(Y &gt; 0.95)</span></span>
+<span><span class="va">la_nd</span><span class="op">$</span><span class="va">prob_emp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">invest</span> <span class="op">&gt;=</span> <span class="fl">0.95</span> <span class="op">~</span> <span class="va">arrangement</span>, data <span class="op">=</span> <span class="va">la</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span><span class="op">$</span><span class="va">invest</span></span>
+<span><span class="va">la_nd</span><span class="op">$</span><span class="va">prob_n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">0.95</span>, mean <span class="op">=</span> <span class="va">la_nd</span><span class="op">$</span><span class="va">mean_n</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">la_n</span><span class="op">)</span><span class="op">$</span><span class="va">sigma</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">la_nd</span><span class="op">$</span><span class="va">prob_b</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">la_b</span>, <span class="va">la_nd</span>, type <span class="op">=</span> <span class="st">"probability"</span>, at <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
+<span><span class="va">la_nd</span><span class="op">$</span><span class="va">prob_xbx</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">la_xbx</span>, <span class="va">la_nd</span>, type <span class="op">=</span> <span class="st">"probability"</span>, at <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
+<span><span class="va">la_nd</span><span class="op">[</span>, <span class="op">-</span><span class="op">(</span><span class="fl">5</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  arrangement male age grade prob_emp  prob_n prob_b prob_xbx
+1      single  yes  16 10-12  0.08696 0.02403 0.1245  0.07161
+2        team  yes  16 10-12  0.20690 0.13280 0.2487  0.18501</code></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## visualization: only XBX works well</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="va">la_nd</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"prob_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">tolower</a></span><span class="op">(</span><span class="va">la_mod</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">"l"</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">la_col</span>, lty <span class="op">=</span> <span class="va">la_lty</span>, lwd <span class="op">=</span> <span class="fl">2</span>, ylab <span class="op">=</span> <span class="st">"P(Y &gt; 0.95)"</span>, main <span class="op">=</span> <span class="st">"P(Y &gt; 0.95)"</span>, xaxt <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span><span class="fl">1</span>, at <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, labels <span class="op">=</span> <span class="va">la_nd</span><span class="op">$</span><span class="va">arrangement</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, <span class="va">la_mod</span>, col <span class="op">=</span> <span class="va">la_col</span>, lty <span class="op">=</span> <span class="va">la_lty</span>, lwd <span class="op">=</span> <span class="fl">2</span>, bty <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="LossAversion_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 
 
-</section>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -962,7 +1084,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-
 
 
 
