@@ -71,6 +71,7 @@ Smithson, M., and Verkuilen, J. (2006).
 \seealso{\code{\link{betareg}}, \code{\link{MockJurors}}, \code{\link{StressAnxiety}}}
 
 \examples{
+options(digits = 4)
 data("ReadingSkills", package = "betareg")
 
 ## Smithson & Verkuilen (2006, Table 5)

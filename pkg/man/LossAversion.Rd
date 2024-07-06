@@ -79,6 +79,8 @@ Glätzle-Rützler D, Sutter M, Zeileis A (2015).
 \seealso{\code{\link{betareg}}}
 
 \examples{
+options(digits = 4)
+
 ## data and add ad-hoc scaling (a la Smithson & Verkuilen)
 data("LossAversion", package = "betareg")
 LossAversion <- transform(LossAversion,
