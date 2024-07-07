@@ -91,11 +91,11 @@ LossAversion <- transform(LossAversion,
 la_n <- lm(invest ~ grade * (arrangement + age) + male, data = LossAversion)
 summary(la_n)
 
+\donttest{
 la_b <- betareg(invests ~ grade * (arrangement + age) + male | arrangement + male + grade,
   data = LossAversion)
 summary(la_b)
 
-\donttest{
 la_xbx <- betareg(invest ~ grade * (arrangement + age) + male | arrangement + male + grade,
   data = LossAversion)
 summary(la_xbx)

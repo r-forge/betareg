@@ -481,42 +481,6 @@ Multiple R-squared:  0.158,	Adjusted R-squared:  0.149
 F-statistic: 17.7 on 6 and 563 DF,  p-value: <2e-16
 
 > 
-> la_b <- betareg(invests ~ grade * (arrangement + age) + male | arrangement + male + grade,
-+   data = LossAversion)
-> summary(la_b)
-
-Call:
-betareg(formula = invests ~ grade * (arrangement + age) + male | arrangement + 
-    male + grade, data = LossAversion)
-
-Quantile residuals:
-   Min     1Q Median     3Q    Max 
--3.948 -0.594 -0.042  0.554  4.439 
-
-Coefficients (mean model with logit link):
-                           Estimate Std. Error z value Pr(>|z|)    
-(Intercept)                 -1.4139     0.6197   -2.28   0.0225 *  
-grade10-12                  -2.9435     1.2520   -2.35   0.0187 *  
-arrangementteam              0.2250     0.1175    1.92   0.0554 .  
-age                          0.0906     0.0486    1.87   0.0621 .  
-maleyes                      0.4553     0.0990    4.60  4.2e-06 ***
-grade10-12:arrangementteam   0.6549     0.2003    3.27   0.0011 ** 
-grade10-12:age               0.1513     0.0806    1.88   0.0605 .  
-
-Phi coefficients (precision model with log link):
-                Estimate Std. Error z value Pr(>|z|)    
-(Intercept)        1.194      0.084   14.21  < 2e-16 ***
-arrangementteam    0.406      0.122    3.33  0.00087 ***
-maleyes           -0.555      0.113   -4.93  8.2e-07 ***
-grade10-12        -0.553      0.104   -5.31  1.1e-07 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-
-Type of estimator: ML (maximum likelihood)
-Log-likelihood: 94.4 on 11 Df
-Pseudo R-squared: 0.154
-Number of iterations: 24 (BFGS) + 3 (Fisher scoring) 
-> 
 > 
 > 
 > 
@@ -1913,7 +1877,7 @@ Number of iterations: 33 (BFGS) + 28 (Fisher scoring)
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  15.993 0.132 16.132 0 0 
+Time elapsed:  11.325 0.123 11.459 0 0 
 > grDevices::dev.off()
 null device 
           1 
