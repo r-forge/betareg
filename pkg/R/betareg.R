@@ -142,7 +142,7 @@ betareg <- function(formula, data, subset, na.action, weights, offset,
     if(model) rval$model <- mf
     if(y) rval$y <- Y
     if(x) rval$x <- list(mu = X, phi = Z)
-    if(rval$dist == "beta") {
+    if(is.null(rval$dist) || (rval$dist == "beta")) {
         for(n in intersect(names(rval), fix_names_mu_phi)) names(rval[[n]])[1L:2L] <- c("mean", "precision")
     }
     class(rval) <- "betareg"
@@ -780,7 +780,7 @@ betareg.fit <- function(x, y, z = NULL, weights = NULL, offset = NULL,
 print.betareg <- function(x, digits = max(3, getOption("digits") - 3), ...)
 {
     ## unify list component names
-    if(x$dist == "beta") {
+    if(is.null(x$dist) || (x$dist == "beta")) {
         for(n in intersect(names(x), fix_names_mu_phi)) names(x[[n]])[1L:2L] <- c("mu", "phi")
         mp <- c("mean", "precision")
     } else {
@@ -805,7 +805,7 @@ print.betareg <- function(x, digits = max(3, getOption("digits") - 3), ...)
             } else cat(sprintf("No coefficients (in %s model)\n\n", mp[2L]))
         }
     }
-    if(x$dist != "beta") {
+    if(!is.null(x$dist) && (x$dist != "beta")) {
         cat(sprintf("Exceedence parameter (extended-support %s model)\nnu: %s\n\n",
                     x$dist,
                     round(x$nu, digits = digits)))
@@ -817,7 +817,7 @@ print.betareg <- function(x, digits = max(3, getOption("digits") - 3), ...)
 summary.betareg <- function(object, phi = NULL, type = "quantile", ...)
 {
     ## unify list component names
-    if(object$dist == "beta") {
+    if(is.null(object$dist) || (object$dist == "beta")) {
         for(n in intersect(names(object), fix_names_mu_phi)) names(object[[n]])[1L:2L] <- c("mu", "phi")
     }
 
@@ -863,7 +863,7 @@ summary.betareg <- function(object, phi = NULL, type = "quantile", ...)
         object$x <- object$levels <- object$contrasts <- object$start <- NULL
 
     ## restore old list component names for backward compatibility
-    if(object$dist == "beta") {
+    if(is.null(object$dist) || (object$dist == "beta")) {
         for(n in intersect(names(object), fix_names_mu_phi)) names(object[[n]])[1L:2L] <- c("mean", "precision")
     }
 
@@ -875,7 +875,7 @@ summary.betareg <- function(object, phi = NULL, type = "quantile", ...)
 print.summary.betareg <- function(x, digits = max(3, getOption("digits") - 3), ...)
 {
     ## unify list component names
-    if(x$dist == "beta") {
+    if(is.null(x$dist) || (x$dist == "beta")) {
         for(n in intersect(names(x), fix_names_mu_phi)) names(x[[n]])[1L:2L] <- c("mu", "phi")
         mp <- c("mean", "precision")
     } else {
@@ -890,7 +890,7 @@ print.summary.betareg <- function(x, digits = max(3, getOption("digits") - 3), .
         types <- c("quantile", "pearson", "deviance", "response", "weighted", "sweighted", "sweighted2")
         Types <- c("Quantile residuals", "Pearson residuals", "Deviance residuals", "Raw response residuals",
                    "Weighted residuals", "Standardized weighted residuals", "Standardized weighted residuals 2")
-        if(x$dist != "beta") Types[1L] <- "Randomized quantile residuals"
+        if(!is.null(x$dist) && (x$dist != "beta")) Types[1L] <- "Randomized quantile residuals"
         cat(sprintf("%s:\n", Types[types == match.arg(x$residuals.type, types)]))
         print(structure(round(as.vector(quantile(x$residuals)), digits = digits),
                         .Names = c("Min", "1Q", "Median", "3Q", "Max")))
@@ -916,7 +916,7 @@ print.summary.betareg <- function(x, digits = max(3, getOption("digits") - 3), .
             cat("---\nSignif. codes: ", "0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1", "\n")
 
 
-        if(x$dist != "beta") {
+        if(!is.null(x$dist) && (x$dist != "beta")) {
             cat(sprintf("\nExceedence parameter nu: %s", round(x$nu, digits = digits)))
         }
         cat("\nType of estimator:", x$type, switch(x$type,
@@ -946,6 +946,7 @@ predict.betareg <- function(object, newdata = NULL,
                             na.action = na.pass, at = 0.5, ...)
 {
     ## unify list component names
+    if(is.null(object$dist)) object$dist <- "beta"
     if(object$dist == "beta") {
         for(n in intersect(names(object), fix_names_mu_phi)) names(object[[n]])[1L:2L] <- c("mu", "phi")
     }
@@ -1082,7 +1083,7 @@ predict.betareg <- function(object, newdata = NULL,
 coef.betareg <- function(object, model = c("full", "mean", "precision"), phi = NULL, ...)
 {
     ## unify list component names
-    if(object$dist == "beta") {
+    if(is.null(object$dist) || (object$dist == "beta")) {
         for(n in intersect(names(object), fix_names_mu_phi)) names(object[[n]])[1L:2L] <- c("mu", "phi")
     }
 
@@ -1119,7 +1120,7 @@ coef.betareg <- function(object, model = c("full", "mean", "precision"), phi = N
 vcov.betareg <- function(object, model = c("full", "mean", "precision"), phi = NULL, ...)
 {
     ## unify list component names
-    if(object$dist == "beta") {
+    if(is.null(object$dist) || (object$dist == "beta")) {
         for(n in intersect(names(object), fix_names_mu_phi)) names(object[[n]])[1L:2L] <- c("mu", "phi")
     }
 
@@ -1159,7 +1160,7 @@ bread.betareg <- function(x, phi = NULL, ...) {
 estfun.betareg <- function(x, phi = NULL, ...)
 {
     ## unify list component names
-    if(x$dist == "beta") {
+    if(is.null(x$dist) || (x$dist == "beta")) {
         for(n in intersect(names(x), fix_names_mu_phi)) names(x[[n]])[1L:2L] <- c("mu", "phi")
     } else {
         stop("not yet implemented")
@@ -1313,6 +1314,7 @@ residuals.betareg <- function(object,
 {
     ## unify list component names
     type <- match.arg(type)
+    if(is.null(object$dist)) object$dist <- "beta"
     if(object$dist == "beta") {
         for(n in intersect(names(object), fix_names_mu_phi)) names(object[[n]])[1L:2L] <- c("mu", "phi")
     } else {
@@ -1399,7 +1401,7 @@ residuals.betareg <- function(object,
 cooks.distance.betareg <- function(model, ...)
 {
     ## unify list component names
-    if(model$dist == "beta") {
+    if(is.null(model$dist) || (model$dist == "beta")) {
         for(n in intersect(names(model), fix_names_mu_phi)) names(model[[n]])[1L:2L] <- c("mu", "phi")
     } else {
         stop("not yet implemented for extended-support beta regression")
@@ -1443,6 +1445,7 @@ simulate.betareg <- function(object, nsim = 1, seed = NULL, ...) {
     p <- predict(object, type = "parameter")
     n <- nrow(p)
     nm <- rownames(p)
+    if(is.null(object$dist)) object$dist <- "beta"
     s <- switch(object$dist,    
       "beta"   = replicate(nsim, rbetar (n, mu = p$mu, phi = p$phi)),
       "xbeta"  = replicate(nsim, rxbeta (n, mu = p$mu, phi = p$phi, nu = p$nu)),
@@ -1455,6 +1458,7 @@ simulate.betareg <- function(object, nsim = 1, seed = NULL, ...) {
 }
 
 prodist.betareg <- function(object, newdata = NULL, na.action = na.pass, ...) {
+  if(is.null(object$dist)) object$dist <- "beta"
   pars <- predict(object, newdata = newdata, na.action = na.action, type = "parameters", ...)
   pars$mu <- setNames(pars$mu, rownames(pars))
   switch(object$dist,

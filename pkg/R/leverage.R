@@ -10,7 +10,7 @@ gleverage <- function(model, ...) {
 gleverage.betareg <- function(model, ...)
 {
   ## unify list component names
-  if(model$dist == "beta") {
+  if(is.null(model$dist) || (model$dist == "beta")) {
     for(n in intersect(names(model), fix_names_mu_phi)) names(model[[n]])[1L:2L] <- c("mu", "phi")
   } else {
     stop("not yet implemented for extended-support beta regression")
@@ -88,7 +88,7 @@ gleverage.betareg <- function(model, ...)
 hatvalues.betareg <- function(model, ...)
 {
   ## unify list component names
-  if(model$dist == "beta") {
+  if(is.null(model$dist) || (model$dist == "beta")) {
     for(n in intersect(names(model), fix_names_mu_phi)) names(model[[n]])[1L:2L] <- c("mu", "phi")
   } else {
     stop("not yet implemented for extended-support beta regression")

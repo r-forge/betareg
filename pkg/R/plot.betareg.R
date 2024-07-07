@@ -8,6 +8,7 @@ plot.betareg <- function(x, which = 1:4,
 {
   if(!is.numeric(which) || any(which < 1) || any(which > 6)) 
     stop("`which' must be in 1:6")
+  if(is.null(x$dist)) x$dist <- "beta"
   if(x$dist != "beta" && any(2:3 %in% which)) {
     which <- setdiff(which, 2:3)
     warning("which = 2 and 3 are not yet available for extended-support beta regression")
