@@ -63,6 +63,7 @@ X <- Beta4(
   theta1 = c(0, -0.1, -0.1),
   theta2 = c(1, 1.1, 1.5)
 )
+\donttest{
 X
 
 ## compute moments of the distribution
@@ -110,4 +111,5 @@ cbind(
   "theoretical" = mean(X),
   "empirical" = rowMeans(random(X, 1000))
 )
+}
 }

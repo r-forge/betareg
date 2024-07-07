@@ -58,6 +58,7 @@ X <- BetaR(
   mu  = c(0.25, 0.50, 0.75),
   phi = c(1, 1, 2)
 )
+\donttest{
 X
 
 ## compute moments of the distribution
@@ -107,4 +108,5 @@ cbind(
   "theoretical" = mean(X),
   "empirical" = rowMeans(random(X, 1000))
 )
+}
 }
