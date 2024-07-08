@@ -1,9 +1,8 @@
 \name{WeatherTask}
 \alias{WeatherTask}
-\docType{data}
-\title{
-  Weather Task With Priming and Precise and Imprecise Probabilities 
-}
+
+\title{Weather Task with Priming and Precise and Imprecise Probabilities}
+
 \description{
   In this study participants were asked to judge how likely Sunday is to
   be the hottest day of the week.

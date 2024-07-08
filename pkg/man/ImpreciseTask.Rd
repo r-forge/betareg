@@ -1,9 +1,8 @@
 \name{ImpreciseTask}
 \alias{ImpreciseTask}
-\docType{data}
-\title{
-  Imprecise Probabilities for Sunday Weather and Boeing Stock Task
-}
+
+\title{Imprecise Probabilities for Sunday Weather and Boeing Stock Task}
+
 \description{
   In this study participants were asked to estimate upper and lower
   probabilities for event to occur and not to occur.
