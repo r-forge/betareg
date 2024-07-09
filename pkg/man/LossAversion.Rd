@@ -15,7 +15,7 @@ adolescents (mostly aged 11 to 19).
 \format{
 A data frame containing 570 observations on 7 variables.
 \describe{
-  \item{invest}{numeric. Average proportion of points invested across
+  \item{invest}{numeric. Average proportion of tokens invested across
     all 9 rounds.}
   \item{gender}{factor. Gender of the player (or team of players).}
   \item{male}{factor. Was (at least one of) the player(s) male (in the team)?}
@@ -36,15 +36,15 @@ A data frame containing 570 observations on 7 variables.
   The data in \code{LossAversion} were collected by Matthias Sutter and
   Daniela Glätzle-Rützler (Universität Innsbruck) in an experiment with
   high-school students in Tyrol, Austria (Schwaz and Innsbruck). The students
-  could invest X points (0-100) in each of 9 rounds in a lottery. The payouts
-  were 100 + 2.5 * X points with probability 1/3 and 100 - X points with
-  probability 2/3. Thus, the expected payouts were 100 + 1/6 * X points.
+  could invest X tokens (0-100) in each of 9 rounds in a lottery. The payouts
+  were 100 + 2.5 * X tokens with probability 1/3 and 100 - X tokens with
+  probability 2/3. Thus, the expected payouts were 100 + 1/6 * X tokens.
   Depending on the treatment in the experiment, the investments could either be
   modified in each round (treatment: "short") or only in round 1, 4, 7
   (treatment "long"). Decisions were either made alone or in teams of two. The
-  points were converted to monetary payouts using a conversion of
-  EUR 0.5 per 100 points for lower grades (Unterstufe, 6-8) or EUR 1.0 per 100
-  points for upper grades (Oberstufe, 10-12).
+  tokens were converted to monetary payouts using a conversion of
+  EUR 0.5 per 100 tokens for lower grades (Unterstufe, 6-8) or EUR 1.0 per 100
+  tokens for upper grades (Oberstufe, 10-12).
 
   From the myopic loss aversion literature (on adults) one would expect that the
   investments of the players (either single players or teams of two) would
