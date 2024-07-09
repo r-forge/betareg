@@ -1,3 +1,10 @@
+# betareg 3.2-1
+
+* Turned `vignette("betareg", package = "betareg")` and
+  `vignette("betareg-ext", package = "betareg")` from Sweave into Quarto
+  vignettes. Some improvements/updates in the text.
+
+
 # betareg 3.2-0
 
 * Major extension in `betareg()`: In addition to classic beta regression for

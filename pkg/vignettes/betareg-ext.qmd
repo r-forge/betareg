@@ -21,7 +21,9 @@ author:
     url: https://www.zeileis.org/
 format: 
   html:
+    html-math-method: mathjax
     toc: true
+    number-sections: true
 abstract: >
   This introduction to the extended features of the R package
   **betareg** is a (slightly) modified version of @betareg:Gruen+Kosmidis+Zeileis:2012,
@@ -861,6 +863,7 @@ and almost unaffected by IQ score.
 #| echo: false
 #| fig-width: 6
 #| fig-height: 5.5
+#| out-width: 100%
 #| label: fig-ReadingSkills
 #| fig-cap: "Reading skills data from @betareg:Smithson+Verkuilen:2006. Linearly transformed reading accuracy by IQ score and dyslexia status (control, blue vs. dyslexic, red). Fitted curves correspond to beta regression (solid) and OLS regression with logit-transformed dependent variable (dashed)."
 data("ReadingSkills", package = "betareg")
@@ -937,6 +940,7 @@ knitr::kable(cfse, align = c("l", "l", "r", "r", "r"), col.names = c("", "", "Ma
 #| echo: false
 #| fig-height: 6.5
 #| fig-width: 6.5
+#| out-width: 100%
 #| label: fig-readingskillsbias
 #| fig-cap: "Scatterplots of the logarithm of the estimated precision parameters $\\log(\\phi_i)$ based on the maximum likelihood, bias-corrected and bias-reduced estimates. The dashed black line is the main diagonal, the solid red line is a scatterplot smoother."
 pr_phi <- sapply(list("Maximum likelihood" = rs_ml,
@@ -967,7 +971,7 @@ the ML estimator has a more symmetric distribution than on the
 original scale.
 
 To emphasize that BC/BR may potentially be crucial for
-empirical analyses, @sec-gasoline replicates the results
+empirical analyses, the appendix replicates the results
 of @betareg:Kosmidis+Firth:2010 for a beta regression where
 substantial upward bias was detected for the ML estimator of the
 precision parameter, which in turn causes underestimated asymptotic
@@ -1046,6 +1050,7 @@ plot(rs_tree)
 #| echo: false
 #| fig-height: 7
 #| fig-width: 10
+#| out-width: 100%
 #| label: fig-betatree
 #| fig-cap: "Partitioned beta regression model for the `ReadingSkills` data."
 plot(rs_tree)
@@ -1196,6 +1201,7 @@ IQ score on accuracy in the second component.
 #| echo: false
 #| fig-height: 5.5
 #| fig-width: 10
+#| out-width: 100%
 #| label: fig-betamix
 #| fig-cap: "Fitted regression lines for the mixture model with three components and the observations shaded according to their posterior probabilities (left). Fitted regression lines for the partitioned beta regression model with shading according to the observed `dyslexic` variable where nondyslexic and dyslexic children are in blue and red, respectively (right)."
 par(mfrow = c(1, 2))
@@ -1307,13 +1313,13 @@ model fitted using ML estimation to those using bias
 correction/reduction, and draw conclusions incorporating observed or
 unobserved heterogeneity in their models.
 
-## Acknowledgments
+## Acknowledgments {.unnumbered}
 
 BG gratefully acknowledges financial support from the Austrian Science
 Fund (FWF): V170-N18.
 
 
-## Appendix: Bias correction/reduction for gasoline yield data {#sec-gasoline}
+## Appendix: Bias correction/reduction for gasoline yield data {.unnumbered}
 
 To illustrate how upward bias in the ML estimator of the precision parameter
 in beta regressions can severely affect inference, results from
@@ -1379,3 +1385,6 @@ knitr::kable(cfse, align = c("l", rep("r", 6)), col.names = c("", "Maximum likel
 ```
 
 : ML, BC and BR estimates and corresponding estimated standard errors for a logit-linked beta regression model for the gasoline yield data. Precision is estimated on the log-scale and is assumed to be equal across the observations. {#tbl-GasolineYield-bias2}
+
+
+## References {.unnumbered}

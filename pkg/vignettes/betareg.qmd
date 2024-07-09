@@ -15,7 +15,9 @@ author:
     url: https://www.zeileis.org/
 format: 
   html:
+    html-math-method: mathjax
     toc: true
+    number-sections: true
 abstract: >
   This introduction to the R package **betareg** is a (slightly)
   modified version of @betareg:Cribari-Neto+Zeileis:2010, published in the
@@ -115,6 +117,7 @@ the beta distribution an attractive candidate for data-driven statistical modeli
 #| echo: false
 #| fig-width: 8.5
 #| fig-height: 4.5
+#| out-width: 100%
 #| label: fig-beta-distributions
 #| fig-cap: "Probability density functions for beta distributions with varying parameters $\\mu = 0.10, 0.25, 0.50, 0.75, 0.90$ and $\\phi = 5$ (left) and $\\phi = 100$ (right)."
 par(mfrow = c(1, 2), mar = c(4.1, 4.1, 4.1, 0.1))
@@ -514,6 +517,7 @@ graphic can be reproduced (in a slightly different order) using the
 #| echo: false
 #| fig-width: 6
 #| fig-height: 5.5
+#| out-width: 100%
 #| label: fig-GasolineYield
 #| fig-cap: "Gasoline yield data from @betareg:Prater:1956: Proportion of crude oil converted to gasoline explained by temperature (in degrees Fahrenheit) at which all gasoline has vaporized and given batch (indicated by gray level). Fitted curves correspond to beta regressions `gy_loglog` with log-log link (solid, red) and `gy_logit` with logit link (dashed, blue). Both curves were evaluated at varying temperature with the intercept for batch 6 (i.e., roughly the average intercept)."
 redblue <- hcl(c(0, 260), 90, 40)
@@ -541,6 +545,7 @@ legend("bottomright", c("log-log", "logit"),
 ```{r GasolineYield-plot}
 #| fig-width: 8.5
 #| fig-height: 10
+#| out-width: 100%
 #| label: fig-GasolineYield-plot
 #| fig-cap: "Diagnostic plots for beta regression model `gy_logit`."
 par(mfrow = c(3, 2))
@@ -618,6 +623,7 @@ hence all model comparisons are deferred.
 #| echo: false
 #| fig-width: 6
 #| fig-height: 5.5
+#| out-width: 100%
 #| label: fig-FoodExpenditure
 #| fig-cap: "Household food expenditure data from @betareg:Griffiths+Hill+Judge:1993: Proportion of household income spent on food explained by household income and number of persons in household (indicated by gray level). Fitted curves correspond to beta regressions `fe_beta` with fixed dispersion (long-dashed, blue), `fe_beta2` with variable dispersion (solid, red), and the linear regression `fe_lin` (dashed, black). All curves were evaluated at varying income with the intercept for mean number of persons ($ = `r round(mean(FoodExpenditure$persons), digits = 2)`$)."
 redblueblack <- hcl(c(0, 260, 0), c(90, 90, 0), c(40, 40, 0))
@@ -777,6 +783,7 @@ absolute raw residuals (i.e., $y_i - \hat \mu_i$) from both models as in
 #| echo: false
 #| fig-width: 6
 #| fig-height: 5.5
+#| out-width: 100%
 #| label: fig-GasolineYield-diagnostics
 #| fig-cap: "Scatterplot comparing the absolute raw residuals from beta regression modes with log-log link (x-axis) and logit link (y-axis)."
 plot(abs(residuals(gy_loglog, type = "response")),
@@ -912,6 +919,7 @@ is a complete replication script with comments.
 #| echo: false
 #| fig-width: 6
 #| fig.height: 5.5
+#| out-width: 100%
 #| label: fig-ReadingSkills
 #| fig-cap: "Reading skills data from @betareg:Smithson+Verkuilen:2006 : Linearly transformed reading accuracy by IQ score and dyslexia status (control, blue vs. dyslexic, red). Fitted curves correspond to beta regression `rs_beta` (solid) and OLS regression with logit-transformed dependent variable `rs_ols` (dashed)."
 cl1 <- hcl(c(260, 0), 90, 40)
@@ -998,16 +1006,16 @@ y2_gefp <- gefp(y2 ~ 1, fit = betareg)
 and visualized by
 
 ```{r strucchange-plot1}
-#| fig-width: 4.5
-#| fig-height: 5
+#| fig-width: 6.5
+#| fig-height: 6
 #| label: fig-strucchange1
 #| fig-cap: "Structural change tests for artificial data `y1` with change in $\\mu$."
 plot(y1_gefp, aggregate = FALSE)
 ```
 
 ```{r strucchange-plot2}
-#| fig-width: 4.5
-#| fig-height: 5
+#| fig-width: 6.5
+#| fig-height: 6
 #| label: fig-strucchange2
 #| fig-cap: "Structural change tests for artificial data `y2` with change in $\\phi$."
 plot(y2_gefp, aggregate = FALSE)
@@ -1036,7 +1044,7 @@ $\beta$ARMA models
 proposed by @betareg:Rocha+Cribari-Neto:2009.  
 
 
-### Acknowledgments
+## Acknowledgments {.unnumbered}
 
 FCN gratefully acknowledges financial support from CNPq/Brazil. 
 Both authors are grateful to A.B. Simas and A.V. Rocha for their
@@ -1044,3 +1052,5 @@ work on the previous versions of the **betareg** package (up to
 version 1.2). Furthermore, detailed and constructive feedback from
 two anonymous reviewers, the associated editor, as well as from
 B. Grün was very helpful for enhancing both software and manuscript.
+
+## References {.unnumbered}
