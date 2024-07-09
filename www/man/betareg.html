@@ -123,10 +123,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Get started</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../man/betareg.html" aria-current="page"> 
-<span class="menu-text">Documentation</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-documentation" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Documentation</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-documentation">
+<li>
+    <a class="dropdown-item" href="../man/betareg.html">
+ <span class="dropdown-text">Beta regression</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../man/CarTask.html">
+ <span class="dropdown-text">Data sets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/dbetar.html">
+ <span class="dropdown-text">Distributions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/BetaR.html">
+ <span class="dropdown-text">distributions3 objects</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Articles</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">
+<li>
+    <a class="dropdown-item" href="../vignettes/betareg.html">
+ <span class="dropdown-text">Beta Regression in R (JSS 2010)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../vignettes/betareg-ext.html">
+ <span class="dropdown-text">Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned (JSS 2012)</span></a>
+  </li>  
+    </ul>
+</li>
   <li class="nav-item">
     <a class="nav-link" href="../NEWS.html"> 
 <span class="menu-text">News</span></a>
@@ -768,7 +802,7 @@ a list with elements <code>“mean”</code> (or <code>“mu”</code>) and <cod
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"FoodExpenditure"</span>, package <span class="op">=</span> <span class="st">"betareg"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Table 1</span></span>
-<span><span class="va">gy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">batch</span> <span class="op">+</span> <span class="va">temp</span>, data <span class="op">=</span> <span class="va">GasolineYield</span><span class="op">)</span></span>
+<span><span class="va">gy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">batch</span> <span class="op">+</span> <span class="va">temp</span>, data <span class="op">=</span> <span class="va">GasolineYield</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">gy</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -815,7 +849,7 @@ Number of iterations: 51 (BFGS) + 3 (Fisher scoring) </code></pre>
 data:  fe_lin
 BP = 5.9, df = 2, p-value = 0.05</code></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fe_beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">food</span><span class="op">/</span><span class="va">income</span><span class="op">)</span> <span class="op">~</span> <span class="va">income</span> <span class="op">+</span> <span class="va">persons</span>, data <span class="op">=</span> <span class="va">FoodExpenditure</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fe_beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/betareg.html">betareg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">food</span><span class="op">/</span><span class="va">income</span><span class="op">)</span> <span class="op">~</span> <span class="va">income</span> <span class="op">+</span> <span class="va">persons</span>, data <span class="op">=</span> <span class="va">FoodExpenditure</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fe_beta</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -844,7 +878,7 @@ Pseudo R-squared: 0.388
 Number of iterations: 28 (BFGS) + 4 (Fisher scoring) </code></pre>
 </div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## nested model comparisons via Wald and LR tests</span></span>
-<span><span class="va">fe_beta2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">food</span><span class="op">/</span><span class="va">income</span><span class="op">)</span> <span class="op">~</span> <span class="va">income</span>, data <span class="op">=</span> <span class="va">FoodExpenditure</span><span class="op">)</span></span>
+<span><span class="va">fe_beta2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/betareg.html">betareg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">food</span><span class="op">/</span><span class="va">income</span><span class="op">)</span> <span class="op">~</span> <span class="va">income</span>, data <span class="op">=</span> <span class="va">FoodExpenditure</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/lmtest/man/lrtest.html">lrtest</a></span><span class="op">(</span><span class="va">fe_beta</span>, <span class="va">fe_beta2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Likelihood ratio test
@@ -872,7 +906,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Section 3 from online supplements to Simas et al. (2010)</span></span>
 <span><span class="co">## mean model as in gy above</span></span>
 <span><span class="co">## precision model with regressor temp</span></span>
-<span><span class="va">gy2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">batch</span> <span class="op">+</span> <span class="va">temp</span> <span class="op">|</span> <span class="va">temp</span>, data <span class="op">=</span> <span class="va">GasolineYield</span><span class="op">)</span></span>
+<span><span class="va">gy2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">batch</span> <span class="op">+</span> <span class="va">temp</span> <span class="op">|</span> <span class="va">temp</span>, data <span class="op">=</span> <span class="va">GasolineYield</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## MLE column in Table 19</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">gy2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

@@ -123,10 +123,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Get started</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../man/betareg.html" aria-current="page"> 
-<span class="menu-text">Documentation</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-documentation" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Documentation</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-documentation">
+<li>
+    <a class="dropdown-item" href="../man/betareg.html">
+ <span class="dropdown-text">Beta regression</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../man/CarTask.html">
+ <span class="dropdown-text">Data sets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/dbetar.html">
+ <span class="dropdown-text">Distributions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/BetaR.html">
+ <span class="dropdown-text">distributions3 objects</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Articles</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">
+<li>
+    <a class="dropdown-item" href="../vignettes/betareg.html">
+ <span class="dropdown-text">Beta Regression in R (JSS 2010)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../vignettes/betareg-ext.html">
+ <span class="dropdown-text">Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned (JSS 2012)</span></a>
+  </li>  
+    </ul>
+</li>
   <li class="nav-item">
     <a class="nav-link" href="../NEWS.html"> 
 <span class="menu-text">News</span></a>
@@ -550,7 +584,7 @@ symbolic description of the model for the parameters fixed over components (of t
 <code id="extra_components">extra_components</code>
 </td>
 <td>
-a list containing objects returned by <code><a href="https://rdrr.io/pkg/betareg/man/betamix.html">extraComponent()</a></code>.
+a list containing objects returned by <code><a href="https://betareg.R-Forge.R-project.org/man/betamix.html">extraComponent()</a></code>.
 </td>
 </tr>
 <tr>
@@ -613,8 +647,8 @@ numeric; half-length of the interval of the uniform distribution.
 <span><span class="co">## try to capture accuracy ~ iq relationship (without using dyslexia</span></span>
 <span><span class="co">## information) using two beta regression components and one additional</span></span>
 <span><span class="co">## extra component for a perfect reading score</span></span>
-<span><span class="va">rs_mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betamix.html">betamix</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, k <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  nstart <span class="op">=</span> <span class="fl">10</span>, extra_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betamix.html">extraComponent</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"uniform"</span>,</span>
+<span><span class="va">rs_mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/betamix.html">betamix</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, k <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  nstart <span class="op">=</span> <span class="fl">10</span>, extra_components <span class="op">=</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/betamix.html">extraComponent</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"uniform"</span>,</span>
 <span>  coef <span class="op">=</span> <span class="fl">0.99</span>, delta <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## visualize result</span></span>
@@ -657,8 +691,8 @@ numeric; half-length of the interval of the uniform distribution.
 <span><span class="co">## The posteriors from the previously fitted model are used</span></span>
 <span><span class="co">## for initialization.</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"flexmix"</span><span class="op">)</span></span>
-<span><span class="va">rs_mix2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betamix.html">betamix</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>,</span>
-<span>  extra_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betamix.html">extraComponent</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"uniform"</span>,</span>
+<span><span class="va">rs_mix2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/betamix.html">betamix</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>,</span>
+<span>  extra_components <span class="op">=</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/betamix.html">extraComponent</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"uniform"</span>,</span>
 <span>  coef <span class="op">=</span> <span class="fl">0.99</span>, delta <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>, cluster <span class="op">=</span> <span class="fu">posterior</span><span class="op">(</span><span class="va">rs_mix</span><span class="op">)</span>,</span>
 <span>  FLXconcomitant <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/flexmix/man/FLXconcomitant.html">FLXPmultinom</a></span><span class="op">(</span><span class="op">~</span><span class="va">w</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">rs_mix2</span>, which <span class="op">=</span> <span class="st">"concomitant"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

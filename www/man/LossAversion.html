@@ -123,10 +123,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Get started</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../man/betareg.html" aria-current="page"> 
-<span class="menu-text">Documentation</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-documentation" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Documentation</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-documentation">
+<li>
+    <a class="dropdown-item" href="../man/betareg.html">
+ <span class="dropdown-text">Beta regression</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../man/CarTask.html">
+ <span class="dropdown-text">Data sets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/dbetar.html">
+ <span class="dropdown-text">Distributions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/BetaR.html">
+ <span class="dropdown-text">distributions3 objects</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Articles</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">
+<li>
+    <a class="dropdown-item" href="../vignettes/betareg.html">
+ <span class="dropdown-text">Beta Regression in R (JSS 2010)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../vignettes/betareg-ext.html">
+ <span class="dropdown-text">Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned (JSS 2012)</span></a>
+  </li>  
+    </ul>
+</li>
   <li class="nav-item">
     <a class="nav-link" href="../NEWS.html"> 
 <span class="menu-text">News</span></a>
@@ -514,7 +548,7 @@ Residual standard error: 0.247 on 563 degrees of freedom
 Multiple R-squared:  0.158, Adjusted R-squared:  0.149 
 F-statistic: 17.7 on 6 and 563 DF,  p-value: &lt;2e-16</code></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">la_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">invests</span> <span class="op">~</span> <span class="va">grade</span> <span class="op">*</span> <span class="op">(</span><span class="va">arrangement</span> <span class="op">+</span> <span class="va">age</span><span class="op">)</span> <span class="op">+</span> <span class="va">male</span> <span class="op">|</span> <span class="va">arrangement</span> <span class="op">+</span> <span class="va">male</span> <span class="op">+</span> <span class="va">grade</span>,</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">la_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">invests</span> <span class="op">~</span> <span class="va">grade</span> <span class="op">*</span> <span class="op">(</span><span class="va">arrangement</span> <span class="op">+</span> <span class="va">age</span><span class="op">)</span> <span class="op">+</span> <span class="va">male</span> <span class="op">|</span> <span class="va">arrangement</span> <span class="op">+</span> <span class="va">male</span> <span class="op">+</span> <span class="va">grade</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">LossAversion</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">la_b</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -551,7 +585,7 @@ Log-likelihood: 94.4 on 11 Df
 Pseudo R-squared: 0.154
 Number of iterations: 24 (BFGS) + 3 (Fisher scoring) </code></pre>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">la_xbx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">invest</span> <span class="op">~</span> <span class="va">grade</span> <span class="op">*</span> <span class="op">(</span><span class="va">arrangement</span> <span class="op">+</span> <span class="va">age</span><span class="op">)</span> <span class="op">+</span> <span class="va">male</span> <span class="op">|</span> <span class="va">arrangement</span> <span class="op">+</span> <span class="va">male</span> <span class="op">+</span> <span class="va">grade</span>,</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">la_xbx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/betareg.html">betareg</a></span><span class="op">(</span><span class="va">invest</span> <span class="op">~</span> <span class="va">grade</span> <span class="op">*</span> <span class="op">(</span><span class="va">arrangement</span> <span class="op">+</span> <span class="va">age</span><span class="op">)</span> <span class="op">+</span> <span class="va">male</span> <span class="op">|</span> <span class="va">arrangement</span> <span class="op">+</span> <span class="va">male</span> <span class="op">+</span> <span class="va">grade</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">LossAversion</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">la_xbx</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -562,7 +596,7 @@ betareg(formula = invest ~ grade * (arrangement + age) + male | arrangement +
 
 Randomized quantile residuals:
    Min     1Q Median     3Q    Max 
--3.661 -0.693 -0.015  0.698  2.885 
+-3.570 -0.693 -0.015  0.698  3.573 
 
 Coefficients (mu model with logit link):
                            Estimate Std. Error z value Pr(&gt;|z|)    

@@ -123,10 +123,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Get started</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../man/betareg.html" aria-current="page"> 
-<span class="menu-text">Documentation</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-documentation" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Documentation</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-documentation">
+<li>
+    <a class="dropdown-item" href="../man/betareg.html">
+ <span class="dropdown-text">Beta regression</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../man/CarTask.html">
+ <span class="dropdown-text">Data sets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/dbetar.html">
+ <span class="dropdown-text">Distributions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/BetaR.html">
+ <span class="dropdown-text">distributions3 objects</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Articles</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">
+<li>
+    <a class="dropdown-item" href="../vignettes/betareg.html">
+ <span class="dropdown-text">Beta Regression in R (JSS 2010)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../vignettes/betareg-ext.html">
+ <span class="dropdown-text">Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned (JSS 2012)</span></a>
+  </li>  
+    </ul>
+</li>
   <li class="nav-item">
     <a class="nav-link" href="../NEWS.html"> 
 <span class="menu-text">News</span></a>
@@ -446,7 +480,7 @@ numeric. The minimum and maximum, respectively, of the 4-parameter beta distribu
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">6020</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## three beta distributions</span></span>
-<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/Beta4.html">Beta4</a></span><span class="op">(</span></span>
+<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/Beta4.html">Beta4</a></span><span class="op">(</span></span>
 <span>  mu  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span><span class="op">)</span>,</span>
 <span>  phi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  theta1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">0.1</span>, <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>,</span>

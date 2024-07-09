@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.53">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Bettina Grün">
+<meta name="author" content="Ioannis Kosmidis">
+<meta name="author" content="Achim Zeileis">
+<title>Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned – betareg</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../betareg.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+<meta property="og:title" content="Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned – betareg">
+<meta property="og:description" content="This introduction to the extended features of the R package betareg is a (slightly) modified version of Grün, Kosmidis, and Zeileis (2012), published in the Journal of Statistical Software.
+Beta regression – an increasingly popular approach for modeling rates and proportions – is extended in various directions: (a) bias correction/reduction of the maximum likelihood estimator, (b) beta regression tree models by means of recursive partitioning, (c) latent class beta regression by means of finite mixture models. All three extensions may be of importance for enhancing the beta regression toolbox in practice to provide more reliable inference and capture both observed and unobserved/latent heterogeneity in the data. Using the analogy of Smithson and Verkuilen (2006), these extensions make beta regression not only “a better lemon squeezer” (compared to classical least squares regression) but a full-fledged modern juicer offering lemon-based drinks: shaken and stirred (bias correction and reduction), mixed (finite mixture model), or partitioned (tree model). All three extensions are provided in the R package betareg (at least 2.4-0), building on generic algorithms and implementations for bias correction/reduction, model-based recursive partioning, and finite mixture models, respectively. Specifically, the new functions betatree() and betamix() reuse the object-oriented flexible implementation from the R packages partykit and flexmix, respectively.">
+<meta property="og:image" content="https://betareg.R-Forge.R-project.org/vignettes/betareg.png">
+<meta property="og:site_name" content="betareg">
+<meta name="twitter:title" content="Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned – betareg">
+<meta name="twitter:description" content="This introduction to the extended features of the R package betareg is a (slightly) modified version of Grün, Kosmidis, and Zeileis (2012), published in the Journal of Statistical Software.
+Beta regression – an increasingly popular approach for modeling rates and proportions – is extended in various directions: (a) bias correction/reduction of the maximum likelihood estimator, (b) beta regression tree models by means of recursive partitioning, (c) latent class beta regression by means of finite mixture models. All three extensions may be of importance for enhancing the beta regression toolbox in practice to provide more reliable inference and capture both observed and unobserved/latent heterogeneity in the data. Using the analogy of Smithson and Verkuilen (2006), these extensions make beta regression not only “a better lemon squeezer” (compared to classical least squares regression) but a full-fledged modern juicer offering lemon-based drinks: shaken and stirred (bias correction and reduction), mixed (finite mixture model), or partitioned (tree model). All three extensions are provided in the R package betareg (at least 2.4-0), building on generic algorithms and implementations for bias correction/reduction, model-based recursive partioning, and finite mixture models, respectively. Specifically, the new functions betatree() and betamix() reuse the object-oriented flexible implementation from the R packages partykit and flexmix, respectively.">
+<meta name="twitter:image" content="https://betareg.R-Forge.R-project.org/vignettes/betareg.png">
+<meta name="twitter:image:alt" content="betareg: Beta Regression in R">
+<meta name="twitter:site" content="@AchimZeileis">
+<meta name="twitter:card" content="summary">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../betareg-wide.png" alt="betareg logo" class="navbar-logo"></a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Get started</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-documentation" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Documentation</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-documentation">
+<li>
+    <a class="dropdown-item" href="../man/betareg.html">
+ <span class="dropdown-text">Beta regression</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/CarTask.html">
+ <span class="dropdown-text">Data sets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/dbetar.html">
+ <span class="dropdown-text">Distributions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/BetaR.html">
+ <span class="dropdown-text">distributions3 objects</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Articles</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">
+<li>
+    <a class="dropdown-item" href="../vignettes/betareg.html">
+ <span class="dropdown-text">Beta Regression in R (JSS 2010)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../vignettes/betareg-ext.html">
+ <span class="dropdown-text">Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned (JSS 2012)</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item">
+    <a class="nav-link" href="../NEWS.html"> 
+<span class="menu-text">News</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../CITATION.html"> 
+<span class="menu-text">Citation</span></a>
+  </li>  
+</ul>
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../contact.html"> 
+<span class="menu-text">Contact</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://R-Forge.R-project.org/projects/betareg"> <i class="bi bi-code" role="img" aria-label="betareg @ R-Forge">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#sec-intro" id="toc-sec-intro" class="nav-link active" data-scroll-target="#sec-intro">Introduction</a>
+  <ul class="collapse">
+<li><a href="#a-brief-review-of-beta-regression" id="toc-a-brief-review-of-beta-regression" class="nav-link" data-scroll-target="#a-brief-review-of-beta-regression">A brief review of beta regression</a></li>
+  <li><a href="#implementation-in-r" id="toc-implementation-in-r" class="nav-link" data-scroll-target="#implementation-in-r">Implementation in R</a></li>
+  <li><a href="#extensions" id="toc-extensions" class="nav-link" data-scroll-target="#extensions">Extensions</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#sec-bias" id="toc-sec-bias" class="nav-link" data-scroll-target="#sec-bias">Bias correction and reduction in beta regressions</a>
+  <ul class="collapse">
+<li><a href="#preamble" id="toc-preamble" class="nav-link" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#sec-iteration" id="toc-sec-iteration" class="nav-link" data-scroll-target="#sec-iteration">Generic framework</a></li>
+  <li><a href="#bias-correction-and-bias-reduction-for-beta-regressions" id="toc-bias-correction-and-bias-reduction-for-beta-regressions" class="nav-link" data-scroll-target="#bias-correction-and-bias-reduction-for-beta-regressions">Bias correction and bias reduction for beta regressions</a></li>
+  <li><a href="#implementation-in-betareg" id="toc-implementation-in-betareg" class="nav-link" data-scroll-target="#implementation-in-betareg">Implementation in <strong>betareg</strong></a></li>
+  </ul>
+</li>
+  <li><a href="#sec-tree" id="toc-sec-tree" class="nav-link" data-scroll-target="#sec-tree">Beta regression trees</a></li>
+  <li><a href="#sec-mix" id="toc-sec-mix" class="nav-link" data-scroll-target="#sec-mix">Finite mixtures of beta regressions</a></li>
+  <li>
+<a href="#sec-illustr-appl" id="toc-sec-illustr-appl" class="nav-link" data-scroll-target="#sec-illustr-appl">Illustrative application</a>
+  <ul class="collapse">
+<li><a href="#bias-correction-and-reduction" id="toc-bias-correction-and-reduction" class="nav-link" data-scroll-target="#bias-correction-and-reduction">Bias correction and reduction</a></li>
+  <li><a href="#beta-regression-tree" id="toc-beta-regression-tree" class="nav-link" data-scroll-target="#beta-regression-tree">Beta regression tree</a></li>
+  <li><a href="#latent-class-beta-regression" id="toc-latent-class-beta-regression" class="nav-link" data-scroll-target="#latent-class-beta-regression">Latent class beta regression</a></li>
+  </ul>
+</li>
+  <li><a href="#sec-conclusions" id="toc-sec-conclusions" class="nav-link" data-scroll-target="#sec-conclusions">Conclusions</a></li>
+  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
+  <li><a href="#sec-gasoline" id="toc-sec-gasoline" class="nav-link" data-scroll-target="#sec-gasoline">Appendix: Bias correction/reduction for gasoline yield data</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header"><h1 class="title display-7">Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned</h1>
+<p class="author">Bettina Grün</p>
+<p class="author">Ioannis Kosmidis</p>
+<p class="author">Achim Zeileis</p>
+
+<div class="abstract">
+<div class="abstract-title">Abstract</div>
+<p>This introduction to the extended features of the R package <strong>betareg</strong> is a (slightly) modified version of <span class="citation" data-cites="betareg:Gruen+Kosmidis+Zeileis:2012">Grün, Kosmidis, and Zeileis (<a href="#ref-betareg:Gruen+Kosmidis+Zeileis:2012" role="doc-biblioref">2012</a>)</span>, published in the <em>Journal of Statistical Software</em>.<br>
+Beta regression – an increasingly popular approach for modeling rates and proportions – is extended in various directions: (a) bias correction/reduction of the maximum likelihood estimator, (b) beta regression tree models by means of recursive partitioning, (c) latent class beta regression by means of finite mixture models. All three extensions may be of importance for enhancing the beta regression toolbox in practice to provide more reliable inference and capture both observed and unobserved/latent heterogeneity in the data. Using the analogy of <span class="citation" data-cites="betareg:Smithson+Verkuilen:2006">Smithson and Verkuilen (<a href="#ref-betareg:Smithson+Verkuilen:2006" role="doc-biblioref">2006</a>)</span>, these extensions make beta regression not only “a better lemon squeezer” (compared to classical least squares regression) but a full-fledged modern juicer offering lemon-based drinks: shaken and stirred (bias correction and reduction), mixed (finite mixture model), or partitioned (tree model). All three extensions are provided in the R package <strong>betareg</strong> (at least 2.4-0), building on generic algorithms and implementations for bias correction/reduction, model-based recursive partioning, and finite mixture models, respectively. Specifically, the new functions <code>betatree()</code> and <code>betamix()</code> reuse the object-oriented flexible implementation from the R packages <strong>partykit</strong> and <strong>flexmix</strong>, respectively.</p>
+</div>
+</header><section id="sec-intro" class="level2"><h2 class="anchored" data-anchor-id="sec-intro">Introduction</h2>
+<section id="a-brief-review-of-beta-regression" class="level3"><h3 class="anchored" data-anchor-id="a-brief-review-of-beta-regression">A brief review of beta regression</h3>
+<p>Beta regression is a model for continuous response variables <span class="math inline">\(y\)</span> which assume values in the open unit interval <span class="math inline">\((0, 1)\)</span>. Such response variables may stem from rates, proportions, concentrations, etc. A regression model where the mean as well as the precision is modeled through covariates was introduced by <span class="citation" data-cites="betareg:Ferrari+Cribari-Neto:2004">Ferrari and Cribari-Neto (<a href="#ref-betareg:Ferrari+Cribari-Neto:2004" role="doc-biblioref">2004</a>)</span> along with the extensions by <span class="citation" data-cites="betareg:Smithson+Verkuilen:2006">Smithson and Verkuilen (<a href="#ref-betareg:Smithson+Verkuilen:2006" role="doc-biblioref">2006</a>)</span> and <span class="citation" data-cites="betareg:Simas+Barreto-Souza+Rocha:2010">Simas, Barreto-Souza, and Rocha (<a href="#ref-betareg:Simas+Barreto-Souza+Rocha:2010" role="doc-biblioref">2010</a>)</span>. This model is also referred to as “double index regression model” because it contains two regression parts: one for the mean and one for the precision. <span class="citation" data-cites="betareg:Ferrari+Cribari-Neto:2004">Ferrari and Cribari-Neto (<a href="#ref-betareg:Ferrari+Cribari-Neto:2004" role="doc-biblioref">2004</a>)</span> employed an alternative parameterization of the beta distribution characterizing more easily the mean and the variance. In this parameterization the beta distribution has the density</p>
+<p><span id="eq-density"><span class="math display">\[
+f(y;\mu,\phi) =
+\frac{\Gamma(\phi)}{\Gamma(\mu\phi)\Gamma((1-\mu)\phi)}y^{\mu\phi-1}(1-y)^{(1-\mu)\phi-1}\,
+\tag{1}\]</span></span></p>
+<p>where <span class="math inline">\(0&lt;y&lt;1\)</span>, <span class="math inline">\(0&lt;\mu&lt;1\)</span>, <span class="math inline">\(\phi &gt; 0\)</span>, and <span class="math inline">\(\Gamma(\cdot)\)</span> is the gamma function. A beta-distributed variable <span class="math inline">\(Y\)</span> then has mean <span class="math inline">\(\text{E}(Y) = \mu\)</span> and variance <span class="math inline">\(\text{Var}(Y) = \mu(1-\mu)/(1+\phi)\)</span> so that <span class="math inline">\(\phi\)</span> can be seen as a precision parameter.</p>
+<p>The double index beta regression model is specified in the following way. Given observations on <span class="math inline">\(n\)</span> independent beta-distributed random variables <span class="math inline">\(Y_i\)</span> (<span class="math inline">\(i = 1, \dots, n\)</span>), the corresponding parameters <span class="math inline">\(\mu_i\)</span> and <span class="math inline">\(\phi_i\)</span> are linked to linear predictors <span class="math inline">\(\eta_i\)</span> and <span class="math inline">\(\zeta_i\)</span> as follows</p>
+<p><span id="eq-link"><span class="math display">\[
+\begin{align}
+  g_1(\mu_i) &amp; = \eta_i =   x_i^\top \beta \, ,  \\
+  g_2(\phi_i) &amp; = \zeta_i =   z_i^\top \gamma\, ,
+\end{align}
+\tag{2}\]</span></span></p>
+<p>where <span class="math inline">\(x_i\)</span> and <span class="math inline">\(z_i\)</span> are <span class="math inline">\(p\)</span>- and <span class="math inline">\(q\)</span>-dimensional vectors of covariates observed along with <span class="math inline">\(Y_i\)</span> <span class="math inline">\((i = 1, \ldots, n)\)</span>, and <span class="math inline">\(\beta
+= (\beta_1, \ldots, \beta_p)^\top\)</span>, <span class="math inline">\(\gamma = (\gamma_1, \ldots,
+\gamma_q)^\top\)</span> are the vectors of coefficients associated with the means and the precisions, respectively. The functions <span class="math inline">\(g_1(\cdot)\)</span> and <span class="math inline">\(g_2(\cdot)\)</span> are monotonic link functions, preferably with the property of mapping the range of <span class="math inline">\(\mu_i\)</span> <span class="math inline">\((0, 1)\)</span> and <span class="math inline">\(\phi_i\)</span> <span class="math inline">\((0,
+\infty)\)</span>, respectively, to the real line. Suitable candidates for <span class="math inline">\(g_1(\cdot)\)</span> are the logit, probit and generally any inverse of a cumulative distribution function, and for <span class="math inline">\(g_2(\cdot)\)</span> the log function. Another common choice for <span class="math inline">\(g_2(\cdot)\)</span> is the identity function which, however, can lead to invalid results when some <span class="math inline">\(\zeta_i &lt; 0\)</span>.</p>
+<p>Typically, the coefficients <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\gamma\)</span> are estimated by maximum likelihood (ML) and inference is based on the usual central limit theorem with its associated asymptotic tests, e.g., likelihood ratio, Wald, score/Lagrange multiplier (LM).</p>
+</section><section id="implementation-in-r" class="level3"><h3 class="anchored" data-anchor-id="implementation-in-r">Implementation in R</h3>
+<p>The R package <strong>betareg</strong> <span class="citation" data-cites="betareg:Cribari-Neto+Zeileis:2010">(<a href="#ref-betareg:Cribari-Neto+Zeileis:2010" role="doc-biblioref">Cribari-Neto and Zeileis 2010</a>)</span> provides ML estimation of beta regressions in its main model fitting function <code>betareg()</code>. The interface as well as the fitted model objects are designed to be similar to those from <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>. The model specification is via a <code>formula</code> plus <code>data</code>. Because two types of covariates need to be distinguished a two-part formula is allowed based on functionality provided by the <strong>Formula</strong> package <span class="citation" data-cites="betareg:Zeileis+Croissant:2010">(<a href="#ref-betareg:Zeileis+Croissant:2010" role="doc-biblioref">Zeileis and Croissant 2010</a>)</span>. For example, would assign the covariates <code>x1</code>, <code>x2</code>, and <code>x3</code> to the mean submodel and <code>z1</code> and <code>z2</code> to the precision submodel in <a href="#eq-link" class="quarto-xref">Equation&nbsp;2</a>. Function <code>betareg()</code> internally uses function <code><a href="https://rdrr.io/r/stats/optim.html">optim()</a></code> as a general purpose optimizer to maximize the log-likelihood. The fitted model has methods for several extractor functions, e.g., <code><a href="https://rdrr.io/r/stats/coef.html">coef()</a></code>, <code><a href="https://rdrr.io/r/stats/vcov.html">vcov()</a></code>, <code><a href="https://rdrr.io/r/stats/residuals.html">residuals()</a></code>, <code><a href="https://rdrr.io/r/stats/logLik.html">logLik()</a></code>. Base methods for the returned fitted model are <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>, <code><a href="https://rdrr.io/r/stats/AIC.html">AIC()</a></code>, <code><a href="https://rdrr.io/r/stats/confint.html">confint()</a></code>. Further methods are available for functions from <strong>lmtest</strong> <span class="citation" data-cites="betareg:Zeileis+Hothorn:2002">(<a href="#ref-betareg:Zeileis+Hothorn:2002" role="doc-biblioref">Zeileis and Hothorn 2002</a>)</span> and <strong>car</strong> <span class="citation" data-cites="betareg:Fox+Weisberg:2019">(<a href="#ref-betareg:Fox+Weisberg:2019" role="doc-biblioref">Fox and Weisberg 2019</a>)</span>, e.g., <code>lrtest()</code>, <code>waldtest()</code>, <code>coeftest()</code>, and <code>linearHypothesis()</code>. Multiple testing is possible via package <strong>multcomp</strong> <span class="citation" data-cites="betareg:Hothorn+Bretz+Westfall:2008">(<a href="#ref-betareg:Hothorn+Bretz+Westfall:2008" role="doc-biblioref">Hothorn, Bretz, and Westfall 2008</a>)</span> and structural change tests can be performed using package <strong>strucchange</strong> <span class="citation" data-cites="betareg:Zeileis+Leisch+Hornik:2002">(<a href="#ref-betareg:Zeileis+Leisch+Hornik:2002" role="doc-biblioref">Zeileis et al. 2002</a>)</span>.</p>
+</section><section id="extensions" class="level3"><h3 class="anchored" data-anchor-id="extensions">Extensions</h3>
+<p>Although the <strong>betareg</strong> package as published by <span class="citation" data-cites="betareg:Cribari-Neto+Zeileis:2010">Cribari-Neto and Zeileis (<a href="#ref-betareg:Cribari-Neto+Zeileis:2010" role="doc-biblioref">2010</a>)</span> provides a rather complete beta regression toolbox based on classical ML inference, further techniques may be required in practice. First, it has been shown that ML inference may be severely biased in the context of beta regression <span class="citation" data-cites="betareg:Kosmidis+Firth:2010">(<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">Kosmidis and Firth 2010</a>)</span>, possibly leading to overly optimistic inferences in the sense of underestimating the standard errors of the estimators. Second, it is not always easy to capture all heterogeneity in the data through the two linear predictors, especially when there are latent unobserved groups/clusters of observations.</p>
+<p>To address the first issue of potentially biased inference, the results of <span class="citation" data-cites="betareg:Kosmidis+Firth:2010">Kosmidis and Firth (<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">2010</a>)</span> are extended to the case with mean and precision covariates and the corresponding methods are implemented in the <code>betareg()</code> function starting from version 2.4-0 of <strong>betareg</strong>. The software optionally allows for bias-corrected or bias-reduced estimation by adopting the unifying iteration developed in <span class="citation" data-cites="betareg:Kosmidis+Firth:2010">Kosmidis and Firth (<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">2010</a>)</span>.</p>
+<p>To address the second issue of heterogeneity between groups/clusters of observations, two generic strategies, model-based recursive partitioning <span class="citation" data-cites="betareg:Zeileis+Hothorn+Hornik:2008">(<a href="#ref-betareg:Zeileis+Hothorn+Hornik:2008" role="doc-biblioref">Zeileis, Hothorn, and Hornik 2008</a>)</span> and finite mixture models , are applied to beta regressions. The idea for both techniques is to capture situations in which the regression relationships vary across groups in the population. If one can identify variables which are related to such groups, one may be able to include them directly in the regression relationships. However, (a) this may lead to rather complex and hard to interpret models, and (b) unnecessary complexity is introduced if the differences are only present in a subset of the combined groups induced by several variables. Model-based recursive partitioning avoids such drawbacks. Furthermore, if groups cannot be directly related to observed variables, the heterogeneity can be accounted for by using finite mixture models. Therefore, extensions of the <strong>betareg</strong> package are introduced where model heterogeneity is taken into account when covariates that characterize the groups are available, and when the heterogeneity is due to latent variables. The new function <code>betatree()</code> provides model-based recursive partitioning of beta regressions leveraging tools from the <strong>partykit</strong> package <span class="citation" data-cites="betareg:Hothorn+Zeileis:2015">(<a href="#ref-betareg:Hothorn+Zeileis:2015" role="doc-biblioref">Hothorn and Zeileis 2015</a>)</span>, and the function <code>betamix()</code> provides beta regression mixture models (or latent class beta regression) reusing the generic functionality from the <strong>flexmix</strong> package <span class="citation" data-cites="betareg:Leisch+Gruen:2012">(<a href="#ref-betareg:Leisch+Gruen:2012" role="doc-biblioref">Leisch and Grün 2012</a>)</span>.</p>
+</section></section><section id="sec-bias" class="level2"><h2 class="anchored" data-anchor-id="sec-bias">Bias correction and reduction in beta regressions</h2>
+<section id="preamble" class="level3"><h3 class="anchored" data-anchor-id="preamble">Preamble</h3>
+<p><span class="citation" data-cites="betareg:Kosmidis+Firth:2010">Kosmidis and Firth (<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">2010</a>)</span> show that bias correction (BC) or bias reduction (BR) of the ML estimator in parametric models may be achieved via a unifying <em>quasi</em> Fisher scoring algorithm. They illustrate the applicability of their algorithm in a beta regression setting with a common precision parameter <span class="math inline">\(\phi\)</span> for all subjects, also revealing some errors in previous literature for the reduction of bias in beta regression models – specifically mistakes in <span class="citation" data-cites="betareg:Ospina+Cribari-Neto+Vasconcellos:2006">Ospina, Cribari-Neto, and Vasconcellos (<a href="#ref-betareg:Ospina+Cribari-Neto+Vasconcellos:2006" role="doc-biblioref">2006</a>)</span> and <span class="citation" data-cites="betareg:Simas+Barreto-Souza+Rocha:2010">Simas, Barreto-Souza, and Rocha (<a href="#ref-betareg:Simas+Barreto-Souza+Rocha:2010" role="doc-biblioref">2010</a>)</span> — that led to misleading negative conclusions about the effect of BC/BR on inferences for beta regression models. In <span class="citation" data-cites="betareg:Kosmidis+Firth:2010">Kosmidis and Firth (<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">2010</a>)</span>, it is shown that BC/BR for beta regression models can be desirable because the ML estimator of <span class="math inline">\(\phi\)</span> may demonstrate substantial upward bias, which in turn may lead to underestimation of asymptotic standard errors and hence over-optimistic Wald-type inferences (e.g., confidence intervals with coverage far below the nominal levels).</p>
+<p>The results in <span class="citation" data-cites="betareg:Kosmidis+Firth:2010">Kosmidis and Firth (<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">2010</a>)</span> are extended here to cover not only the case of constant <span class="math inline">\(\phi\)</span> but also a regression part for the precision parameters as shown in <a href="#eq-link" class="quarto-xref">Equation&nbsp;2</a>.</p>
+</section><section id="sec-iteration" class="level3"><h3 class="anchored" data-anchor-id="sec-iteration">Generic framework</h3>
+<p>Denote by <span class="math inline">\(0_{k}\)</span> a vector of <span class="math inline">\(k\)</span> zeros and by <span class="math inline">\(S(\theta)\)</span> the vector of the log-likelihood derivatives for a parametric model with parameter <span class="math inline">\(\theta\)</span>. <span class="citation" data-cites="betareg:Firth:1993">Firth (<a href="#ref-betareg:Firth:1993" role="doc-biblioref">1993</a>)</span> showed that the solution <span class="math inline">\(\tilde\theta\)</span> of the equation</p>
+<p><span id="eq-adjest"><span class="math display">\[
+S(\tilde{\theta}) + A(\tilde{\theta}) = 0_{p+q} \, ,
+\tag{3}\]</span></span></p>
+<p>has smaller asymptotic bias than the ML estimator, if the <span class="math inline">\(t\)</span>-th component of the vector <span class="math inline">\(A(\theta)\)</span> has the form</p>
+<p><span class="math display">\[
+A_t(\theta) = \frac{1}{2}\text{trace}\left[\{F(\theta)\}^{-1} \left\{
+    P_t(\theta) + Q_t(\theta) \right\}\right] \quad (t = 1, \ldots,
+p + q) \, ,
+\]</span></p>
+<p>with <span class="math inline">\(F(\theta)\)</span> the expected information matrix and</p>
+<p><span id="eq-PQ"><span class="math display">\[
+\begin{align}
+  P_t(\theta) &amp; =  \text{E}\{S(\theta)S^\top(\theta)S_t(\theta)\}
+  \quad (t = 1, \ldots, p + q)\, , \\
+  Q_t(\theta) &amp; = -\text{E}\left\{I(\theta)S_t(\theta) \right\} \quad (t =
+  1, \ldots, p + q)\, ,
+\end{align}
+\tag{4}\]</span></span></p>
+<p>where <span class="math inline">\(S_t(\theta)\)</span> denotes the <span class="math inline">\(t\)</span>-th component of <span class="math inline">\(S(\theta)\)</span> <span class="math inline">\((t =
+1, \ldots, p + q)\)</span> and <span class="math inline">\(I(\theta)\)</span> is the observed information matrix (minus the matrix of second derivatives of the log-likelihood with respect to <span class="math inline">\(\theta\)</span>).</p>
+<p>The quasi Fisher scoring iteration that has been developed in <span class="citation" data-cites="betareg:Kosmidis+Firth:2010">Kosmidis and Firth (<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">2010</a>)</span> attempts to solve <a href="#eq-adjest" class="quarto-xref">Equation&nbsp;3</a>. Specifically, at the <span class="math inline">\(j\)</span>-th step of the iterative procedure, the current value <span class="math inline">\(\theta^{(j)}\)</span> of the parameter vector is updated to <span class="math inline">\(\theta^{(j+1)}\)</span> by</p>
+<p><span id="eq-iteration"><span class="math display">\[
+\theta^{(j+1)} = \theta^{(j)} + \left\{F\left(\theta^{(j)}\right)\right\}^{-1}
+S\left(\theta^{(j)}\right) - b\left(\theta^{(j)}\right) \, ,
+\tag{5}\]</span></span></p>
+<p>where <span class="math inline">\(b(\theta) = - \{F(\theta)\}^{-1} A(\theta)\)</span> is the vector of the first term in the expansion of the bias of the ML estimator.</p>
+<p>If the summand <span class="math inline">\(b\left(\theta^{(j)}\right)\)</span> is ignored, then iteration <a href="#eq-iteration" class="quarto-xref">Equation&nbsp;5</a> becomes the usual Fisher scoring iteration that can be used to solve the ML score equations <span class="math inline">\(S(\hat\theta) = 0_{p+q}\)</span>.</p>
+<p>Furthermore, if the starting value <span class="math inline">\(\theta^{(0)}\)</span> is the ML estimator <span class="math inline">\(\hat\theta\)</span>, then <span class="math inline">\(\theta^{(1)}\)</span> is the bias-corrected estimator <span class="math inline">\(\theta^\dagger\)</span> of <span class="math inline">\(\theta\)</span> defined as</p>
+<p><span class="math display">\[
+\theta^\dagger = \hat\theta - b(\hat\theta) \, ,
+\]</span></p>
+<p>which also has smaller asymptotic bias compared to the ML estimator <span class="citation" data-cites="betareg:Efron:1975">(<a href="#ref-betareg:Efron:1975" role="doc-biblioref">Efron 1975</a>)</span>.</p>
+<p>Hence, the quasi Fisher scoring iteration provides a unified framework for implementing all three types of estimators – ML, BR, and BC – by merely deciding whether the summand <span class="math inline">\(b\left(\theta^{(j)}\right)\)</span> is absent or present in the right hand side of <a href="#eq-iteration" class="quarto-xref">Equation&nbsp;5</a>, and whether more than one iteration should be allowed in the latter case.</p>
+</section><section id="bias-correction-and-bias-reduction-for-beta-regressions" class="level3"><h3 class="anchored" data-anchor-id="bias-correction-and-bias-reduction-for-beta-regressions">Bias correction and bias reduction for beta regressions</h3>
+<p>Denote the vector of the <span class="math inline">\(p + q\)</span> model parameters in a beta regression model by <span class="math inline">\(\theta = (\beta^\top, \gamma^\top)^\top\)</span>, and let <span class="math inline">\(X\)</span> and <span class="math inline">\(Z\)</span> be the <span class="math inline">\(n\times p\)</span> and <span class="math inline">\(n\times q\)</span> model matrices with <span class="math inline">\(i\)</span>-th row <span class="math inline">\(x_i\)</span> and <span class="math inline">\(z_i\)</span>, respectively <span class="math inline">\((i = 1, \ldots, n)\)</span>. The ingredients required for setting the iteration described in <a href="#sec-iteration" class="quarto-xref">Section&nbsp;2.2</a> are closed-form expressions for the vector of log-likelihood derivatives <span class="math inline">\(S(\theta)\)</span>, the expected information matrix <span class="math inline">\(F(\theta)\)</span> and the two higher-order joint null cumulants of log-likelihood derivatives <span class="math inline">\(P_t(\theta)\)</span> and <span class="math inline">\(Q_t(\theta)\)</span> shown in <a href="#eq-PQ" class="quarto-xref">Equation&nbsp;4</a>. Based on these, all matrix multiplications and inversions can be performed numerically during the iterative procedure.</p>
+<p>The fact that all the aforementioned quantities depend on <span class="math inline">\(X\)</span> and <span class="math inline">\(Z\)</span>, and that <span class="math inline">\(S(\theta)\)</span> and <span class="math inline">\(I(\theta)\)</span> depend additionally on the random variables <span class="math inline">\(Y_i\)</span> <span class="math inline">\((i = 1, \ldots, n)\)</span> has been concealed here merely for notational simplicity. The same convention is used for the derivations below, additionally concealing the dependence on <span class="math inline">\(\theta\)</span> unless otherwise stated.</p>
+<p>Up to an additive constant the log-likelihood for the beta regression model in <a href="#eq-density" class="quarto-xref">Equation&nbsp;1</a> is <span class="math inline">\(\ell(\theta) = \sum_{i =1}^n \ell_i(\theta)\)</span> with</p>
+<p><span id="eq-loglik"><span class="math display">\[
+\ell_i(\theta) = \phi_i\mu_i
+  (T_i - U_i) + \phi_i U_i +
+  \log\Gamma(\phi_i) -
+  \log\Gamma(\phi_i\mu_i) -\log\Gamma(\phi_i(1-\mu_i))
+\tag{6}\]</span></span></p>
+<p>where <span class="math inline">\(\mu_i\)</span> and <span class="math inline">\(\phi_i\)</span> are defined by inverting the functions in <a href="#eq-link" class="quarto-xref">Equation&nbsp;2</a>, and where <span class="math inline">\(T_i = \log Y_i\)</span> and <span class="math inline">\(U_i = \log(1 - Y_i)\)</span> are the sufficient statistics for the beta distribution with natural parameters <span class="math inline">\(\phi_i\mu_i\)</span> and <span class="math inline">\(\phi_i(1 -
+\mu_i)\)</span> <span class="math inline">\((i =1, \ldots, n)\)</span>, respectively.</p>
+<p>Direct differentiation of the log-likelihood function reveals that the vector of log-likelihood derivatives has the form</p>
+<p><span id="eq-scores"><span class="math display">\[
+S(\theta) = \nabla_\theta \ell(\theta) = \left[
+\begin{array}{c}
+  X^\top \Phi D_1 \left(\bar{T} - \bar{U}\right) \\
+  Z^\top D_2 \left\{ M\left(\bar{T} - \bar{U}\right) + \bar{U}  \right\}
+\end{array}
+\right]\, ,
+\tag{7}\]</span></span></p>
+<p>with <span class="math inline">\(\Phi = \text{diag}\{\phi_1, \ldots, \phi_n\}\)</span>, <span class="math inline">\(M
+= \text{diag}\{\mu_1, \ldots, \mu_n\}\)</span>, <span class="math inline">\(D_1 = \text{diag}\{d_{1,1}, \ldots, d_{1,
+  n}\}\)</span>, and <span class="math inline">\(D_2 = \text{diag}\{d_{2,1}, \ldots, d_{2, n}\}\)</span>, where <span class="math inline">\(d_{1,
+  i} = \partial{\mu_i}/\partial{\eta_i}\)</span> and <span class="math inline">\(d_{2,i} =
+\partial{\phi_i}/\partial{\zeta_i}\)</span>. Furthermore, <span class="math inline">\(\bar{T} = (\bar{T}_1, \ldots, \bar{T}_n)^\top\)</span> and <span class="math inline">\(\bar{U} =
+(\bar{U}_1, \ldots, \bar{U}_n)^\top\)</span> are the vectors of centered sufficient statistics, with</p>
+<p><span class="math display">\[
+\begin{align*}
+\bar{T}_i &amp; = T_i - \text{E}(T_i) \, , \\
+\bar{U}_i &amp; = U_i - \text{E}(U_i) \, ,
+\end{align*}
+\]</span></p>
+<p>where <span class="math inline">\(\text{E}(T_i) = \psi^{(0)}(\phi\mu_i) - \psi^{(0)}(\phi_i)\)</span> and <span class="math inline">\(\text{E}(U_i) = \psi^{(0)}(\phi(1-\mu_i)) + \psi^{(0)}(\phi_i)\)</span>, with <span class="math inline">\(\psi^{(r)}(k) = \partial{^{r+1} \log\Gamma(k)}/\partial{k^{r+1}}\)</span> the polygamma function of degree <span class="math inline">\(r\)</span> <span class="math inline">\((r = 0, 1, \ldots; i =1, \ldots,
+n)\)</span>.</p>
+<p>Differentiating <span class="math inline">\(\ell(\theta)\)</span> one more time reveals that the observed information on <span class="math inline">\(\theta\)</span> is</p>
+<p><span id="eq-obsinfo"><span class="math display">\[
+I(\theta) = F(\theta) - \left[
+\begin{array}{cc}
+  X^\top \Phi D_1' \text{diag}\{\bar{T} - \bar{U}\}X &amp; X^\top D_1\text{diag}\{\bar{T} - \bar{U}\}D_2Z \\
+  Z^\top D_2\text{diag}\{\bar{T} - \bar{U}\}D_1X &amp; Z^\top D_2'\left(M\text{diag}\left\{\bar{T} -
+      \bar{U}\} + \text{diag}\{\bar{U}\right\}\right)Z \\
+\end{array}
+\right] \, ,
+\tag{8}\]</span></span></p>
+<p>where</p>
+<p><span id="eq-expinfo"><span class="math display">\[
+F(\theta) = \left[
+\begin{array}{cc}
+  X^\top D_1\Phi K_2 \Phi D_1 X &amp; X^\top D_1\Phi \left(MK_2 - \Psi_1\right)D_2Z \\
+  Z^\top D_2 \left(MK_2 - \Psi_1\right)\Phi D_1  X &amp;
+  Z^\top D_2\left\{M^2K_2 + (1_n-2M)\Psi_1 - \Omega_1\right\}D_2Z
+\end{array}
+\right]\, ,
+\tag{9}\]</span></span></p>
+<p>is the expected information on <span class="math inline">\(\theta\)</span>, because the second summand in the right hand side of <a href="#eq-obsinfo" class="quarto-xref">Equation&nbsp;8</a> depends linearly on the centered sufficient statistics and hence has expectation zero. Here, <span class="math inline">\(1_n\)</span> is the <span class="math inline">\(n \times n\)</span> identity matrix, <span class="math inline">\(D_1' = \text{diag}\{d'_{1,1},
+\ldots, d'_{1,n}\}\)</span> with <span class="math inline">\(d'_{1,i} = \partial{^2\mu_i}/\partial{\eta_i^2}\)</span> and <span class="math inline">\(D_2' = \text{diag}\{d'_{2,1}, \ldots, d'_{2,n}\}\)</span> with <span class="math inline">\(d'_{2,i} =
+\partial{^2\phi_i}/\partial{\zeta_i^2}\)</span> <span class="math inline">\((i = 1, \ldots, n)\)</span>. Furthermore, <span class="math inline">\(K_2 = \text{diag}\{\kappa_{2,1}, \ldots, \kappa_{2,n}\}\)</span>, where <span class="math inline">\(\kappa_{2,i} = \text{Var}\left(\bar{T}_i -\bar{U}_i\right) =
+\psi^{(1)}(\phi_i\mu_i) + \psi^{(1)}(\phi_i(1-\mu_i))\)</span> for <span class="math inline">\(i =1,
+\ldots, n\)</span> and</p>
+<p><span class="math display">\[
+\begin{align*}
+  \Psi_r &amp; = \text{diag}\left\{\psi^{(r)}(\phi_1(1-\mu_1)), \ldots,
+  \psi^{(r)}(\phi_n(1-\mu_n))\right\} \, ,\\
+  \Omega_r &amp; = \text{diag}\left\{\psi^{(r)}(\phi_1), \ldots,
+  \psi^{(r)}(\phi_n)\right\}\quad (r = 0, 1, \ldots)\, .
+\end{align*}
+\]</span></p>
+<p>Some tedious but straightforward algebra, along with direct use of the results in <span class="citation" data-cites="betareg:Kosmidis+Firth:2010">Kosmidis and Firth (<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">2010</a>)</span> for the joint cumulants of <span class="math inline">\(\bar{T}_i\)</span> and <span class="math inline">\(\bar{U}_i\)</span> <span class="math inline">\((i = 1, \ldots, n)\)</span>, gives</p>
+<p><span id="eq-PQbeta"><span class="math display">\[
+  P_t(\theta) + Q_t(\theta) = \left[
+    \begin{array}{cc}
+      V_{\beta\beta, t} &amp; V_{\beta\gamma, t} \\
+      V_{\beta\gamma, t}^\top &amp; V_{\gamma\gamma, t}
+    \end{array}
+  \right] \quad (t = 1, \ldots, p)\, ,
+\tag{10}\]</span></span></p>
+<p><span id="eq-PQgamma"><span class="math display">\[
+  P_{p + s}(\theta) + Q_{p + s}(\theta)  = \left[
+    \begin{array}{cc}
+      W_{\beta\beta, s} &amp; W_{\beta\gamma, s} \\
+      W_{\beta\gamma, s}^\top &amp; W_{\gamma\gamma, s}
+    \end{array}
+  \right] \quad (s = 1, \ldots, q) \, ,
+\tag{11}\]</span></span></p>
+<p>where</p>
+<p><span class="math display">\[
+\begin{align*}
+  V_{\beta\beta, t} &amp; = X^\top \Phi^2 D_1 \left( \Phi D_1^2 K_3 + D_1'
+    K_2 \right)X_t^\text{D} X \, , \\
+  V_{\beta\gamma, t} &amp; = X^\top\Phi D_1^2 D_2 \left\{\Phi\left(MK_3 + \Psi_2\right) +
+  K_2\right)X_t^\text{D} Z \, , \\
+  V_{\gamma\gamma, t} &amp; =
+  Z^\top\Phi D_1 \left\{ D_2^2\left(M^2 K_3 + 2M\Psi_2 -
+      \Psi_2\right) + D_2'\left(MK_2 - \Psi_1\right)\right\}X_t^\text{D} Z
+\end{align*}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\begin{align*}
+  W_{\beta\beta, s} &amp; =
+  X^\top \Phi D_2 \left\{\Phi D_1^2 \left(M K_3 + \Psi_2\right) +
+    D_1'\left(MK_2 - \Psi_1\right) \right\}Z_s^\text{D} X\, , \\
+  W_{\beta\gamma, s} &amp; = X^\top D_1 D_2^2 \left\{ \Phi \left(M^2 K_3 + 2M\Psi_2
+      - \Psi_2\right) + MK_2 - \Psi_1 \right\}Z_s^\text{D} Z\, , \\
+  W_{\gamma\gamma, s} &amp; =
+  Z^\top D_2^3 \left\{M^3K_3 + \left( 3M^2 - 3M + 1_n \right) \Psi_2 -
+  \Omega_2 \right\} Z_s^\text{D} Z  \\
+&amp; \qquad + Z^\top D_2 D_2' \left\{M^2K_2 + \Psi_1 - 2M \Psi_1 -
+  \Omega_1 \right\}Z_s^\text{D} Z\, ,
+\end{align*}
+\]</span></p>
+<p>where <span class="math inline">\(K_3 = \text{diag}\left\{\kappa_{3,1}, \ldots, \kappa_{3,n} \right\}\)</span>, with <span class="math inline">\(\kappa_{3,i} = \text{E}\left\{\left(\bar{T}_i -
+    \bar{U}_i\right)^3\right\} = \psi^{(2)}(\phi_i\mu_i) -
+\psi^{(2)}(\phi_i(1 - \mu_i))\)</span> <span class="math inline">\((i =1, \ldots, n)\)</span>. Furthermore, <span class="math inline">\(C_t^\text{D}\)</span> denotes the diagonal matrix with non-zero components the elements of the <span class="math inline">\(t\)</span>-th column of a matrix <span class="math inline">\(C\)</span>.</p>
+</section><section id="implementation-in-betareg" class="level3"><h3 class="anchored" data-anchor-id="implementation-in-betareg">Implementation in <strong>betareg</strong>
+</h3>
+<p>Support for both bias correction and bias reduction has been added in the principal model fitting function <code>betareg()</code> starting from <strong>betareg</strong> 2.4-0. The interface of <code>betareg()</code> is essentially the same as described in <span class="citation" data-cites="betareg:Cribari-Neto+Zeileis:2010">Cribari-Neto and Zeileis (<a href="#ref-betareg:Cribari-Neto+Zeileis:2010" role="doc-biblioref">2010</a>)</span>, with merely the addition of a <code>type</code> argument that specifies the type of estimator that should be used.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">betareg</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, <span class="va">subset</span>, <span class="va">na.action</span>, <span class="va">weights</span>, <span class="va">offset</span>,</span>
+<span>  link <span class="op">=</span> <span class="st">"logit"</span>, link.phi <span class="op">=</span> <span class="cn">NULL</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ML"</span>, <span class="st">"BC"</span>, <span class="st">"BR"</span><span class="op">)</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu">betareg.control</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, model <span class="op">=</span> <span class="cn">TRUE</span>, y <span class="op">=</span> <span class="cn">TRUE</span>, x <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The arguments in the first line (<code>formula</code>, <code>data</code>, ) pertain to the data and model specification using a formula that potentially may have two parts pertaining to the mean and the precision submodels, respectively. The arguments <code>link</code> and <code>link.phi</code> specify the link functions <span class="math inline">\(g_1(\cdot)\)</span> and <span class="math inline">\(g_2(\cdot)\)</span>, respectively. The argument <code>type</code> controls which of the maximum likelihood (<code>type = "ML"</code>), bias-corrected (<code>type = "BC"</code>), or bias-reduced (<code>type = "BR"</code>) estimates are computed. Finally, <code>control</code> is a list of control arguments and <code>model</code>, <code>y</code>, and <code>x</code> control whether the respective data components are included in the fitted model object. For more details on all arguments except <code>type</code> see <span class="citation" data-cites="betareg:Cribari-Neto+Zeileis:2010">Cribari-Neto and Zeileis (<a href="#ref-betareg:Cribari-Neto+Zeileis:2010" role="doc-biblioref">2010</a>)</span>.</p>
+<p>While the interface of <code>betareg()</code> is almost the same as in previous versions, the internal code has been substantially enhanced. Specifically, the optimization via <code><a href="https://rdrr.io/r/stats/optim.html">optim()</a></code> is now (optionally) enhanced by an additional Fisher scoring iteration. As in previous versions, the initial optimization of the likelihood is carried out via <code><a href="https://rdrr.io/r/stats/optim.html">optim()</a></code>, by default with <code>method = "BFGS"</code>, using analytic gradients. In recent versions, this is followed by a Fisher scoring iteration with both analytic gradients and expected information that either neglects or includes the summand <span class="math inline">\(b\left(\theta^{(j)}\right)\)</span> in iteration <a href="#eq-iteration" class="quarto-xref">Equation&nbsp;5</a>. Thus, the iteration is either used to further improve the numerical maximization of the likelihood (for <code>type = "ML"</code> or ) or to carry out the bias reduction (for <code>type = "BR"</code>) as detailed in <a href="#sec-iteration" class="quarto-xref">Section&nbsp;2.2</a>. To control the details of the (quasi) Fisher scoring, <code>betareg.control()</code> takes two additional arguments <code>fsmaxit = 200</code> and <code>fstol = 1e-8</code> controlling the maximal number of iterations and convergence tolerance, respectively. If the number of iterations is set to zero (<code>fsmaxit = 0</code>), no Fisher scoring is carried out (allowed only for <code>type = "ML"</code> and <code>"BC"</code>) and thus results from previous versions of <strong>betareg</strong> can be exactly replicated.</p>
+</section></section><section id="sec-tree" class="level2"><h2 class="anchored" data-anchor-id="sec-tree">Beta regression trees</h2>
+<p>Model-based recursive partitioning builds on the more widely known method of classification and regression trees . As for CART, the idea is to split the sample recursively with respect to available variables (called “partitioning” variables in what follows) in order to capture differences in the response variable. While CART tries to capture differences in the distribution of the response variable (in particular with respect to location) directly, the aim of model-based recursive partitioning is more broadly to capture differences in parameters describing the distribution of the response. In particular, model-based recursive partitioning allows to incorporate regressor variables in a parametric model for the response variable.</p>
+<p>Here, we adapt the general MOB framework to the model-based partitioning of beta regressions, called “beta regression trees” for short. The aim is to capture differences in the distribution that are not yet adequately described by the regressor variables through a forward search. Basically, the approach proceeds by (a) fitting a beta regression model, (b) assessing whether its parameters are stable across all partitioning variables, (c) splitting the sample along the partitioning variable associated with the highest parameter instability, (d) repeating these steps until some stopping criterion is met. Thus, interactions and nonlinearities can be incorporated by locally maximizing the likelihood of a partitioned model. More precisely and denoting <span class="math inline">\(c_{ij}\)</span> the <span class="math inline">\(j\)</span>-th partitioning variable (<span class="math inline">\(j = 1, \dots, l\)</span>) for observation <span class="math inline">\(i\)</span>, the steps of the MOB algorithm adapted to beta regression are as follows.</p>
+<ul>
+<li>Fit a beta regression model with parameters <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\gamma\)</span> by maximizing the log-likelihood for all observations <span class="math inline">\(y_i\)</span> in the current sample.</li>
+<li>Assess whether the parameters <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\gamma\)</span> are stable across each partitioning variable <span class="math inline">\(c_{ij}\)</span>.</li>
+<li>If there is significant parameter instability with respect to at least one of the partitioning variables <span class="math inline">\(c_{ij}\)</span>, split the sample along the variable <span class="math inline">\(j*\)</span> with the strongest association: Choose the breakpoint with highest improvement in the fitted log-likelihood.</li>
+<li>Repeat steps 1–3 recursively in the resulting subsamples until there is no significant instability any more or the sample size is too small.</li>
+</ul>
+<p>he MOB framework of <span class="citation" data-cites="betareg:Zeileis+Hothorn+Hornik:2008">Zeileis, Hothorn, and Hornik (<a href="#ref-betareg:Zeileis+Hothorn+Hornik:2008" role="doc-biblioref">2008</a>)</span> is generic in that it requires only the specification of a model with additive objective function for which a central limit theorem holds. Under the usual regularity conditions, the latter requirement is valid for beta regressions. The main building blocks that the MOB algorithm requires are the contributions to the additive objective function (in steps 1 and 3) and to the associated score function (in step 2). For beta regressions, the objective is the log-likelihood <span class="math inline">\(\ell(\theta)\)</span> and its contributions <span class="math inline">\(\ell_i(\theta)\)</span> are given in <a href="#eq-loglik" class="quarto-xref">Equation&nbsp;6</a>. By <a href="#eq-scores" class="quarto-xref">Equation&nbsp;7</a> and using the notation in <a href="#sec-bias" class="quarto-xref">Section&nbsp;2</a>, the corresponding score (or gradient) contributions have the form</p>
+<p><span class="math display">\[
+  S_{i}(\theta) = \left[
+    \begin{array}{c}
+      \mu_i \phi_i d_{1,i} \left(\bar{T}_i -
+  \bar{U}_i\right)x_{i1} \\
+\vdots \\
+      \mu_i \phi_i d_{1,i} \left(\bar{T}_i -
+  \bar{U}_i\right)x_{ip}  \\
+d_{2,i}\left\{ \mu_i\left(\bar{T}_i -
+  \bar{U}_i\right) + \bar{U}_i \right\}z_{i1} \\
+\vdots \\
+d_{2,i}\left\{ \mu_i\left(\bar{T}_i -
+  \bar{U}_i\right) + \bar{U}_i \right\}z_{iq} \\
+    \end{array}
+    \right]\quad (i = 1, \ldots, n) \, .
+\]</span></p>
+<p>The above contributions are employed for testing whether there are significant departures from zero across the partitioning variables. More specifically, MOB uses generalized M-fluctuation tests for parameter instability <span class="citation" data-cites="betareg:Zeileis:2006">(<a href="#ref-betareg:Zeileis:2006" role="doc-biblioref">Zeileis 2006, betareg:Zeileis+Hornik:2007</a>)</span>: fluctuations in numeric variables are assessed with a <span class="math inline">\(\sup\)</span>LM type test <span class="citation" data-cites="betareg:Andrews:1993">(<a href="#ref-betareg:Andrews:1993" role="doc-biblioref">Andrews 1993</a>)</span> and fluctuations in categorical variables are assessed with a <span class="math inline">\(\chi^2\)</span>-type test <span class="citation" data-cites="betareg:Hjort+Koning:2002">(<a href="#ref-betareg:Hjort+Koning:2002" role="doc-biblioref">Hjort and Koning 2002</a>)</span>. For further details and references, see <span class="citation" data-cites="betareg:Zeileis+Hothorn+Hornik:2008">Zeileis, Hothorn, and Hornik (<a href="#ref-betareg:Zeileis+Hothorn+Hornik:2008" role="doc-biblioref">2008</a>)</span>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Beta regression trees are implemented in the <strong>betareg</strong> package in function <code>betatree()</code> taking the following arguments:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">betatree</span><span class="op">(</span><span class="va">formula</span>, <span class="va">partition</span>, <span class="va">data</span>, <span class="va">subset</span>, <span class="va">na.action</span>, <span class="va">weights</span>, <span class="va">offset</span>,</span>
+<span>  link <span class="op">=</span> <span class="st">"logit"</span>, link.phi <span class="op">=</span> <span class="st">"log"</span>, control <span class="op">=</span> <span class="fu">betareg.control</span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Essentially, almost all arguments work as for the basic <code>betareg()</code> function. The main difference is that a <code>partition</code> formula (without left hand side), such as <code>~ c1 + c2 + c3</code> has to be provided to specify the vector of partitioning variables <span class="math inline">\(c_i = (c_{i1}, \dots, c_{il})^\top\)</span>. As an alternative, <code>partition</code> may be omitted when <code>formula</code> has three parts on the right hand side, such as <code>y ~ x1 + x2 | z1 | c1 + c2 + c3</code>, specifying mean regressors <span class="math inline">\(x_i\)</span>, presicion regressors <span class="math inline">\(z_i\)</span>, and partitioning variables <span class="math inline">\(c_i\)</span>, respectively. The formula <code>y ~ c1 + c2 + c3</code> is short for <code>y ~ 1 | 1 | c1 + c2 + c3</code>.</p>
+<p>The <code>betatree()</code> function takes all arguments and carries out all data preprocessing and then calls the function <code>mob()</code> from the <strong>partykit</strong> package <span class="citation" data-cites="betareg:Hothorn+Zeileis:2015">(<a href="#ref-betareg:Hothorn+Zeileis:2015" role="doc-biblioref">Hothorn and Zeileis 2015</a>)</span>. The latter can perform all steps of the MOB algorithm in an object-oriented manner, provided that a suitable model fitting function (optimizing the log-likelihood) is specified and that extractor functions are available for the optimized log-likelihood <a href="#eq-loglik" class="quarto-xref">Equation&nbsp;6</a> and the score function <a href="#eq-scores" class="quarto-xref">Equation&nbsp;7</a> at the estimated parameters. For model fitting <code>betareg.fit()</code> is employed and for extractions the <code><a href="https://rdrr.io/r/stats/logLik.html">logLik()</a></code> and <code><a href="https://sandwich.R-Forge.R-project.org/reference/estfun.html">estfun()</a></code> methods are leveraged. To control the details of the MOB algorithm – such as the significance level and the minimal subsample size in step 4 – the <code>...</code> argument is passed to <code>mob()</code>. (Note that this is somewhat different from <code>betareg()</code> where <code>...</code> is passed to <code>betareg.control()</code>.)</p>
+</section><section id="sec-mix" class="level2"><h2 class="anchored" data-anchor-id="sec-mix">Finite mixtures of beta regressions</h2>
+<p>Finite mixtures are suitable models if the data is assumed to be from different groups, but the group memberships are not observed. If mixture models are fitted one aims at determining the parameters of each group as well as the group sizes. Furthermore, the model can be used to estimate from which group each observation is. In the case of finite mixtures of beta regression models the latent groups can be assumed to differ in their mean and/or in their precision. Furthermore, the group sizes can depend on further covariates.</p>
+<p>The mixture model with <span class="math inline">\(K\)</span> components which correspond to <span class="math inline">\(K\)</span> groups is given by</p>
+<p><span class="math display">\[
+\begin{align}
+  h(y ; x, z, c, \theta) &amp; = \sum_{k = 1}^K \pi(k ; c, \alpha) f(y ;
+  g_1^{-1}(x^{\top}\beta_k), g_2^{-1}(z^{\top}\gamma_k)),
+\end{align}
+\]</span></p>
+<p>where <span class="math inline">\(h(\cdot ; \cdot)\)</span> is the mixture density and <span class="math inline">\(f(y ; \mu, \phi)\)</span> is the density of the beta distribution using the mean-precision parameterization shown in <a href="#eq-density" class="quarto-xref">Equation&nbsp;1</a>. Furthermore the component weights <span class="math inline">\(\pi(k ; \cdot)\)</span> are nonnegative for all <span class="math inline">\(k\)</span> and sum to one. In what follows the component weights are assumed to be determined from a vector of covariates <span class="math inline">\(c\)</span> by</p>
+<p><span class="math display">\[
+\begin{align}
+  \pi(k ; c, \alpha) &amp;= \frac{\textrm{exp}\{c^{\top}\alpha_k\}}
+  {\sum_{u=1}^K\textrm{exp}\{c^{\top}\alpha_u\}}
+\end{align}
+\]</span></p>
+<p>with <span class="math inline">\(\alpha_1 \equiv 0\)</span>. Without covariates and just a constant (<span class="math inline">\(c = 1\)</span>), this reduces to prior probabilities that are fixed across all observations.</p>
+<p><span class="citation" data-cites="betareg:Smithson+Segale:2009">Smithson and Segale (<a href="#ref-betareg:Smithson+Segale:2009" role="doc-biblioref">2009</a>)</span> and <span class="citation" data-cites="betareg:Smithson+Merkle+Verkuilen:2011">Smithson, Merkle, and Verkuilen (<a href="#ref-betareg:Smithson+Merkle+Verkuilen:2011" role="doc-biblioref">2011</a>)</span> consider finite mixtures of beta regression models to analyze priming effects in judgments of imprecise probabilities. <span class="citation" data-cites="betareg:Smithson+Segale:2009">Smithson and Segale (<a href="#ref-betareg:Smithson+Segale:2009" role="doc-biblioref">2009</a>)</span> fit mixture models where they investigate if priming has an effect on the size of the latent groups, i.e., they include the information on priming as a predictor variable <span class="math inline">\(c\)</span>. <span class="citation" data-cites="betareg:Smithson+Merkle+Verkuilen:2011">Smithson, Merkle, and Verkuilen (<a href="#ref-betareg:Smithson+Merkle+Verkuilen:2011" role="doc-biblioref">2011</a>)</span> assume that for at least one component distribution the location parameter is a-priori known due to so-called “anchors”. For example, for partition priming, an anchor would be assumed at location <span class="math inline">\(1/K\)</span> if the respondents are primed to believe that there are <span class="math inline">\(K\)</span> possible events. The component distribution for this anchor can be either assumed to follow a beta distribution with known parameters for the mean and the precision or a uniform distribution with known support.</p>
+<p>Package <strong>flexmix</strong> <span class="citation" data-cites="betareg:Leisch:2004 betareg:Gruen+Leisch:2008">(<a href="#ref-betareg:Leisch:2004" role="doc-biblioref">Leisch 2004</a>; <a href="#ref-betareg:Gruen+Leisch:2008" role="doc-biblioref">Grün and Leisch 2008</a>)</span> implements a general framework for estimating finite mixture models using the EM algorithm. The EM algorithm is an iterative method for ML estimation in a missing data setting. The missing data for mixture models is the information to which component an observation belongs. The EM algorithm exploits the fact that the complete-data log-likelihood for the data and the missing information is easier to maximize. In general for mixture models the posterior probabilities of an observation to be from each component given the current parameter estimates are determined in the E-step. The M-step then consists of maximizing the complete-data log-likelihood where the missing component memberships are replaced by the current posterior probabilities. This implies that different mixture models only require the implementation of a suitable M-step driver. Function <code>betareg.fit()</code> provides functionality for weighted ML estimation of beta regression models and hence allows the easy implementation of the M-step.</p>
+<p>The function <code>betamix()</code> allows to fit finite mixtures of beta regression models using the package <strong>betareg</strong>. It has the following arguments:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">betamix</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, <span class="va">k</span>, <span class="va">fixed</span>, <span class="va">subset</span>, <span class="va">na.action</span>,</span>
+<span>  link <span class="op">=</span> <span class="st">"logit"</span>, link.phi <span class="op">=</span> <span class="st">"log"</span>, control <span class="op">=</span> <span class="fu">betareg.control</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>,</span>
+<span>  FLXconcomitant <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">extra_components</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">ID</span>, nstart <span class="op">=</span> <span class="fl">3</span>, FLXcontrol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>, cluster <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  which <span class="op">=</span> <span class="st">"BIC"</span>, <span class="va">...</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Arguments <code>formula</code>, <code>data</code>, <code>subset</code>, <code>na.action</code>, <code>link</code>, <code>link.phi</code> and <code>control</code> are the same as for <code>betareg()</code>.</li>
+</ul>
+<p>Additionally the formula can also consist of three parts on the right hand side when specifying a concomitant variable model (see below for the <code>FLXconcomitant</code> argument).</p>
+<ul>
+<li>Arguments <code>cluster</code>, <code>FLXconcomitant</code> and <code>FLXcontrol</code> are the same as for function <code>flexmix()</code> (in the latter two cases without prefix <code>FLX</code>).</li>
+</ul>
+<p>Currently functionality to fit a multinomal logit model for the concomitant variable model is provided by <code>FLXPmultinom()</code> with a formula interface for specifying the concomitant variables. To fit a multinomial logit model for the variables <code>c1</code> and <code>c2</code> use . Alternatively, yielding equivalent output, the main model formula can be specified via a three-part formula on the right hand side, e.g., <code>y ~ x | 1 | c1 + c2</code> (if there are no covariates for the precision model).</p>
+<ul>
+<li><p>Argument <code>k</code>, <code>verbose</code>, <code>nstart</code> and <code>which</code> are used to specify the repeated runs of the EM algorithm using function <code>stepFlexmix()</code>, where <code>k</code> is the (vector of) number(s) of mixture components, <code>nstart</code> the number of random starting values used, and <code>which</code> determines which number of components is kept if <code>k</code> is a vector.</p></li>
+<li><p>Because the formula for specifying the beta regression model is already a two-part formula, a potential grouping variable is specified via argument <code>ID</code> as opposed to when using <code>flexmix()</code>.</p></li>
+<li><p>Further arguments for the component specific model are <code>fixed</code> and <code>extra_components</code>. The argument <code>fixed</code> can be used to specify the covariates for which parameters are the same over components. This is done via a formula interface. The argument <code>extra_components</code> is a list of <code>"extraComponent"</code> objects which specify the distribution of the component that needs to be completely specified (via the <code>type</code> argument). The parameter values of that distribution are specified through <code>coef</code> and <code>delta</code>.</p></li>
+</ul>
+<p><code>extraComponent(type = c("uniform", "betareg"), coef, delta, link = "logit", link.phi = "log")</code></p>
+</section><section id="sec-illustr-appl" class="level2"><h2 class="anchored" data-anchor-id="sec-illustr-appl">Illustrative application</h2>
+<p>To illustrate the methods introduced above, we consider the analysis of reading accuracy data for nondyslexic and dyslexic Australian children <span class="citation" data-cites="betareg:Smithson+Verkuilen:2006">(<a href="#ref-betareg:Smithson+Verkuilen:2006" role="doc-biblioref">Smithson and Verkuilen 2006</a>)</span>. The data consists of 44 observations of children with ages between eight years and five months and twelve years and three months. For each child, the variables <code>accuracy</code> (the score on a reading accuracy test), <code>iq</code> (the score on a nonverbal intelligent quotient test, converted to <span class="math inline">\(z\)</span> score), and a binary variable on whether the child is dyslexic were recorded. The 19 dyslexic children have a mean reading accuracy of 0.606 and a mean IQ score of <span class="math inline">\(-0.653\)</span>. The 25 nondyslexic children have a mean reading accuracy of 0.900 and a mean IQ score of $ 0.497$.</p>
+<p><span class="citation" data-cites="betareg:Smithson+Verkuilen:2006">Smithson and Verkuilen (<a href="#ref-betareg:Smithson+Verkuilen:2006" role="doc-biblioref">2006</a>)</span> investigated whether dyslexic children have a different score on the reading accuracy test when corrected for IQ score. <span class="citation" data-cites="betareg:Smithson+Verkuilen:2006">Smithson and Verkuilen (<a href="#ref-betareg:Smithson+Verkuilen:2006" role="doc-biblioref">2006</a>)</span> fit a beta regression where the means are linked via the logistic link to main and interaction effects for <code>iq</code> and <code>dyslexic</code>, and where the precision parameters are linked with a log-link to main effects for the same variables. The fitted model and its comparison to the results of an OLS regression using the logit-transformed <code>accuracy</code> as response are given in <span class="citation" data-cites="betareg:Cribari-Neto+Zeileis:2010">Cribari-Neto and Zeileis (<a href="#ref-betareg:Cribari-Neto+Zeileis:2010" role="doc-biblioref">2010</a>)</span>. <a href="#fig-ReadingSkills" class="quarto-xref">Figure&nbsp;1</a> shows a visualization of the fitted models to briefly highlight the most important findings: In the control group (nondyslexic children), reading skill increases clearly with the IQ score while the variance decreases. In the dyslexic group, reading skills are generally lower and almost unaffected by IQ score.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ReadingSkills" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ReadingSkills-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="betareg-ext_files/figure-html/fig-ReadingSkills-1.png" class="img-fluid figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ReadingSkills-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Reading skills data from <span class="citation" data-cites="betareg:Smithson+Verkuilen:2006">Smithson and Verkuilen (<a href="#ref-betareg:Smithson+Verkuilen:2006" role="doc-biblioref">2006</a>)</span>. Linearly transformed reading accuracy by IQ score and dyslexia status (control, blue vs.&nbsp;dyslexic, red). Fitted curves correspond to beta regression (solid) and OLS regression with logit-transformed dependent variable (dashed).
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>In what follows, the data is reanalyzed using the methods from <a href="#sec-bias" class="quarto-xref">Section&nbsp;2</a> to <a href="#sec-mix" class="quarto-xref">Section&nbsp;4</a>. Initially, the effect of bias to ML inference is assessed. Subsequently, it is illustrated how the differences with respect to dyslexia could have been discovered in a data-driven way. While in the original study dyslexia has, of course, been of prime interest in the model, the data set is used here to illustrate how (a) the two dyslexia groups are automatically selected by recursive partitioning if dyslexia is just one of many covariables and how (b) mixture modeling recovers the dyslexia groups if that covariable is not available at all.</p>
+<section id="bias-correction-and-reduction" class="level3"><h3 class="anchored" data-anchor-id="bias-correction-and-reduction">Bias correction and reduction</h3>
+<p>To investigate whether the results of <span class="citation" data-cites="betareg:Smithson+Verkuilen:2006">Smithson and Verkuilen (<a href="#ref-betareg:Smithson+Verkuilen:2006" role="doc-biblioref">2006</a>)</span> may have been affected by severe bias in the ML estimator, all three flavors of estimators are obtained and compared for the model with interactions (both in the mean and precision submodels).</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"ReadingSkills"</span>, package <span class="op">=</span> <span class="st">"betareg"</span><span class="op">)</span></span>
+<span><span class="va">rs_f</span> <span class="op">&lt;-</span> <span class="va">accuracy</span> <span class="op">~</span> <span class="va">dyslexia</span> <span class="op">*</span> <span class="va">iq</span> <span class="op">|</span> <span class="va">dyslexia</span> <span class="op">*</span> <span class="va">iq</span></span>
+<span><span class="va">rs_ml</span> <span class="op">&lt;-</span> <span class="fu">betareg</span><span class="op">(</span><span class="va">rs_f</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, type <span class="op">=</span> <span class="st">"ML"</span><span class="op">)</span></span>
+<span><span class="va">rs_bc</span> <span class="op">&lt;-</span> <span class="fu">betareg</span><span class="op">(</span><span class="va">rs_f</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, type <span class="op">=</span> <span class="st">"BC"</span><span class="op">)</span></span>
+<span><span class="va">rs_br</span> <span class="op">&lt;-</span> <span class="fu">betareg</span><span class="op">(</span><span class="va">rs_f</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, type <span class="op">=</span> <span class="st">"BR"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tbl-ReadingSkills-bias" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ReadingSkills-bias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Comparison of coefficients and standard errors in the interaction model for reading skills. The ML estimator from <code>rs_ml</code>, the BC estimator from <code>rs_bc</code>, and the BR estimator from <code>rs_br</code> all give very similar results for the mean submodel. In the precision submodel, main effects are slightly damped and the interaction effect is slightly amplified when using BC/BR.
+</figcaption><div aria-describedby="tbl-ReadingSkills-bias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 17%">
+<col style="width: 24%">
+<col style="width: 20%">
+<col style="width: 18%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Maximum likelihood</th>
+<th style="text-align: right;">Bias correction</th>
+<th style="text-align: right;">Bias reduction</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Mean</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;"><span class="math inline">\(1.019\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.990\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.985\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"><span class="math inline">\(0.145\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.150\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.150\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>dyslexia</code></td>
+<td style="text-align: right;"><span class="math inline">\(-0.638\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.610\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.603\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"><span class="math inline">\(0.145\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.150\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.150\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>iq</code></td>
+<td style="text-align: right;"><span class="math inline">\(0.690\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.700\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.707\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"><span class="math inline">\(0.127\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.133\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.133\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>dyslexia:iq</code></td>
+<td style="text-align: right;"><span class="math inline">\(-0.776\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.786\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.784\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"><span class="math inline">\(0.127\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.133\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.133\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Precision</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;"><span class="math inline">\(3.040\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(2.811\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(2.721\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"><span class="math inline">\(0.258\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.257\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.256\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>dyslexia</code></td>
+<td style="text-align: right;"><span class="math inline">\(1.768\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.705\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.634\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"><span class="math inline">\(0.258\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.257\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.256\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>iq</code></td>
+<td style="text-align: right;"><span class="math inline">\(1.437\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.370\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.281\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"><span class="math inline">\(0.257\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.257\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.257\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>dyslexia:iq</code></td>
+<td style="text-align: right;"><span class="math inline">\(-0.611\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.668\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.759\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"><span class="math inline">\(0.257\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.257\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.257\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Log-likelihood</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"><span class="math inline">\(66.734\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(66.334\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(66.134\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-readingskillsbias" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-readingskillsbias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="betareg-ext_files/figure-html/fig-readingskillsbias-1.png" class="img-fluid figure-img" width="624">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-readingskillsbias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Scatterplots of the logarithm of the estimated precision parameters <span class="math inline">\(\log(\phi_i)\)</span> based on the maximum likelihood, bias-corrected and bias-reduced estimates. The dashed black line is the main diagonal, the solid red line is a scatterplot smoother.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>The resulting coefficient estimates, standard errors, and log-likelihoods can be displayed using the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> method and are reported in <a href="#tbl-ReadingSkills-bias" class="quarto-xref">Table&nbsp;1</a>. All three estimators give very similar results for the mean submodel. In the precision submodel, main effects are slightly dampened and the interaction effect is slightly amplified when using BC/BR. <a href="#fig-readingskillsbias" class="quarto-xref">Figure&nbsp;2</a> shows the scatter plots of the logarithm of the estimated precision parameters based on the ML, BC, and BR estimates. It is apparent that the logarithms of the estimated precision parameters based on the bias-corrected and bias-reduced estimates are mildly shrunk towards zero. This is a similar but much milder effect compared to the one described in <span class="citation" data-cites="betareg:Kosmidis+Firth:2010">Kosmidis and Firth (<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">2010</a>)</span>. The reason that the effect is milder in this particular example relates to the fact that bias for the precision parameters is corrected/reduced on the log-scale where the ML estimator has a more symmetric distribution than on the original scale.</p>
+<p>To emphasize that BC/BR may potentially be crucial for empirical analyses, <a href="#sec-gasoline" class="quarto-xref">Section&nbsp;8</a> replicates the results of <span class="citation" data-cites="betareg:Kosmidis+Firth:2010">Kosmidis and Firth (<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">2010</a>)</span> for a beta regression where substantial upward bias was detected for the ML estimator of the precision parameter, which in turn causes underestimated asymptotic standard errors; note the direct dependence of the expected information matrix on the precision parameters in <a href="#eq-expinfo" class="quarto-xref">Equation&nbsp;9</a>.</p>
+<p>For the reading accuracy data, the similarity of the results in <a href="#tbl-ReadingSkills-bias" class="quarto-xref">Table&nbsp;1</a> between the three different estimation methods and <a href="#fig-readingskillsbias" class="quarto-xref">Figure&nbsp;2</a> is reassuring and illustrates that analysis based on the ML estimator would not be influenced by bias-related issues. Furthermore, the effect of BC/BR becomes even smaller when the model without interaction in the precision submodel is considered.</p>
+</section><section id="beta-regression-tree" class="level3"><h3 class="anchored" data-anchor-id="beta-regression-tree">Beta regression tree</h3>
+<p>For illustrating the use of model-based recursive partitioning methods we assume the following situation: A researcher wants to assess whether the relationship between reading <code>accuracy</code> and nonverbal <code>iq</code> score is different for some subgroups in the data. Covariates potentially describing these subgroups are available but no prior knowledge how exactly the subgroups can be described by these covariates. For investigating the ability of the tree to select suitable variables for partitioning, <code>dyslexia</code> is considered as a partitioning variable along with three additional randomly generated noise variables. One noise variable is drawn from a standard normal distribution, one from a uniform distribution and the third is a categorical variable which takes two different values with equal probability.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">RNGversion</a></span><span class="op">(</span><span class="st">"3.5.0"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1071</span><span class="op">)</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">ReadingSkills</span><span class="op">)</span></span>
+<span><span class="va">ReadingSkills</span><span class="op">$</span><span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span><span class="va">ReadingSkills</span><span class="op">$</span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span><span class="va">ReadingSkills</span><span class="op">$</span><span class="va">x3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, <span class="va">n</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The model-based tree is fitted using <code>betatree()</code>. The first argument is a formula which specifies the model to be partitioned: We have a beta regression where both the mean and the precision of <code>accuracy</code> depend on <code>iq</code>. The second argument is a formula for the symbolic description of the partitioning variables and both formulas are evaluated using <code>data</code>. Additional control arguments for the recursive partitioning method used in <code>mob_control()</code> can be specified via the argument. In this case the minimum number of observations in a node is given by <code>minsize = 10</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rs_tree</span> <span class="op">&lt;-</span> <span class="fu">betatree</span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span> <span class="op">|</span> <span class="va">iq</span>, <span class="op">~</span> <span class="va">dyslexia</span> <span class="op">+</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">ReadingSkills</span>, minsize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Alternatively the model could be specified using a three-part formula where the third part is the symbolic description of the partitioning variables.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rs_tree</span> <span class="op">&lt;-</span> <span class="fu">betatree</span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span> <span class="op">|</span> <span class="va">iq</span> <span class="op">|</span> <span class="va">dyslexia</span> <span class="op">+</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">ReadingSkills</span>, minsize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The returned object is of class <code>"betatree"</code> which inherits from <code>"modelparty"</code> and <code>"party"</code>. All methods for <code>"modelparty"</code>/<code>"party"</code> objects can be reused, e.g., the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> method and the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method (see <a href="#fig-betatree" class="quarto-xref">Figure&nbsp;3</a>).</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">rs_tree</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-betatree" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-betatree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="betareg-ext_files/figure-html/fig-betatree-1.png" class="img-fluid figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-betatree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Partitioned beta regression model for the <code>ReadingSkills</code> data.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-betatree" class="quarto-xref">Figure&nbsp;3</a> indicates that the data was only split into two subsamples. None of the three noise variables was selected in order to perform a split, but only variable <code>dyslexia</code>. This indicates that the relationship between the IQ score and the reading accuracy does not depend on the noise variables as expected. By contrast, the relationship between these two variables differ for dyslexic and nondyslexic children. The beta regressions fitted to each of the two groups of children are illustrated in the two leaf nodes. Note that the fitted models use the IQ score as predictor for the mean and the precision. Hence the results are equivalent to the ML results from <a href="#tbl-ReadingSkills-bias" class="quarto-xref">Table&nbsp;1</a> (where sum contrasts are employed for <code>dyslexia</code>). Function <code><a href="https://rdrr.io/r/stats/coef.html">coef()</a></code> allows to inspect the parameters of the fitted models, by default in the terminal nodes (nodes 2 and 3).</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">rs_tree</span><span class="op">)</span></span>
+<span><span class="co">##   (Intercept)        iq (phi)_(Intercept) (phi)_iq</span></span>
+<span><span class="co">## 2     1.65653  1.465708            1.2726  2.04786</span></span>
+<span><span class="co">## 3     0.38093 -0.086228            4.8077  0.82603</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If the fitted object is printed the output indicates after the number of the node, which part of the data according to the split is contained (e.g., ) or the weights of the observations in the terminal nodes indicated by stars. In the terminal nodes also the estimated parameters of the beta regression models are provided.</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rs_tree</span></span>
+<span><span class="co">## Beta regression tree</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model formula:</span></span>
+<span><span class="co">## accuracy ~ iq + iq | dyslexia + x1 + x2 + x3</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Fitted party:</span></span>
+<span><span class="co">## [1] root</span></span>
+<span><span class="co">## |   [2] dyslexia in no: n = 25</span></span>
+<span><span class="co">## |             (Intercept)                iq (phi)_(Intercept) </span></span>
+<span><span class="co">## |                  1.6565            1.4657            1.2726 </span></span>
+<span><span class="co">## |                (phi)_iq </span></span>
+<span><span class="co">## |                  2.0479 </span></span>
+<span><span class="co">## |   [3] dyslexia in yes: n = 19</span></span>
+<span><span class="co">## |             (Intercept)                iq (phi)_(Intercept) </span></span>
+<span><span class="co">## |                0.380932         -0.086228          4.807662 </span></span>
+<span><span class="co">## |                (phi)_iq </span></span>
+<span><span class="co">## |                0.826033 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Number of inner nodes:    1</span></span>
+<span><span class="co">## Number of terminal nodes: 2</span></span>
+<span><span class="co">## Number of parameters per node: 4</span></span>
+<span><span class="co">## Objective function (negative log-likelihood): -66.734</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The output above confirms that in the nondyslexic group there is a positive association of both mean accuracy and the precision with IQ score. In the dyslexic group, the mean accuracy is generally lower with almost no dependence on IQ score while precision is higher and slightly decreasing with IQ score. Some further details could be revealed by considering for example <code>summary(rs_tree, node = 3)</code> that provides the usual regression model summary (unadjusted for recursive partitioning) for the model associated with node 3.</p>
+<p>To gain further insight into the recursive construction of the beta regression tree, we use the results of the parameter instability tests in all three nodes. The test statistics together with the corresponding <span class="math inline">\(p\)</span> values can be obtained using function <code><a href="https://rdrr.io/pkg/strucchange/man/sctest.html">sctest()</a></code> (for structural change test). This indicates which partitioning variables in each node exhibited significant instability and the reason for performing no further split, i.e., either because all parameter instability tests were insignificant (see node 2) or because the node size is too small for a further split (see node 3).</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"strucchange"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/strucchange/man/sctest.html">sctest</a></span><span class="op">(</span><span class="va">rs_tree</span><span class="op">)</span></span>
+<span><span class="co">## $`1`</span></span>
+<span><span class="co">##             dyslexia      x1      x2     x3</span></span>
+<span><span class="co">## statistic 2.2687e+01 8.52510 5.56986 3.6273</span></span>
+<span><span class="co">## p.value   5.8479e-04 0.90946 0.99871 0.9142</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $`2`</span></span>
+<span><span class="co">##           dyslexia      x1      x2      x3</span></span>
+<span><span class="co">## statistic        0 6.41163 4.51702 8.20191</span></span>
+<span><span class="co">## p.value         NA 0.84121 0.97516 0.23257</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $`3`</span></span>
+<span><span class="co">## NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In node 1 only dyslexia shows significant instability while the noise variables are all insignificant. In node 2, dyslexia cannot be used for splitting anymore and all other variables are still insignificant and thus the partitioning stops. With only 19 observations, node 3 is considered too small to warrant further splitting given that <code>minsize = 10</code> requires that each node contains at least 10 observations and hence no tests are carried out.</p>
+</section><section id="latent-class-beta-regression" class="level3"><h3 class="anchored" data-anchor-id="latent-class-beta-regression">Latent class beta regression</h3>
+<p>For illustrating the use of finite mixture models we assume the following situation: A researcher wants to assess whether the relationship between reading <code>accuracy</code> and nonverbal <code>iq</code> score is different for some subgroups in the data without having further covariates potentially describing the groups available. In particular, we assume that the information whether the children are dyslexic or not is not available. Modeling the relationship between reading accuracy and IQ score is now complicated by the fact that latent groups exist in the data where this relationship is different.</p>
+<p>The group of nondyslexic children is challenging as some of them essentially have a perfect reading accuracy while for others accuracy is strongly increasing with the IQ score. In a model with observed <code>dyslexia</code>, this can be captured by different variances in the two groups. However, issues arise when <code>dyslexia</code> is unobserved and a mixture model is employed to infer the groups. Specifically, the subgroup with perfect reading score will typically be selected as one component of the mixture whose variance converges to zero leading to an unbounded likelihood. To address this issue we fit a finite mixture model with three components, where one component is used to capture those children who have a perfect reading accuracy test score. Following <span class="citation" data-cites="betareg:Smithson+Merkle+Verkuilen:2011">Smithson, Merkle, and Verkuilen (<a href="#ref-betareg:Smithson+Merkle+Verkuilen:2011" role="doc-biblioref">2011</a>)</span> this additional component is assumed to follow a uniform distribution on the interval <code>coef</code> <span class="math inline">\(\pm\)</span> <code>delta</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rs_mix</span> <span class="op">&lt;-</span> <span class="fu">betamix</span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span>, data <span class="op">=</span> <span class="va">ReadingSkills</span>, k <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  extra_components <span class="op">=</span> <span class="fu">extraComponent</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"uniform"</span>,</span>
+<span>    coef <span class="op">=</span> <span class="fl">0.99</span>, delta <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>, nstart <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The argument <code>nstart</code> is set to 10. This implies that the EM algorithm is run 10 times, with each run being randomly initialized. Then only the best solution according to the log-likelihood is returned. In this way, the chance that the global optimum is detected is increased (the EM algorithm is generally only guaranteed to converge to a local optimum and the convergence behaviour depends on the initialization).</p>
+<p>The returned fitted model is of class <code>"betamix"</code> and has methods for <code>clusters,betamix,ANY-method</code>, <code>coef</code>, <code>coerce,oldClass,S3-method</code>, <code>fitted,betamix-method</code>, <code>initialize,oldClass-method</code>, <code>logLik</code>, <code>posterior,betamix,ANY-method</code>, <code>predict,betamix-method</code>, <code>print</code>, <code>show,oldClass-method</code>, <code>slotsFromS3,oldClass-method</code> and <code>summary</code>. These methods reuse functionality already available for finite mixture models that are directly fitted using <code>flexmix()</code> from package <strong>flexmix</strong>. The <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> method shows the function call and provides information on how many observations are assigned to each of the components based on the values of the posterior probabilities. Furthermore, the convergence status of the EM algorithm is reported, and in the case of convergence, the number of iterations that were performed is shown. % it is indicated % if the EM algorithm converged or not and in the case of convergence % how many iterations were performed.</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rs_mix</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## betamix(formula = accuracy ~ iq, data = ReadingSkills, </span></span>
+<span><span class="co">##     k = 3, nstart = 10, extra_components = extraComponent(type = "uniform", </span></span>
+<span><span class="co">##         coef = 0.99, delta = 0.01))</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Cluster sizes:</span></span>
+<span><span class="co">##  1  2  3 </span></span>
+<span><span class="co">## 20 10 14 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## convergence after 20 iterations</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> method provides more information on the estimated coefficients and their estimated standard errors. For the calculation of the latter, function <code><a href="https://rdrr.io/r/stats/optim.html">optim()</a></code> is used for the numerical approximation of the corresponding Hessian matrix.</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">rs_mix</span><span class="op">)</span></span>
+<span><span class="co">## $Comp.1</span></span>
+<span><span class="co">## $Comp.1$mean</span></span>
+<span><span class="co">##             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">## (Intercept)   0.5025     0.0825    6.09  1.1e-09 ***</span></span>
+<span><span class="co">## iq           -0.0484     0.1130   -0.43     0.67    </span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $Comp.1$precision</span></span>
+<span><span class="co">##             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">## (Intercept)    4.251      0.748    5.69  1.3e-08 ***</span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $Comp.2</span></span>
+<span><span class="co">## $Comp.2$mean</span></span>
+<span><span class="co">##             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">## (Intercept)    1.403      0.263    5.33  9.9e-08 ***</span></span>
+<span><span class="co">## iq             0.825      0.216    3.81  0.00014 ***</span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $Comp.2$precision</span></span>
+<span><span class="co">##             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span><span class="co">## (Intercept)    2.685      0.454    5.91  3.4e-09 ***</span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Because only two components are freely estimated and the parameters for the third component were fixed a-priori, the detailed information on the estimated parameters is only provided for components 1 and 2. The regression part for the mean indicates that in the first component the IQ score does not significantly affect the achieved accuracy, while there is a positive significant effect of the IQ score on accuracy in the second component.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-betamix" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-betamix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="betareg-ext_files/figure-html/fig-betamix-1.png" class="img-fluid figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-betamix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Fitted regression lines for the mixture model with three components and the observations shaded according to their posterior probabilities (left). Fitted regression lines for the partitioned beta regression model with shading according to the observed <code>dyslexic</code> variable where nondyslexic and dyslexic children are in blue and red, respectively (right).
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>A cross-tabulation of the cluster assignments of the mixture model with the variable <code>dyslexia</code> indicates that no dyslexic children are assigned to the third component. Furthermore, children assigned to the first component have a high probability (80%) of being dyslexic.</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu">clusters</span><span class="op">(</span><span class="va">rs_mix</span><span class="op">)</span>, <span class="va">ReadingSkills</span><span class="op">$</span><span class="va">dyslexia</span><span class="op">)</span></span>
+<span><span class="co">##    </span></span>
+<span><span class="co">##     no yes</span></span>
+<span><span class="co">##   1  4  16</span></span>
+<span><span class="co">##   2  7   3</span></span>
+<span><span class="co">##   3 14   0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The fitted mean regression lines for each of the three components are provided in <a href="#fig-betamix" class="quarto-xref">Figure&nbsp;4</a> (left). The observations are shaded according to the magnitude of the corresponding posterior probabilities. The stronger the shading of an observation is in red, the higher the posterior probability for this observation being from the first component is. Blue shading corresponds to the second component and green to the third. For comparison purposes, the right plot in <a href="#fig-betamix" class="quarto-xref">Figure&nbsp;4</a> shows the mean regression lines for the dyslexic and nondyslexic children as obtained by recursive partitioning – or equivalently for the model where an interaction with the variable <code>dyslexic</code> is specified in the regressions for mean and precision.</p>
+<p>The fitted regression lines for the dyslexic children (red) and the latent group capturing the dyslexic children (component 1) are very similar. In contrast, the group of nondyslexic children is modeled differently. With observed dyslexia, the heterogeneity in the control group is captured by differences in the precision submodel, i.e., in the variance. However, for unobserved dyslexia, it is more natural to capture the increased heterogeneity in the control group using two components, one of which would correspond to perfect reading accuracy irrespective of the IQ score.</p>
+</section></section><section id="sec-conclusions" class="level2"><h2 class="anchored" data-anchor-id="sec-conclusions">Conclusions</h2>
+<p>The new extensions of the package <strong>betareg</strong> allow to move beyond classical ML inference when fitting beta regression models. Bias correction and bias reduction of the ML estimates can be useful alternatives when the ML inferences turn out to be unreliable, and actually their ready availability in the package allows users to check how sensitive inferences (standard errors, confidence intervals and Wald tests, in particular) can be to the bias of the ML estimator. Recursive partitioning methods and finite mixture models enable the user to investigate heterogeneity – both observed and unobserved – in the regression model fitted to the whole sample.</p>
+<p>For users already familiar with previous versions of the <strong>betareg</strong> package, obtaining the bias-corrected/reduced estimators is straightforward; the user only needs to appropriately specify the <code>type</code> argument (which defaults to <code>"ML"</code>).</p>
+<p>For the implementation of the aforementioned extensions some changes and additions in the fitting function <code>betareg.fit()</code> were necessary. Specifically, the optimization of the likelihood is now followed by a Fisher scoring iteration. Furthermore, if the bias-reduced or bias-corrected estimates are requested, that Fisher scoring iteration is accordingly modified using a bias adjustment.</p>
+<p>To fit beta regression trees and finite mixtures of beta regressions the new functions <code>betatree()</code> and <code>betamix()</code> are available in package <strong>betareg</strong>. These functions borrow functionality from the packages <strong>partykit</strong> and <strong>flexmix</strong>. The interface of the two new functions has been designed to be as similar as possible to <code>betareg()</code>, in order to facilitate their use by users that are already familiar with the <code>betareg()</code> function.</p>
+<p>For modeling heterogeneity <code>betareg.fit()</code> is reused to fit the models in the nodes when beta regression trees are constructed, and in the M-step when finite mixture models are fitted. For this task, only a small amount of additional code was necessary to inherit the functionality provided by the <strong>partykit</strong> and <strong>flexmix</strong> packages to the package <strong>betareg</strong>.</p>
+<p>Overall, the increased flexibility of the extended package <strong>betareg</strong> enables users to conveniently check model suitability and appropriateness of the resultant inferences. With the extended package users can easily compare the results from a beta regression model fitted using ML estimation to those using bias correction/reduction, and draw conclusions incorporating observed or unobserved heterogeneity in their models.</p>
+</section><section id="acknowledgments" class="level2"><h2 class="anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
+<p>BG gratefully acknowledges financial support from the Austrian Science Fund (FWF): V170-N18.</p>
+</section><section id="sec-gasoline" class="level2"><h2 class="anchored" data-anchor-id="sec-gasoline">Appendix: Bias correction/reduction for gasoline yield data</h2>
+<p>To illustrate how upward bias in the ML estimator of the precision parameter in beta regressions can severely affect inference, results from <span class="citation" data-cites="betareg:Kosmidis+Firth:2010">Kosmidis and Firth (<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">2010</a>)</span> are replicated. All three flavors of estimators (ML, BC, and BR) are computed for the fixed-precision beta regression model considered in <span class="citation" data-cites="betareg:Ferrari+Cribari-Neto:2004">Ferrari and Cribari-Neto (<a href="#ref-betareg:Ferrari+Cribari-Neto:2004" role="doc-biblioref">2004</a>)</span> (also replicated in ):</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"GasolineYield"</span>, package <span class="op">=</span> <span class="st">"betareg"</span><span class="op">)</span></span>
+<span><span class="va">gy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ML"</span>, <span class="st">"BC"</span>, <span class="st">"BR"</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="fu">betareg</span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">batch</span> <span class="op">+</span> <span class="va">temp</span>, data <span class="op">=</span> <span class="va">GasolineYield</span>, type <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tbl-GasolineYield-bias" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-GasolineYield-bias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: ML, BC and BR estimates and corresponding estimated standard errors for a logit-linked beta regression model for the gasoline yield data. The precision parameter <span class="math inline">\(\phi\)</span> is assumed to be equal across the observations.
+</figcaption><div aria-describedby="tbl-GasolineYield-bias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 12%">
+<col style="width: 16%">
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 11%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Maximum likelihood</th>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">Bias correction</th>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">Bias reduction</th>
+<th style="text-align: right;"></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\beta_{1}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-6.15957\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.18232\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-6.14837\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.23595\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-6.14171\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.23588\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\beta_{2}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.72773\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.10123\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.72484\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13107\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.72325\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13106\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\beta_{3}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.32260\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.11790\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.32009\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.15260\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.31860\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.15257\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\beta_{4}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.57231\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.11610\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.56928\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.15030\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.56734\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.15028\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\beta_{5}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.05971\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.10236\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.05788\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13251\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.05677\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13249\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\beta_{6}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.13375\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.10352\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.13165\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13404\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.13024\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13403\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\beta_{7}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.04016\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.10604\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.03829\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13729\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.03714\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13727\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\beta_{8}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.54369\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.10913\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.54309\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.14119\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.54242\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.14116\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\beta_{9}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.49590\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.10893\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.49518\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.14099\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.49446\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.14096\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\beta_{10}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.38579\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.11859\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.38502\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.15353\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.38459\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.15351\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\beta_{11}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.01097\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.00041\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.01094\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.00053\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.01093\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.00053\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\phi\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(440.27839\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(110.02562\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(261.20610\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(65.25866\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(261.03777\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(65.21640\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The estimate of the precision parameter shrinks considerably when bias correction/reduction is used, indicating a large upward bias for the ML estimator of <span class="math inline">\(\phi\)</span>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">gy</span>, <span class="va">coef</span>, model <span class="op">=</span> <span class="st">"precision"</span><span class="op">)</span></span>
+<span><span class="co">##  (phi)  (phi)  (phi) </span></span>
+<span><span class="co">## 440.28 261.21 261.04</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>while the log-likelihood does not change much</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">gy</span>, <span class="va">logLik</span><span class="op">)</span></span>
+<span><span class="co">## [1] 84.798 82.947 82.945</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This results in much larger standard errors (and hence smaller test statistics and larger <span class="math inline">\(p\)</span> values) for all coefficients in the mean part of the model. <a href="#tbl-GasolineYield-bias" class="quarto-xref">Table&nbsp;2</a> replicates <span class="citation" data-cites="betareg:Kosmidis+Firth:2010">(<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">Kosmidis and Firth 2010</a>, Table 1)</span>. The picture does also not change much when a log-link is used in the precision model, see below and <a href="#tbl-GasolineYield-bias2" class="quarto-xref">Table&nbsp;3</a> replicating <span class="citation" data-cites="betareg:Kosmidis+Firth:2010">(<a href="#ref-betareg:Kosmidis+Firth:2010" role="doc-biblioref">Kosmidis and Firth 2010</a>, Table 3)</span>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"GasolineYield"</span>, package <span class="op">=</span> <span class="st">"betareg"</span><span class="op">)</span></span>
+<span><span class="va">gy2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ML"</span>, <span class="st">"BC"</span>, <span class="st">"BR"</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="fu">betareg</span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">batch</span> <span class="op">+</span> <span class="va">temp</span> <span class="op">|</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">GasolineYield</span>, type <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">gy2</span>, <span class="va">logLik</span><span class="op">)</span></span>
+<span><span class="co">## [1] 84.798 83.797 83.268</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tbl-GasolineYield-bias2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-GasolineYield-bias2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: ML, BC and BR estimates and corresponding estimated standard errors for a logit-linked beta regression model for the gasoline yield data. Precision is estimated on the log-scale and is assumed to be equal across the observations.
+</figcaption><div aria-describedby="tbl-GasolineYield-bias2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 20%">
+<col style="width: 10%">
+<col style="width: 17%">
+<col style="width: 10%">
+<col style="width: 16%">
+<col style="width: 10%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Maximum likelihood</th>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">Bias correction</th>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">Bias reduction</th>
+<th style="text-align: right;"></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\beta_{1}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-6.15957\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.18232\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-6.14837\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.21944\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-6.14259\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.22998\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\beta_{2}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.72773\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.10123\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.72484\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.12189\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.72347\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.12777\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\beta_{3}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.32260\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.11790\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.32009\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.14193\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.31880\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.14875\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\beta_{4}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.57231\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.11610\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.56928\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13978\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.56758\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.14651\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\beta_{5}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.05971\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.10236\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.05788\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.12323\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.05691\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.12917\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\beta_{6}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.13375\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.10352\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.13165\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.12465\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.13041\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13067\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\beta_{7}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.04016\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.10604\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.03829\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.12767\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1.03729\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13383\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\beta_{8}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.54369\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.10913\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.54309\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13133\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.54248\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13763\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\beta_{9}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.49590\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.10893\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.49518\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13112\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.49453\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.13743\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\beta_{10}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.38579\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.11859\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.38502\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.14278\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.38465\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.14966\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\beta_{11}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.01097\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.00041\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.01094\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.00050\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.01093\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.00052\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\log\phi\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(6.08741\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.24990\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(5.71191\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.24986\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(5.61608\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.24984\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+
+
+
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-betareg:Andrews:1993" class="csl-entry" role="listitem">
+Andrews, Donald W. K. 1993. <span>“Tests for Parameter Instability and Structural Change with Unknown Change Point.”</span> <em>Econometrica</em> 61: 821–56.
+</div>
+<div id="ref-betareg:Cribari-Neto+Zeileis:2010" class="csl-entry" role="listitem">
+Cribari-Neto, Francisco, and Achim Zeileis. 2010. <span>“Beta Regression in .”</span> <em>Journal of Statistical Software</em> 34 (2): 1–24. <a href="https://doi.org/10.18637/jss.v034.i02">https://doi.org/10.18637/jss.v034.i02</a>.
+</div>
+<div id="ref-betareg:Efron:1975" class="csl-entry" role="listitem">
+Efron, Bradley. 1975. <span>“Defining the Curvature of a Statistical Problem (with Applications to Second Order Efficiency).”</span> <em>The Annals of Statistics</em> 3 (6): 1189–1217.
+</div>
+<div id="ref-betareg:Ferrari+Cribari-Neto:2004" class="csl-entry" role="listitem">
+Ferrari, Silvia L. P., and Francisco Cribari-Neto. 2004. <span>“Beta Regression for Modelling Rates and Proportions.”</span> <em>Journal of Applied Statistics</em> 31 (7): 799–815.
+</div>
+<div id="ref-betareg:Firth:1993" class="csl-entry" role="listitem">
+Firth, David. 1993. <span>“Bias Reduction of Maximum Likelihood Estimates.”</span> <em>Biometrika</em> 80 (1): 27–38.
+</div>
+<div id="ref-betareg:Fox+Weisberg:2019" class="csl-entry" role="listitem">
+Fox, John, and Sanford Weisberg. 2019. <em>An Companion to Applied Regression</em>. 3rd ed. Thousand Oaks, CA: Sage Publications.
+</div>
+<div id="ref-betareg:Gruen+Kosmidis+Zeileis:2012" class="csl-entry" role="listitem">
+Grün, Bettina, Ioannis Kosmidis, and Achim Zeileis. 2012. <span>“Extended Beta Regression in : Shaken, Stirred, Mixed, and Partitioned.”</span> <em>Journal of Statistical Software</em> 48 (11): 1–25. <a href="https://doi.org/10.18637/jss.v048.i11">https://doi.org/10.18637/jss.v048.i11</a>.
+</div>
+<div id="ref-betareg:Gruen+Leisch:2008" class="csl-entry" role="listitem">
+Grün, Bettina, and Friedrich Leisch. 2008. <span>“<span>FlexMix</span> Version&nbsp;2: Finite Mixtures with Concomitant Variables and Varying and Constant Parameters.”</span> <em>Journal of Statistical Software</em> 28 (4): 1–35. <a href="https://doi.org/10.18637/jss.v028.i04">https://doi.org/10.18637/jss.v028.i04</a>.
+</div>
+<div id="ref-betareg:Hjort+Koning:2002" class="csl-entry" role="listitem">
+Hjort, Nils Lid, and Alexander Koning. 2002. <span>“Tests for Constancy of Model Parameters over Time.”</span> <em>Nonparametric Statistics</em> 14: 113–32.
+</div>
+<div id="ref-betareg:Hothorn+Bretz+Westfall:2008" class="csl-entry" role="listitem">
+Hothorn, Torsten, Frank Bretz, and Peter Westfall. 2008. <span>“Simultaneous Inference in General Parametric Models.”</span> <em>Biometrical Journal</em> 50 (3): 346–63.
+</div>
+<div id="ref-betareg:Hothorn+Zeileis:2015" class="csl-entry" role="listitem">
+Hothorn, Torsten, and Achim Zeileis. 2015. <span>“: A Modular Toolkit for Recursive Partytioning in .”</span> <em>Journal of Machine Learning Research</em>. <a href="http://EconPapers.RePEc.org/RePEc:inn:wpaper:2014-10">http://EconPapers.RePEc.org/RePEc:inn:wpaper:2014-10</a>.
+</div>
+<div id="ref-betareg:Kosmidis+Firth:2010" class="csl-entry" role="listitem">
+Kosmidis, Ioannis, and David Firth. 2010. <span>“A Generic Algorithm for Reducing Bias in Parametric Estimation.”</span> <em>Electronic Journal of Statistics</em> 4: 1097–1112.
+</div>
+<div id="ref-betareg:Leisch:2004" class="csl-entry" role="listitem">
+Leisch, Friedrich. 2004. <span>“<span>FlexMix</span>: A General Framework for Finite Mixture Models and Latent Class Regression in .”</span> <em>Journal of Statistical Software</em> 11 (8): 1–18. <a href="https://doi.org/10.18637/jss.v011.i08">https://doi.org/10.18637/jss.v011.i08</a>.
+</div>
+<div id="ref-betareg:Leisch+Gruen:2012" class="csl-entry" role="listitem">
+Leisch, Friedrich, and Bettina Grün. 2012. <em>: Flexible Mixture Modeling</em>. <a href="http://CRAN.R-project.org/package=flexmix">http://CRAN.R-project.org/package=flexmix</a>.
+</div>
+<div id="ref-betareg:Ospina+Cribari-Neto+Vasconcellos:2006" class="csl-entry" role="listitem">
+Ospina, R., Francisco Cribari-Neto, and K. L. P. Vasconcellos. 2006. <span>“Improved Point and Interval Estimation for a Beta Regression Model.”</span> <em>Computational Statistics &amp; Data Analysis</em> 51 (2): 960–81.
+</div>
+<div id="ref-betareg:Simas+Barreto-Souza+Rocha:2010" class="csl-entry" role="listitem">
+Simas, Alexandre B., Wagner Barreto-Souza, and Andréa V. Rocha. 2010. <span>“Improved Estimators for a General Class of Beta Regression Models.”</span> <em>Computational Statistics &amp; Data Analysis</em> 54 (2): 348–66.
+</div>
+<div id="ref-betareg:Smithson+Merkle+Verkuilen:2011" class="csl-entry" role="listitem">
+Smithson, Michael, Edgar C. Merkle, and Jay Verkuilen. 2011. <span>“Beta Regression Finite Mixture Models of Polarization and Priming.”</span> <em>Journal of Educational and Behavioral Statistics</em> 36 (6): 804–31.
+</div>
+<div id="ref-betareg:Smithson+Segale:2009" class="csl-entry" role="listitem">
+Smithson, Michael, and Carl Segale. 2009. <span>“Partition Priming in Judgments of Imprecise Probabilities.”</span> <em>Journal of Statistical Theory and Practice</em> 3 (1): 169–81.
+</div>
+<div id="ref-betareg:Smithson+Verkuilen:2006" class="csl-entry" role="listitem">
+Smithson, Michael, and Jay Verkuilen. 2006. <span>“A Better Lemon Squeezer? Maximum-Likelihood Regression with Beta-Distributed Dependent Variables.”</span> <em>Psychological Methods</em> 11 (1): 54–71.
+</div>
+<div id="ref-betareg:Zeileis:2006" class="csl-entry" role="listitem">
+Zeileis, Achim. 2006. <span>“Implementing a Class of Structural Change Tests: An Econometric Computing Approach.”</span> <em>Computational Statistics &amp; Data Analysis</em> 50 (11): 2987–3008.
+</div>
+<div id="ref-betareg:Zeileis+Croissant:2010" class="csl-entry" role="listitem">
+Zeileis, Achim, and Yves Croissant. 2010. <span>“Extended Model Formulas in : Multiple Parts and Multiple Responses.”</span> <em>Journal of Statistical Software</em> 34 (1): 1–13. <a href="https://doi.org/10.18637/jss.v034.i01">https://doi.org/10.18637/jss.v034.i01</a>.
+</div>
+<div id="ref-betareg:Zeileis+Hothorn:2002" class="csl-entry" role="listitem">
+Zeileis, Achim, and Torsten Hothorn. 2002. <span>“Diagnostic Checking in Regression Relationships.”</span><em> News</em> 2 (3): 7–10. <a href="http://CRAN.R-project.org/doc/Rnews/">http://CRAN.R-project.org/doc/Rnews/</a>.
+</div>
+<div id="ref-betareg:Zeileis+Hothorn+Hornik:2008" class="csl-entry" role="listitem">
+Zeileis, Achim, Torsten Hothorn, and Kurt Hornik. 2008. <span>“Model-Based Recursive Partitioning.”</span> <em>Journal of Computational and Graphical Statistics</em> 17 (2): 492–514.
+</div>
+<div id="ref-betareg:Zeileis+Leisch+Hornik:2002" class="csl-entry" role="listitem">
+Zeileis, Achim, Friedrich Leisch, Kurt Hornik, and Christian Kleiber. 2002. <span>“: <span>A</span>n Package for Testing for Structural Change in Linear Regression Models.”</span> <em>Journal of Statistical Software</em> 7 (2): 1–38. <a href="https://doi.org/10.18637/jss.v007.i02">https://doi.org/10.18637/jss.v007.i02</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<ol>
+<li id="fn1"><p>An example of M-fluctuation tests for parameter instability (also known as structural change) in beta regressions is also discussed in <span class="citation" data-cites="betareg:Zeileis:2006">Zeileis (<a href="#ref-betareg:Zeileis:2006" role="doc-biblioref">2006</a>)</span> and replicated in <span class="citation" data-cites="betareg:Cribari-Neto+Zeileis:2010">Cribari-Neto and Zeileis (<a href="#ref-betareg:Cribari-Neto+Zeileis:2010" role="doc-biblioref">2010</a>)</span>. However, this uses a double-maximum type test statistic, not a <span class="math inline">\(\sup\)</span>LM or <span class="math inline">\(\chi^2\)</span> statistic.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/betareg\.R-Forge\.R-project\.org\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

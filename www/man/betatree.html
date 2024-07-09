@@ -123,10 +123,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Get started</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../man/betareg.html" aria-current="page"> 
-<span class="menu-text">Documentation</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-documentation" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Documentation</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-documentation">
+<li>
+    <a class="dropdown-item" href="../man/betareg.html">
+ <span class="dropdown-text">Beta regression</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../man/CarTask.html">
+ <span class="dropdown-text">Data sets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/dbetar.html">
+ <span class="dropdown-text">Distributions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../man/BetaR.html">
+ <span class="dropdown-text">distributions3 objects</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Articles</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">
+<li>
+    <a class="dropdown-item" href="../vignettes/betareg.html">
+ <span class="dropdown-text">Beta Regression in R (JSS 2010)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../vignettes/betareg-ext.html">
+ <span class="dropdown-text">Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned (JSS 2012)</span></a>
+  </li>  
+    </ul>
+</li>
   <li class="nav-item">
     <a class="nav-link" href="../NEWS.html"> 
 <span class="menu-text">News</span></a>
@@ -470,7 +504,7 @@ further control arguments for the recursive partitioning passed to <code>mob_con
 <p>Beta regression trees are an application of model-based recursive partitioning (implemented in <code>mob</code>, see Zeileis et al.&nbsp;2008) to beta regression (implemented in <code>betareg</code>, see Cribari-Neto and Zeileis 2010). See also Grün at al.&nbsp;(2012) for more details.</p>
 <p>Various methods are provided for <code>“betatree”</code> objects, most of them inherit their behavior from <code>“mob”</code> objects (e.g., <code>print</code>, <code>summary</code>, <code>coef</code>, etc.). The <code>plot</code> method employs the <code>node_bivplot</code> panel-generating function.</p>
 </section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
-<p><code><a href="https://rdrr.io/pkg/betareg/man/betatree.html">betatree()</a></code> returns an object of S3 class <code>“betatree”</code> which inherits from <code>“modelparty”</code>.</p>
+<p><code><a href="https://betareg.R-Forge.R-project.org/man/betatree.html">betatree()</a></code> returns an object of S3 class <code>“betatree”</code> which inherits from <code>“modelparty”</code>.</p>
 </section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
 <p>Cribari-Neto, F., and Zeileis, A. (2010). Beta Regression in R. <em>Journal of Statistical Software</em>, <b>34</b>(2), 1–24. <a href="https://doi.org/10.18637/jss.v034.i02">doi:10.18637/jss.v034.i02</a></p>
 <p>Grün, B., Kosmidis, I., and Zeileis, A. (2012). Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned. <em>Journal of Statistical Software</em>, <b>48</b>(11), 1–25. <a href="https://doi.org/10.18637/jss.v048.i11">doi:10.18637/jss.v048.i11</a></p>
@@ -496,7 +530,7 @@ further control arguments for the recursive partitioning passed to <code>mob_con
 <span><span class="co">##   - accurcay's mean and precision depends on iq</span></span>
 <span><span class="co">##   - partitioning is done by dyslexia and the noise variables x1, x2, x3</span></span>
 <span><span class="co">## only dyslexia is correctly selected for splitting</span></span>
-<span><span class="va">bt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betatree.html">betatree</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span> <span class="op">|</span> <span class="va">iq</span>, <span class="op">~</span> <span class="va">dyslexia</span> <span class="op">+</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span>,</span>
+<span><span class="va">bt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/betatree.html">betatree</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span> <span class="op">|</span> <span class="va">iq</span>, <span class="op">~</span> <span class="va">dyslexia</span> <span class="op">+</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">ReadingSkills</span>, minsize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">bt</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -587,7 +621,7 @@ Number of iterations: 16 (BFGS) + 2 (Fisher scoring) </code></pre>
 <span><span class="co">## add a numerical variable with relevant information for splitting</span></span>
 <span><span class="va">ReadingSkills</span><span class="op">$</span><span class="va">x4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">ReadingSkills</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span><span class="op">)</span><span class="op">[</span><span class="va">ReadingSkills</span><span class="op">$</span><span class="va">dyslexia</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">bt2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/betareg/man/betatree.html">betatree</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span> <span class="op">|</span> <span class="va">iq</span>, <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span> <span class="op">+</span> <span class="va">x4</span>,</span>
+<span><span class="va">bt2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://betareg.R-Forge.R-project.org/man/betatree.html">betatree</a></span><span class="op">(</span><span class="va">accuracy</span> <span class="op">~</span> <span class="va">iq</span> <span class="op">|</span> <span class="va">iq</span>, <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span> <span class="op">+</span> <span class="va">x4</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">ReadingSkills</span>, minsize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">bt2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
