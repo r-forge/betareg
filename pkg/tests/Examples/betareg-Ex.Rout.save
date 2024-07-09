@@ -174,7 +174,7 @@ detaching ‘package:distributions3’
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: CarTask
-> ### Title: Partition-primed Probability Judgement Task for Car Dealership
+> ### Title: Partition-Primed Probability Judgement Task for Car Dealership
 > ### Aliases: CarTask
 > ### Keywords: datasets
 > 
@@ -822,7 +822,7 @@ sa_stress  4 -595.9
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: WeatherTask
-> ### Title: Weather Task With Priming and Precise and Imprecise
+> ### Title: Weather Task with Priming and Precise and Imprecise
 > ###   Probabilities
 > ### Aliases: WeatherTask
 > ### Keywords: datasets
@@ -1877,7 +1877,7 @@ Number of iterations: 33 (BFGS) + 28 (Fisher scoring)
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  11.325 0.123 11.459 0 0 
+Time elapsed:  12.989 0.084 13.079 0 0 
 > grDevices::dev.off()
 null device 
           1 

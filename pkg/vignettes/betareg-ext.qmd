@@ -53,7 +53,7 @@ vignette: >
   %\VignetteIndexEntry{Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{stats,betareg,partykit,flexmix}
+  %\VignetteDepends{stats,betareg,partykit,flexmix,knitr}
   %\VignetteKeywords{beta regression, bias correction, bias reduction, recursive partitioning, finite mixture, R}
   %\VignettePackage{betareg}
 ---
@@ -107,10 +107,9 @@ beta distribution has the density
 $$
 f(y;\mu,\phi) =
 \frac{\Gamma(\phi)}{\Gamma(\mu\phi)\Gamma((1-\mu)\phi)}y^{\mu\phi-1}(1-y)^{(1-\mu)\phi-1}\,
-,\quad 0<y<1\, ,\quad  0<\mu<1\, , \quad \phi > 0 \, ,
 $$ {#eq-density}
 
-where $\Gamma(\cdot)$ is the gamma function.  A
+where $0<y<1$, $0<\mu<1$, $\phi > 0$, and $\Gamma(\cdot)$ is the gamma function.  A
 beta-distributed variable $Y$ then has mean $\text{E}(Y) = \mu$ and
 variance $\text{Var}(Y) = \mu(1-\mu)/(1+\phi)$ so that $\phi$ can be seen as a
 precision parameter.

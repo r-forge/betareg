@@ -24,7 +24,21 @@ website:
       - text: Get started
         file: index.qmd
       - text: Documentation
-        file: man/betareg.qmd
+        menu:
+        - text: Beta regression
+          file: man/betareg.qmd
+        - text: Data sets
+          file: man/CarTask.qmd
+        - text: Distributions
+          file: man/dbetar.qmd
+        - text: distributions3 objects
+          file: man/BetaR.qmd
+      - text: Articles
+        menu:
+        - text: "Beta Regression in R (JSS 2010)"
+          file: vignettes/betareg.qmd
+        - text: "Extended Beta Regression in R: Shaken, Stirred, Mixed, and Partitioned (JSS 2012)"
+          file: vignettes/betareg-ext.qmd
       - text: News
         file: NEWS.md
       - text: Citation

@@ -20,8 +20,9 @@ Description: Beta regression for modeling beta-distributed dependent variables o
   beta regression, see Grün, Kosmidis, and Zeileis (2012) <doi:10.18637/jss.v048.i11>.
 Depends: R (>= 3.6.0)
 Imports: graphics, grDevices, methods, stats, flexmix, Formula, lmtest, modeltools, sandwich
-Suggests: car, distributions3 (>= 0.2.1), lattice, numDeriv, partykit, statmod, strucchange
+Suggests: car, distributions3 (>= 0.2.1), knitr, lattice, numDeriv, partykit, quarto, statmod, strucchange
 License: GPL-2 | GPL-3
 URL: https://betareg.R-Forge.R-project.org/
 BugReports: https://betareg.R-Forge.R-project.org/contact.html
 Encoding: UTF-8
+VignetteBuilder: quarto
