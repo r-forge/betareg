@@ -1,10 +1,10 @@
 project:
   type: website
-  output-dir: ../../www/
+  output-dir: ../../../topmodels/www/betareg/
 
 website:
   title: betareg
-  site-url: https://betareg.R-Forge.R-project.org/
+  site-url: https://topmodels.R-Forge.R-project.org/betareg/
   favicon: betareg.png
   image: betareg.png
   open-graph:
@@ -27,6 +27,8 @@ website:
         menu:
         - text: Beta regression
           file: man/betareg.qmd
+        - text: Beta regression trees and finite mixtures
+          file: man/betatree.qmd
         - text: Data sets
           file: man/CarTask.qmd
         - text: Distributions
@@ -69,12 +71,14 @@ website:
               file: man/predict.betareg.qmd
             - text: residuals.betareg
               file: man/residuals.betareg.qmd
+            - text: gleverage
+              file: man/gleverage.qmd
+        - section: Beta regression trees and finite mixtures
+          contents:
             - text: betatree
               file: man/betatree.qmd
             - text: betamix
               file: man/betamix.qmd
-            - text: gleverage
-              file: man/gleverage.qmd
         - section: Data sets
           contents:
             - text: CarTask
@@ -129,7 +133,7 @@ format:
     number-sections: false
     fontsize: 110%
     fontcolor: '#333333'
-    linkcolor: '#069580'
+    linkcolor: '#b52267'
     code-link: true
     code-copy: true
     code-overflow: scroll
