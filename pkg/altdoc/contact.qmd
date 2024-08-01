@@ -7,7 +7,7 @@ _&#x3c;&#x41;&#x63;&#x68;&#x69;&#x6d;&#x2e;&#x5a;&#x65;&#x69;&#x6c;&#x65;&#x69;&
 
 For discussions we also try to follow these channels:
 
-* [StackOverflow](https://StackOverflow.com/questions/tagged/colors) with `betareg` tag
+* [StackOverflow](https://StackOverflow.com/questions/tagged/betareg) with `betareg` tag
 * [CrossValidated](https://stats.StackExchange.com/questions/tagged/beta-regression) with `beta-regression` tag
 * [R-help](https://stat.ethz.ch/mailman/listinfo/R-help) mailing list
 
