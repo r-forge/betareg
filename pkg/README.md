@@ -55,33 +55,33 @@ effects of the two explanatory variables. More details are provided in
 ``` r
 br <- betareg(accuracy ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills)
 summary(br)
-#> 
-#> Call:
-#> betareg(formula = accuracy ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills)
-#> 
-#> Quantile residuals:
-#>     Min      1Q  Median      3Q     Max 
-#> -2.3625 -0.5872  0.3026  0.9425  1.5874 
-#> 
-#> Coefficients (mean model with logit link):
-#>             Estimate Std. Error z value Pr(>|z|)    
-#> (Intercept)   1.1232     0.1428   7.864 3.73e-15 ***
-#> dyslexia     -0.7416     0.1428  -5.195 2.04e-07 ***
-#> iq            0.4864     0.1331   3.653 0.000259 ***
-#> dyslexia:iq  -0.5813     0.1327  -4.381 1.18e-05 ***
-#> 
-#> Phi coefficients (precision model with log link):
-#>             Estimate Std. Error z value Pr(>|z|)    
-#> (Intercept)   3.3044     0.2227  14.835  < 2e-16 ***
-#> dyslexia      1.7466     0.2623   6.658 2.77e-11 ***
-#> iq            1.2291     0.2672   4.600 4.23e-06 ***
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-#> 
-#> Type of estimator: ML (maximum likelihood)
-#> Log-likelihood:  65.9 on 7 Df
-#> Pseudo R-squared: 0.5756
-#> Number of iterations: 25 (BFGS) + 1 (Fisher scoring)
+## 
+## Call:
+## betareg(formula = accuracy ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills)
+## 
+## Quantile residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.3625 -0.5872  0.3026  0.9425  1.5874 
+## 
+## Coefficients (mean model with logit link):
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)   1.1232     0.1428   7.864 3.73e-15 ***
+## dyslexia     -0.7416     0.1428  -5.195 2.04e-07 ***
+## iq            0.4864     0.1331   3.653 0.000259 ***
+## dyslexia:iq  -0.5813     0.1327  -4.381 1.18e-05 ***
+## 
+## Phi coefficients (precision model with log link):
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)   3.3044     0.2227  14.835  < 2e-16 ***
+## dyslexia      1.7466     0.2623   6.658 2.77e-11 ***
+## iq            1.2291     0.2672   4.600 4.23e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## Type of estimator: ML (maximum likelihood)
+## Log-likelihood:  65.9 on 7 Df
+## Pseudo R-squared: 0.5756
+## Number of iterations: 25 (BFGS) + 1 (Fisher scoring)
 ```
 
 The regression summary shows that `accuracy` increases with `iq` for the
