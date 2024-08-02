@@ -4,9 +4,12 @@
 
 <img src="https://topmodels.R-Forge.R-project.org/betareg/betareg.png" align="right" alt="countreg logo" width="100" />
 
-# betareg: Beta Regression in R
+# Beta Regression
 
 ## Overview
+
+The R package
+[betareg](https://topmodels.R-Forge.R-project.org/betareg/) provides:
 
 -   Beta regression for modeling beta-distributed dependent variables on
     the open unit interval (0, 1), e.g., rates and proportions, see
@@ -25,13 +28,15 @@
 
 ## Installation
 
-The stable version of `betareg` is available on CRAN:
+The stable version of `betareg` is available on
+[CRAN](https://CRAN.R-project.org/package=betareg):
 
 ``` r
 install.packages("betareg")
 ```
 
-The latest development version can be installed from R-universe:
+The latest development version can be installed from
+[R-universe](https://zeileis.R-universe.dev/betareg):
 
 ``` r
 install.packages("betareg", repos = "https://zeileis.R-universe.dev")
