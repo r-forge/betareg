@@ -15,14 +15,14 @@ For discussions we also try to follow these channels:
 
 * Achim Zeileis
   [![ORCID](orcid.svg){width=18px}](https://orcid.org/0000-0003-0918-3766)
-  [🌐](https://www.zeileis.org/)
+  [<i class="bi bi-globe" role="img" aria-label="Personal web page"></i>](https://www.zeileis.org/)
 * Francisco Cribari-Neto
   [![ORCID](orcid.svg){width=18px}](https://orcid.org/0000-0002-5909-6698)
-  [🌐](https://www.de.ufpe.br/~cribari/)
+  [<i class="bi bi-globe" role="img" aria-label="Personal web page"></i>](https://www.de.ufpe.br/~cribari/)
 * Bettina Grün
   [![ORCID](orcid.svg){width=18px}](https://orcid.org/0000-0001-7265-4773)
-  [🌐](https://statmath.wu.ac.at/~gruen/)
+  [<i class="bi bi-globe" role="img" aria-label="Personal web page"></i>](https://statmath.wu.ac.at/~gruen/)
 * Ioannis Kosmidis
   [![ORCID](orcid.svg){width=18px}](https://orcid.org/0000-0003-1556-0302)
-  [🌐](https://ikosmidis.com/)
+  [<i class="bi bi-globe" role="img" aria-label="Personal web page"></i>](https://ikosmidis.com/)
 
