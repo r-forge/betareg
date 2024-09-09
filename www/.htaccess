@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^betareg.r-forge.r-project.org$
+RewriteRule (.*)$ https://topmodels.R-Forge.R-project.org/betareg/$1 [R=301,L]
