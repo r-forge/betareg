@@ -1,5 +1,8 @@
 # betareg 3.2-1
 
+* Extended functionality of `predict()` method for `betareg` objects and
+  enhanced the corresponding documentation, see `?predict.betareg`.
+
 * Turned `vignette("betareg", package = "betareg")` and
   `vignette("betareg-ext", package = "betareg")` from Sweave into Quarto
   vignettes. Some improvements/updates in the text.
