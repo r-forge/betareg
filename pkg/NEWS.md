@@ -1,5 +1,7 @@
 # betareg 3.2-1
 
+* New working paper: Extended-Support Beta Regression for [0, 1] Responses.
+
 * New package web page (via `altdoc`/`quarto`) at
   <https://topmodels.R-Forge.R-project.org/betareg/>
 
