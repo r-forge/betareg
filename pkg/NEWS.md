@@ -1,5 +1,8 @@
 # betareg 3.2-1
 
+* New package web page (via `altdoc`/`quarto`) at
+  <https://topmodels.R-Forge.R-project.org/betareg/>
+
 * Extended functionality of `predict()` method for `betareg` objects and
   enhanced the corresponding documentation, see `?predict.betareg`.
 
