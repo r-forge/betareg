@@ -13,8 +13,8 @@
 
 \usage{
 \method{predict}{betareg}(object, newdata = NULL,
-  type = c("response", "link", "precision", "variance", "parameters", "distribution",
-    "density", "probability", "quantile"),
+  type = c("response", "link", "precision", "variance", "parameters",
+    "distribution", "density", "probability", "quantile"),
   na.action = na.pass, at = 0.5, elementwise = NULL, \dots)
 }
 
