@@ -7,8 +7,10 @@
 
 \description{
   Extract various types of predictions from beta regression models:
-  either on the scale of responses in (0, 1) or the scale of
-  the linear predictor.
+  First, GLM-style predictions on the scale of responses in (0, 1)
+  or the scale of the linear predictor are provided. Second, various
+  quantities based on the predicted beta distributions are available,
+  e.g., moments, quantiles, probabilities, densities, etc.
 }
 
 \usage{

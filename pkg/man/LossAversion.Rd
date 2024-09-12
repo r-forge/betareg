@@ -6,8 +6,8 @@
 \title{(No) Myopic Loss Aversion in Adolescents}
 
 \description{
-Data for assessing the extent of myopic loss aversion among
-adolescents (mostly aged 11 to 19).
+Data from a behavioral economics experiment assessing the extent
+of myopic loss aversion among adolescents (mostly aged 11 to 19).
 }
 
 \usage{data("LossAversion", package = "betareg")}
@@ -75,8 +75,8 @@ Glätzle-Rützler D, Sutter M, Zeileis A (2020).
 
 \references{
 Glätzle-Rützler D, Sutter M, Zeileis A (2015).
-  No Myopic Loss Aversion in Adolescents? - An Experimental Note.
-  \emph{Journal of Economic Behavior & Organization}, \bold{111}, 169-176.
+  No Myopic Loss Aversion in Adolescents? -- An Experimental Note.
+  \emph{Journal of Economic Behavior & Organization}, \bold{111}, 169--176.
   \doi{10.1016/j.jebo.2014.12.021}
 
 Kosmidis I, Zeileis A (2024).

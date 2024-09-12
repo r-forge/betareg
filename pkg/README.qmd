@@ -101,49 +101,56 @@ legend("topleft", c("Control", "Dyslexic"), pch = pch, col = pal, bty = "n")
 For going beyond this basic analysis the following extensions can be considered.
 
 
-### Bias reduction
-
-Bias-reduced estimation (instead of the default maximum likelihood estimation) can
-be used by adding the argument `type = "BR"` in `betareg()`. This slightly
-shrinks all coefficient estimates but leads to qualitatively identical results.  
-
-```{r, eval = FALSE}
-betareg(accuracy ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills, type = "BR")
-```
-
-
 ### Extended-support beta regression
 
 To analyze the original accuracy scores in [0, 1] (without scaling the perfect
-scores of `1` to `0.99`) use the variable `accuracy1`
-in the code above. The `betareg()` model then estimates an additional exceedence
-parameter that accounts for the boundary probability of a perfect score.  
+scores of `1` to `0.99`), use the variable `accuracy1` (instead of `accuracy`)
+in the code above. The `betareg()` model then automatically estimates an additional
+exceedence parameter that accounts for the boundary probability of a perfect score.
+For this data set, most coefficients shrink a bit, rendering some coefficients
+only weakly significant but the qualitative interpretations still remain similar.  
 
 ```{r, eval = FALSE}
 betareg(accuracy1 ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills)
 ```
 
+See Kosmidis and Zeileis (2024) and the documentation of `betareg()` for more details.
+
+
+### Bias reduction
+
+Bias-reduced estimation (instead of the default maximum likelihood estimation) can
+be used by adding the argument `type = "BR"` in `betareg()`. This slightly
+shrinks all coefficient estimates but, on this data, leads to qualitatively identical results.  
+
+```{r, eval = FALSE}
+betareg(accuracy ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills, type = "BR")
+```
+
+See Grün et al. (2012) and the documentation of `betareg()` for more details.
+
 
 ### Beta regression trees
 
-To find subgroups in a beta regression by recursively splitting subsamples
-(rather than fixing the dyslexia interaction in advance), beta regression trees
-can be used:  
+To find subgroups in a beta regression by recursively splitting subsamples, beta
+regression trees can be used. Here, this strategy can be used to figure out the different
+`iq` effects by `dyslexia` rather than fixing the variables' interaction in advance.  
 
 ```{r, eval = FALSE}
 betatree(accuracy ~ iq | iq, ~ dyslexia + ..., data = ReadingSkills, minsize = 10)
 ```
 
-See the documentation of `betatree()` for more details.
+See Grün et al. (2012) and the documentation of `betatree()` for more details.
 
 
 ### Finite mixtures of beta regressions
 
-To find clusters in a beta regression (without even having the dyslexia information),
-finite mixtures of beta regressions can be used:  
+To find clusters in a beta regression finite mixtures of beta regressions can be used.
+Here, this technique can be employed to find the different `iq` effects in the data
+without even requiring the `dyslexia` information.
 
 ```{r, eval = FALSE}
 betamix(accuracy ~ iq, data = ReadingSkills, k = 3, ...)
 ```
 
-See the documentation of `betamix()` for more details.
+See Grün et al. (2012) and the documentation of `betamix()` for more details.
