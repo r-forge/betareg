@@ -60,6 +60,10 @@ A data frame containing 570 observations on 7 variables.
   data are averaged across rounds for each player, leading to qualitatively
   similar results. The full data along with replication materials are available
   in the Harvard Dataverse.
+  
+  Kosmidis and Zeileis (2024) revisit the data using extended-support beta
+  mixture (XBX) regression, which can simultaneously capture both the probability
+  of rational behavior and the mean amount of loss aversion.
 }
 
 \source{
@@ -74,6 +78,11 @@ Glätzle-Rützler D, Sutter M, Zeileis A (2015).
   No Myopic Loss Aversion in Adolescents? - An Experimental Note.
   \emph{Journal of Economic Behavior & Organization}, \bold{111}, 169-176.
   \doi{10.1016/j.jebo.2014.12.021}
+
+Kosmidis I, Zeileis A (2024).
+  Extended-Support Beta Regression for [0, 1] Responses.
+  2409.07233, \emph{arXiv.org E-Print Archive}.
+  \doi{10.48550/arXiv.2409.07233}
 }
 
 \seealso{\code{\link{betareg}}}

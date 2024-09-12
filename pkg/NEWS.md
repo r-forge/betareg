@@ -1,7 +1,8 @@
 # betareg 3.2-1
 
 * New working paper "Extended-Support Beta Regression for [0, 1] Responses"
-  by Ioannis Kosmidis and Achim Zeileis.
+  by Ioannis Kosmidis and Achim Zeileis in the _arXiv.org E-Print Archive_,
+  [doi:10.48550/arXiv.2409.07233](https://doi.org/10.48550/arXiv.2409.07233).
 
 * New package web page (via `altdoc`/`quarto`) at
   <https://topmodels.R-Forge.R-project.org/betareg/>
