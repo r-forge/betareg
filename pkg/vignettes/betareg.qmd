@@ -173,7 +173,7 @@ be used to perform inference in both fixed and variable dispersion beta
 regressions. The package is implemented in the R system
 for statistical computing [@betareg:R:2009] and available
 from the Comprehensive R Archive Network (CRAN) at
-<http://CRAN.R-project.org/package=betareg>. The initial version of the
+<https://CRAN.R-project.org/package=betareg>. The initial version of the
 package was written by @betareg:Simas+Rocha:2006 up to version 1.2
 which was orphaned and archived on CRAN in mid-2009. Starting from version 2.0-0,
 Achim Zeileis took over maintenance after rewriting/extending the package's
