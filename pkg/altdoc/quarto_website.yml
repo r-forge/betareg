@@ -27,7 +27,7 @@ website:
         menu:
         - text: Beta regression
           file: man/betareg.qmd
-        - text: Beta regression trees and finite mixtures
+        - text: Beta regression extensions
           file: man/betatree.qmd
         - text: Data sets
           file: man/CarTask.qmd
@@ -82,12 +82,14 @@ website:
               file: man/residuals.betareg.qmd
             - text: gleverage
               file: man/gleverage.qmd
-        - section: Beta regression trees and finite mixtures
+        - section: Beta regression extensions
           contents:
             - text: betatree
               file: man/betatree.qmd
             - text: betamix
               file: man/betamix.qmd
+            - text: betar_family
+              file: man/betar_family.qmd
         - section: Data sets
           contents:
             - text: CarTask
