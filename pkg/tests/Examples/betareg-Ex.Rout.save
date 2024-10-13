@@ -1086,8 +1086,8 @@ The following object is masked from ‘package:mgcv’:
 > ## IGNORE_RDIFF_BEGIN
 > ## Bayesian additive model (with low number of iterations to speed up the example)
 > set.seed(0)
-> rs2 <- bamlss(accuracy ~ s(iq, by = dyslexia) | dyslexia + iq, data = ReadingSkills, family = betar_family(),
-+   eps = 1e-7, n.iter = 400, burnin = 100)
+> rs2 <- bamlss(accuracy ~ s(iq, by = dyslexia) | dyslexia + iq, data = ReadingSkills,
++   family = betar_family(), eps = 1e-7, n.iter = 400, burnin = 100)
 AICc  -0.8829 logPost -64.6792 logLik  21.6241 edf 13.973 eps 1.0000 iteration   1
 AICc -51.8915 logPost -25.8044 logLik  39.7035 edf 10.242 eps 2.8731 iteration   2
 AICc -68.1251 logPost  -7.3858 logLik  46.8183 edf 9.6642 eps 0.5561 iteration   3

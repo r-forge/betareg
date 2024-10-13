@@ -90,8 +90,8 @@ rs1 <- betareg(accuracy ~ dyslexia * iq | dyslexia + iq, data = ReadingSkills)
 ## IGNORE_RDIFF_BEGIN
 ## Bayesian additive model (with low number of iterations to speed up the example)
 set.seed(0)
-rs2 <- bamlss(accuracy ~ s(iq, by = dyslexia) | dyslexia + iq, data = ReadingSkills, family = betar_family(),
-  eps = 1e-7, n.iter = 400, burnin = 100)
+rs2 <- bamlss(accuracy ~ s(iq, by = dyslexia) | dyslexia + iq, data = ReadingSkills,
+  family = betar_family(), eps = 1e-7, n.iter = 400, burnin = 100)
 
 ## Bayesian model shrinks the effects compared to ML
 plot(accuracy ~ iq, data = ReadingSkills, pch = 19, col = dyslexia)
