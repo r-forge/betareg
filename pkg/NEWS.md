@@ -8,6 +8,9 @@
   `xbetax_family()` provides the new extended-support beta mixture (XBX)
   regression.
 
+* Improved vignette source to consistently use pipe comments and avoid
+  duplicated figure labels.
+
 
 # betareg 3.2-1
 
