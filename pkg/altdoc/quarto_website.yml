@@ -7,13 +7,7 @@ website:
   site-url: https://topmodels.R-Forge.R-project.org/betareg/
   favicon: betareg.png
   image: betareg.png
-  open-graph:
-    image: betareg.png
-  twitter-card:
-    site: '@AchimZeileis'
-    card-style: summary
-    image: betareg.png
-    image-alt: 'betareg: Beta Regression in R'
+  open-graph: true
   navbar:
     logo: betareg-wide.png
     logo-alt: betareg logo
@@ -52,9 +46,9 @@ website:
         href: https://fosstodon.org/@zeileis
         aria-label: "@zeileis@fosstodon.org"
         target: _blank
-      - icon: twitter-x
-        href: https://x.com/AchimZeileis
-        aria-label: "@AchimZeileis"
+      - text: "{{< iconify fa6-brands:bluesky >}}"
+        href: https://bsky.app/profile/zeileis.org
+        aria-label: "@zeileis.org"
         target: _blank
       - icon: code-square
         href: https://R-Forge.R-project.org/projects/betareg
