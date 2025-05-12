@@ -1,3 +1,7 @@
+# betareg 3.2-3
+
+* Minor update of example output in the CRAN checks.
+
 
 # betareg 3.2-2
 
