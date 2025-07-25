@@ -1,3 +1,8 @@
+# betareg 3.2-4
+
+* Avoid partial matches of argument names.
+
+
 # betareg 3.2-3
 
 * Minor update of example output in the CRAN checks.

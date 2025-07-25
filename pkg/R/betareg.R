@@ -854,7 +854,7 @@ summary.betareg <- function(object, phi = NULL, type = "quantile", ...)
     if (object$method == "nlminb") {
         object$iterations <- c("nlminb" = as.vector(object$optim$iterations), "scoring" = as.vector(object$scoring))
     } else {
-        object$iterations <- c("optim" = as.vector(mytail(na.omit(object$optim$count))), "scoring" = as.vector(object$scoring))
+        object$iterations <- c("optim" = as.vector(mytail(na.omit(object$optim$counts))), "scoring" = as.vector(object$scoring))
     }
 
 
@@ -1037,7 +1037,7 @@ predict.betareg <- function(object, newdata = NULL,
         rownames(pars) <- rownames(mf)
 
         if(type != "precision") {
-            X <- model.matrix(delete.response(object$terms$mu), mf, contrasts = object$contrasts$mu)
+            X <- model.matrix(delete.response(object$terms$mu), mf, contrasts.arg = object$contrasts$mu)
             if(!is.null(object$call$offset)) offset[[1L]] <- offset[[1L]] + eval(object$call$offset, newdata)
             if(!is.null(off.num <- attr(object$terms$mu, "offset"))) {
                 for(j in off.num) offset[[1L]] <- offset[[1L]] + eval(attr(object$terms$mu, "variables")[[j + 1L]], newdata)
@@ -1045,7 +1045,7 @@ predict.betareg <- function(object, newdata = NULL,
             pars$mu <- object$link$mu$linkinv(drop(X %*% object$coefficients$mu + offset[[1L]]))
         }
         if(!(object$dist == "beta" && type %in% c("response", "link"))) {
-            Z <- model.matrix(object$terms$phi, mf, contrasts = object$contrasts$phi)
+            Z <- model.matrix(object$terms$phi, mf, contrasts.arg = object$contrasts$phi)
             if(!is.null(off.num <- attr(object$terms$phi, "offset"))) {
                 for(j in off.num) offset[[2L]] <- offset[[2L]] + eval(attr(object$terms$phi, "variables")[[j + 1L]], newdata)
             }
@@ -1316,7 +1316,7 @@ model.matrix.betareg <- function(object, model = c("mean", "precision"), ...) {
     model <- fix_model_mu_phi(model)[1L]
     for(n in names(object)[names(object) %in% c("x", "terms", "contrasts")]) names(object[[n]])[1L:2L] <- c("mu", "phi")
     rval <- if(!is.null(object$x[[model]])) object$x[[model]]
-            else model.matrix(object$terms[[model]], model.frame(object), contrasts = object$contrasts[[model]])
+            else model.matrix(object$terms[[model]], model.frame(object), contrasts.arg = object$contrasts[[model]])
     return(rval)
 }
 
