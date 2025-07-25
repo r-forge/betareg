@@ -960,6 +960,9 @@ predict.betareg <- function(object, newdata = NULL,
     if(type == "cdf") type <- "probability"
     if(type == "pdf") type <- "density"
 
+    ## for distribution require distributions3 infrastructure
+    if(type == "distribution") stopifnot(requireNamespace("distributions3"))
+
     ## unify list component names
     if(is.null(object$dist)) object$dist <- "beta"
     if(object$dist == "beta") {
@@ -1024,7 +1027,7 @@ predict.betareg <- function(object, newdata = NULL,
         }
     } else {
         tnam <- switch(type,
-                       "response" = "mu",
+                       "response" = if(object$dist == "beta") "mu" else "full",
                        "link" = "mu",
                        "precision" = "phi",
                        "full")
@@ -1044,7 +1047,7 @@ predict.betareg <- function(object, newdata = NULL,
             }
             pars$mu <- object$link$mu$linkinv(drop(X %*% object$coefficients$mu + offset[[1L]]))
         }
-        if(!(object$dist == "beta" && type %in% c("response", "link"))) {
+        if(!((object$dist == "beta" && type == "response") || (type == "link"))) {
             Z <- model.matrix(object$terms$phi, mf, contrasts.arg = object$contrasts$phi)
             if(!is.null(off.num <- attr(object$terms$phi, "offset"))) {
                 for(j in off.num) offset[[2L]] <- offset[[2L]] + eval(attr(object$terms$phi, "variables")[[j + 1L]], newdata)

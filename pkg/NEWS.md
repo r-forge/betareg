@@ -1,5 +1,8 @@
 # betareg 3.2-4
 
+* Fix `predict()` method for extended beta regression models with `newdata`
+  and `type = "response"` or `type = "link"`.
+
 * Avoid partial matches of argument names.
 
 
