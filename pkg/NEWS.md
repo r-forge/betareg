@@ -1,5 +1,10 @@
 # betareg 3.2-4
 
+* The paper "Extended-Support Beta Regression for [0, 1] Responses"
+  by Ioannis Kosmidis and Achim Zeileis has been published online in the
+  _Journal of the Royal Statistical Society Series C: Applied Statistics_
+  with [doi:10.1093/jrsssc/qlaf039](https://doi.org/10.1093/jrsssc/qlaf039).
+
 * Fix `predict()` method for extended beta regression models with `newdata`
   and `type = "response"` or `type = "link"`.
 
